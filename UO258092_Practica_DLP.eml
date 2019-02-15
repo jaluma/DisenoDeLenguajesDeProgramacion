@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inheritJdk="true">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
+		<excludeFolder url="file://$MODULE_DIR$/.vscode"/>
+	</contentEntry>
+	<lib name="antlr-4.7.2-complete.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/antlr/antlr.src.zip!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/antlr/antlr.src.zip!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/antlr/antlr-4.7.2-complete.jar!/"/>
+	</lib>
+</component>

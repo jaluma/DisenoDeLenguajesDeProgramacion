@@ -1,0 +1,7 @@
+// Tipos simples ---------
+var ab:int;
+var ba:char;
+
+// Arrays ---------
+var c:[5] float;
+var h:[3][2] float;  // Pueden ser más de 2 dimensiones
