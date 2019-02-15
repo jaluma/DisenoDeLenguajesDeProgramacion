@@ -25,10 +25,25 @@ escribeEdad(): char {
     // con parametros
 dobleSuma(a:int, b:int): int {
     var local:float;
+    var array:[5][8] float;
+
+    array[i+5] = array[i+6][i+7];
 
     local = (3 + 2) / 4 * 8;
     return cast<int>(5.6);
 }
+
+//vacia
+dobleSuma(a:int, b:int): int {
+    return a;
+}
+
+dobleSuma(a:int, b:int) {
+    dobleSuma(a,b);
+}
+
+// definicion de variables globales
+var a: char;
 
 /*
  Hipoteca.txt v1.1

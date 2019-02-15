@@ -6,9 +6,13 @@ import Lexicon
 start
     : instruccion*
 	;
+
+main
+    : 'main' '(' ')' '{' ((definicion)* sentencia)* '}'
+    ;
 	
 instruccion
-    : (definicion | estructura | funcion)
+    : (definicion | funcion)
 	;
 	
 definicion
@@ -16,18 +20,13 @@ definicion
 	;
 
 def
-    : IDENT ':' ('[' expr ']')* tipo PTO_COMA
-    ;
-
-estructura
-    : 'struct' IDENT '{' def* '}' PTO_COMA
+    : IDENT ':' ('[' INT_CONSTANT ']')* tipo PTO_COMA
+    | 'struct' IDENT '{' def* '}' PTO_COMA
     ;
 
 funcion
-    : IDENT '(' ( IDENT ':' tipo (',' IDENT ':' tipo )* )? ')'
+    : IDENT '(' ( IDENT ':' tipo (',' IDENT ':' tipo )* )? ')' (':' tipo)*
         '{' ((definicion)* sentencia)* '}'
-    | IDENT '(' ( IDENT ':' tipo (',' IDENT ':' tipo )* )? ')' ':' tipo
-        '{' ((definicion)* sentencia)* 'return' expr PTO_COMA '}'
     ;
 
 sentencia
@@ -35,15 +34,18 @@ sentencia
 	| 'printsp' expr PTO_COMA
     | 'println' expr PTO_COMA
 	| expr '=' expr PTO_COMA
-	| 'if' '(' expr ')' '{' sentencia*
+	| 'return' expr? PTO_COMA
+	| 'if' '(' expr ')' '{' sentencia* '}'
 	| 'if' '(' expr ')' '{' sentencia* '}' 'else' '{' sentencia* '}'
 	| 'while' '(' expr ')' '{' sentencia* '}'
+	| expr PTO_COMA
 	;
 
 expr
 	: INT_CONSTANT
 	| REAL_CONSTANT
 	| IDENT
+	| IDENT '(' ( expr (',' expr )* )? ')'
 	| '(' expr ')'
 	| CAST '<' tipo '>' '(' expr ')'
 	| expr ('*' | '/') expr

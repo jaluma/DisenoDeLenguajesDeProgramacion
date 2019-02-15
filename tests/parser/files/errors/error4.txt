@@ -1,0 +1,4 @@
+// 4-funcion sin return
+tercera(a:int, b:int):char {
+	return print cast<int>(bebe);
+}

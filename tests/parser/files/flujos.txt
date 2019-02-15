@@ -1,0 +1,32 @@
+prueba(a:int, b:int): int {
+    var a:int;
+    if (a) {
+
+    } else {
+
+    }
+
+    while (b) {
+        a = a+b;
+    }
+
+    while (a) {
+        return;
+    }
+
+    if (a) {
+        return b;
+    }
+
+    if (b) {
+        return a;
+    } else {
+        return a+b;
+    }
+
+
+
+
+}
+
+main () {}

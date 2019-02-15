@@ -28,8 +28,7 @@ import java.io.Writer;
  * @author Raúl Izquierdo
  */
 public class Main {
-	//	public static final String program = "definicion_variables.txt"; // prueba definicion variables y struct
-	public static final String program = "definicion_funciones.txt"; // prueba definicion variables y struct
+	private static final String program = "Hipoteca.txt"; // Prueba a compilar durante el desarrollo
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();
@@ -44,10 +43,10 @@ public class Main {
 	/**
 	 * Método que coordina todas las fases del compilador
 	 */
-	public static AST compile(String sourceName, ErrorManager errorManager) throws Exception {
+	private static AST compile(String sourceName, ErrorManager errorManager) throws Exception {
 
 		// 1. Fases de Análisis Léxico y Sintáctico
-		GrammarLexer lexer = new GrammarLexer(CharStreams.fromFileName(sourceName));
+		GrammarLexer lexer = new GrammarLexer(CharStreams.fromFileName("tests/parser/files/" + sourceName));
 		GrammarParser parser = new GrammarParser(new CommonTokenStream(lexer));
 
 		// Las dos siguientes líneas son opcionales. Realizan una detección más precisa

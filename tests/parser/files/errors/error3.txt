@@ -1,0 +1,5 @@
+// 3-return con sentencia
+
+tercera(a:int, b:int) {
+	return print cast<int>(bebe);
+}

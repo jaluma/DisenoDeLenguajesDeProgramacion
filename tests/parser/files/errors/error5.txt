@@ -1,0 +1,5 @@
+// 1-print y definir variable
+
+a() {
+    print var a: char;
+}

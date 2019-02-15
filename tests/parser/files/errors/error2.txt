@@ -1,0 +1,8 @@
+// 2-funcion con definiciones despues de sentencias
+
+segunda(a:int, b:int) {
+	local = (a + b) * 2;
+	print cast<int>(bebe);
+
+	var local:int;
+}
