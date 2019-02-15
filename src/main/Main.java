@@ -28,7 +28,8 @@ import java.io.Writer;
  * @author Raúl Izquierdo
  */
 public class Main {
-	public static final String program = "definicion_variables.txt"; // Prueba a compilar durante el desarrollo
+	//	public static final String program = "definicion_variables.txt"; // prueba definicion variables y struct
+	public static final String program = "definicion_funciones.txt"; // prueba definicion variables y struct
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();

@@ -1,0 +1,40 @@
+// funciones sin return
+    // sin parametros
+
+noReturnNoParam() {
+	var local:int;
+
+	local = (a + b) * 2;
+}
+
+noReturn2Param(a:int, b:int) {
+	var local:int;
+
+	local = (a + b) * 2;
+	print cast<int>(bebe);
+}
+
+// funciones con return
+    // sin parametros
+
+escribeEdad(): char {
+    printsp microsoft.empleados[num].edad;
+    return microsoft.empleados[num][num][num].edad;
+}
+
+    // con parametros
+dobleSuma(a:int, b:int): int {
+    var local:float;
+
+    local = (3 + 2) / 4 * 8;
+    return cast<int>(5.6);
+}
+
+/*
+ Hipoteca.txt v1.1
+
+- Programa de ejemplo que muestra las características del lenguaje
+- La sintaxis tiene que ser obligatoriamente la que se muestra en este ejemplo
+
+*/
+//hola prueba

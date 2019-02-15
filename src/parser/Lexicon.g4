@@ -12,26 +12,12 @@ FLOAT
 	:'float';
 CHAR
 	:'char';
-	
 
-MAS
-	: '+';
-MENOS
-	: '-';
-MUL
-	: '*';
-DIV
-	: '/';
-	
-IGUAL
-	: '=';
+CAST
+	:'cast';
+
 PTO_COMA
 	: ';';
-
-READ
-	: 'read';
-WRITE
-	: 'write';
 
 IDENT
 	: [a-zA-Z0-9]+;
