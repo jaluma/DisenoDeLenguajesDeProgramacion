@@ -4,14 +4,15 @@
 
 package ast;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.Visitor;
+import visitor.*;
 
-//	arrayCall:expression -> call:expression  index:expression
+import org.antlr.v4.runtime.*;
 
-public class ArrayCall extends AbstractExpression {
+//	indexExpression:expression -> call:expression  index:expression
 
-	public ArrayCall(Expression call, Expression index) {
+public class IndexExpression extends AbstractExpression {
+
+	public IndexExpression(Expression call, Expression index) {
 		this.call = call;
 		this.index = index;
 
@@ -20,7 +21,7 @@ public class ArrayCall extends AbstractExpression {
        setPositions(call, index);
 	}
 
-	public ArrayCall(Object call, Object index) {
+	public IndexExpression(Object call, Object index) {
 		this.call = (Expression) ((call instanceof ParserRuleContext) ? getAST(call) : call);
 		this.index = (Expression) ((index instanceof ParserRuleContext) ? getAST(index) : index);
 

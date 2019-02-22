@@ -8,11 +8,11 @@ import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	arithmeticExpression:expression -> left:expression  operator:String  right:expression
+//	binaryExpression:expression -> left:expression  operator:String  right:expression
 
-public class ArithmeticExpression extends AbstractExpression {
+public class BinaryExpression extends AbstractExpression {
 
-	public ArithmeticExpression(Expression left, String operator, Expression right) {
+	public BinaryExpression(Expression left, String operator, Expression right) {
 		this.left = left;
 		this.operator = operator;
 		this.right = right;
@@ -22,7 +22,7 @@ public class ArithmeticExpression extends AbstractExpression {
        setPositions(left, right);
 	}
 
-	public ArithmeticExpression(Object left, Object operator, Object right) {
+	public BinaryExpression(Object left, Object operator, Object right) {
 		this.left = (Expression) ((left instanceof ParserRuleContext) ? getAST(left) : left);
 		this.operator = (operator instanceof Token) ? ((Token)operator).getText() : (String) operator;
 		this.right = (Expression) ((right instanceof ParserRuleContext) ? getAST(right) : right);

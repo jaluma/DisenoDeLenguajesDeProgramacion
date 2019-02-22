@@ -8,7 +8,7 @@ import ast.*;
 
 public interface Visitor {
 	public Object visit(Program node, Object param);
-	public Object visit(Instruccion node, Object param);
+	public Object visit(Instruction node, Object param);
 	public Object visit(VarDefinition node, Object param);
 	public Object visit(StructDefinition node, Object param);
 	public Object visit(FunDefinition node, Object param);
@@ -20,15 +20,15 @@ public interface Visitor {
 	public Object visit(Print node, Object param);
 	public Object visit(Assignment node, Object param);
 	public Object visit(Return node, Object param);
-	public Object visit(IfElseStatement node, Object param);
-	public Object visit(WhileStatement node, Object param);
-	public Object visit(Expresion node, Object param);
+	public Object visit(IfElse node, Object param);
+	public Object visit(While node, Object param);
 	public Object visit(IntConstant node, Object param);
 	public Object visit(RealConstant node, Object param);
 	public Object visit(Variable node, Object param);
-	public Object visit(ArithmeticExpression node, Object param);
-	public Object visit(FunCall node, Object param);
+	public Object visit(BinaryExpression node, Object param);
+	public Object visit(UnaryExpression node, Object param);
 	public Object visit(CastExpression node, Object param);
-	public Object visit(FunCallMethod node, Object param);
-	public Object visit(ArrayCall node, Object param);
+	public Object visit(FunInvocationExpression node, Object param);
+	public Object visit(FunFieldAccessExpression node, Object param);
+	public Object visit(IndexExpression node, Object param);
 }

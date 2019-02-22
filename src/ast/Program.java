@@ -8,32 +8,33 @@ import visitor.Visitor;
 
 import java.util.List;
 
-//	program -> instruccions:instruccion*
+//	program -> instructions:instruction*
 
 public class Program extends AbstractAST  {
 
-	public Program(List<Instruccion> instruccions) {
-		this.instruccions = instruccions;
+	public Program(List<Instruction> instructions) {
+		this.instructions = instructions;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(instruccions);
+		setPositions(instructions);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Program(Object instruccions) {
-		this.instruccions = (List<Instruccion>) instruccions;
+	public Program(Object instructions) {
+		this.instructions = (List<Instruction>) instructions;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(instruccions);
+		setPositions(instructions);
 	}
 
-	public List<Instruccion> getInstruccions() {
-		return instruccions;
+	public List<Instruction> getInstructions() {
+		return instructions;
 	}
-	public void setInstruccions(List<Instruccion> instruccions) {
-		this.instruccions = instruccions;
+
+	public void setInstructions(List<Instruction> instructions) {
+		this.instructions = instructions;
 	}
 
 	@Override
@@ -41,9 +42,9 @@ public class Program extends AbstractAST  {
 		return v.visit(this, param);
 	}
 
-	private List<Instruccion> instruccions;
+	private List<Instruction> instructions;
 
 	public String toString() {
-       return "{instruccions:" + getInstruccions() + "}";
+		return "{instructions:" + getInstructions() + "}";
    }
 }

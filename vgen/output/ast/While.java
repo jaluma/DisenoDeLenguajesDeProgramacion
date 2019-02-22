@@ -4,28 +4,32 @@
 
 package ast;
 
+import java.util.*;
 import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	expresion:sentence -> expression:expression
+//	while:sentence -> expression:expression  sentence:sentence*
 
-public class Expresion extends AbstractSentence {
+public class While extends AbstractSentence {
 
-	public Expresion(Expression expression) {
+	public While(Expression expression, List<Sentence> sentence) {
 		this.expression = expression;
+		this.sentence = sentence;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(expression);
+       setPositions(expression, sentence);
 	}
 
-	public Expresion(Object expression) {
+	@SuppressWarnings("unchecked")
+	public While(Object expression, Object sentence) {
 		this.expression = (Expression) ((expression instanceof ParserRuleContext) ? getAST(expression) : expression);
+		this.sentence = (List<Sentence>) sentence;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(expression);
+       setPositions(expression, sentence);
 	}
 
 	public Expression getExpression() {
@@ -35,14 +39,22 @@ public class Expresion extends AbstractSentence {
 		this.expression = expression;
 	}
 
+	public List<Sentence> getSentence() {
+		return sentence;
+	}
+	public void setSentence(List<Sentence> sentence) {
+		this.sentence = sentence;
+	}
+
 	@Override
 	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
 	private Expression expression;
+	private List<Sentence> sentence;
 
 	public String toString() {
-       return "{expression:" + getExpression() + "}";
+       return "{expression:" + getExpression() + ", sentence:" + getSentence() + "}";
    }
 }

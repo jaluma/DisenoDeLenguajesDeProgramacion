@@ -7,6 +7,7 @@
 		<testFolder url="file://$MODULE_DIR$/tests/parser/files/errors"/>
 		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
 		<excludeFolder url="file://$MODULE_DIR$/.vscode"/>
+		<excludeFolder url="file://$MODULE_DIR$/vgen/output"/>
 	</contentEntry>
 	<lib name="antlr-4.7.2-complete.jar" scope="COMPILE">
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/antlr/antlr-4.7.2-complete.jar!/"/>

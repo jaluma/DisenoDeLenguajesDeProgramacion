@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="tests/parser/files"/>
 	<classpathentry kind="src" path="tests/parser/files/errors"/>
 	<classpathentry kind="src" path="antlr"/>
+	<classpathentry kind="src" path="vgen"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/junit:junit:4.11"/>
 	<classpathentry exported="true" kind="lib" path="antlr/antlr-4.7.2-complete.jar"/>

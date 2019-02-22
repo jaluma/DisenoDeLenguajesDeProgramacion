@@ -8,9 +8,9 @@ import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	paramDefinition:param -> name:String  type:type
+//	paramDefinition:definition -> name:String  type:type
 
-public class ParamDefinition extends AbstractParam {
+public class ParamDefinition extends AbstractDefinition {
 
 	public ParamDefinition(String name, Type type) {
 		this.name = name;

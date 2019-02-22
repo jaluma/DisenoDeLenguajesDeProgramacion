@@ -4,14 +4,15 @@
 
 package ast;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.Visitor;
+import visitor.*;
 
-//	instruccion -> definitions:definition
+import org.antlr.v4.runtime.*;
 
-public class Instruccion extends AbstractAST  {
+//	instruction -> definitions:definition
 
-	public Instruccion(Definition definitions) {
+public class Instruction extends AbstractAST  {
+
+	public Instruction(Definition definitions) {
 		this.definitions = definitions;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
@@ -19,7 +20,7 @@ public class Instruccion extends AbstractAST  {
        setPositions(definitions);
 	}
 
-	public Instruccion(Object definitions) {
+	public Instruction(Object definitions) {
 		this.definitions = (Definition) ((definitions instanceof ParserRuleContext) ? getAST(definitions) : definitions);
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.

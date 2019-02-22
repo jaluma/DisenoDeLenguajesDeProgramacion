@@ -8,9 +8,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import visitor.Visitor;
 
-//	paramDefinition:param -> name:String  type:type
+//	paramDefinition:definition -> name:String  type:type
 
-public class ParamDefinition extends AbstractParam {
+public class ParamDefinition extends AbstractDefinition {
 
 	public ParamDefinition(String name, Type type) {
 		this.name = name;

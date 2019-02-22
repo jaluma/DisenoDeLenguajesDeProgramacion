@@ -9,11 +9,11 @@ import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	ifElseStatement:sentence -> expression:expression  if_s:sentence*  else_s:sentence*
+//	ifElse:sentence -> expression:expression  if_s:sentence*  else_s:sentence*
 
-public class IfElseStatement extends AbstractSentence {
+public class IfElse extends AbstractSentence {
 
-	public IfElseStatement(Expression expression, List<Sentence> if_s, List<Sentence> else_s) {
+	public IfElse(Expression expression, List<Sentence> if_s, List<Sentence> else_s) {
 		this.expression = expression;
 		this.if_s = if_s;
 		this.else_s = else_s;
@@ -24,7 +24,7 @@ public class IfElseStatement extends AbstractSentence {
 	}
 
 	@SuppressWarnings("unchecked")
-	public IfElseStatement(Object expression, Object if_s, Object else_s) {
+	public IfElse(Object expression, Object if_s, Object else_s) {
 		this.expression = (Expression) ((expression instanceof ParserRuleContext) ? getAST(expression) : expression);
 		this.if_s = (List<Sentence>) if_s;
 		this.else_s = (List<Sentence>) else_s;

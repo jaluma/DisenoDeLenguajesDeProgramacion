@@ -29,3 +29,7 @@ struct Empresa {
 };
 
 var microsoft: Empresa;
+
+struct Empresa {
+
+};

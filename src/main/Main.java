@@ -29,7 +29,8 @@ import java.io.Writer;
  */
 @SuppressWarnings("Duplicates")
 public class Main {
-	private static final String program = "definicion_variables.txt"; // Prueba a compilar durante el desarrollo
+	private static final String path = "tests/parser/files/";
+	private static final String program = path + "definicion_funciones.txt"; // Prueba a compilar durante el desarrollo
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();
@@ -47,7 +48,7 @@ public class Main {
 	private static AST compile(String sourceName, ErrorManager errorManager) throws Exception {
 
 		// 1. Fases de Análisis Léxico y Sintáctico
-		GrammarLexer lexer = new GrammarLexer(CharStreams.fromFileName("tests/parser/files/" + sourceName));
+		GrammarLexer lexer = new GrammarLexer(CharStreams.fromFileName(sourceName));
 		GrammarParser parser = new GrammarParser(new CommonTokenStream(lexer));
 
 		// Las dos siguientes líneas son opcionales. Realizan una detección más precisa

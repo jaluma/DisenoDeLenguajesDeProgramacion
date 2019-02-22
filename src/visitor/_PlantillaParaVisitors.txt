@@ -38,20 +38,20 @@ public class <nombre clase> extends DefaultVisitor {
 	//		es la llamada a 'super.visit' la que debería ser borrada.
 	// ---------------------------------------------------------
 
-	//	class Program { List<Instruccion> instruccions; }
+	//	class Program { List<Instruction> instructions; }
 	public Object visit(Program node, Object param) {
 
 		// super.visit(node, param);
 
-		if (node.getInstruccions() != null)
-			for (Instruccion child : node.getInstruccions())
+		if (node.getInstructions() != null)
+			for (Instruction child : node.getInstructions())
 				child.accept(this, param);
 
 		return null;
 	}
 
-	//	class Instruccion { Definition definitions; }
-	public Object visit(Instruccion node, Object param) {
+	//	class Instruction { Definition definitions; }
+	public Object visit(Instruction node, Object param) {
 
 		// super.visit(node, param);
 
@@ -61,7 +61,7 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class VarDefinition { Type type;  String name;  List<Expression> size; }
+	//	class VarDefinition { String name;  Type type;  List<Expression> arraySizes; }
 	public Object visit(VarDefinition node, Object param) {
 
 		// super.visit(node, param);
@@ -69,8 +69,8 @@ public class <nombre clase> extends DefaultVisitor {
 		if (node.getType() != null)
 			node.getType().accept(this, param);
 
-		if (node.getSize() != null)
-			for (Expression child : node.getSize())
+		if (node.getArraySizes() != null)
+			for (Expression child : node.getArraySizes())
 				child.accept(this, param);
 
 		return null;
@@ -88,13 +88,13 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class FunDefinition { String name;  List<Param> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
+	//	class FunDefinition { String name;  List<Definition> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
 	public Object visit(FunDefinition node, Object param) {
 
 		// super.visit(node, param);
 
 		if (node.getParams() != null)
-			for (Param child : node.getParams())
+			for (Definition child : node.getParams())
 				child.accept(this, param);
 
 		if (node.getReturn_t() != null)
@@ -137,7 +137,7 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class VarType {  }
+	//	class VarType { String type; }
 	public Object visit(VarType node, Object param) {
 		return null;
 	}
@@ -178,8 +178,8 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class IfElseStatement { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
-	public Object visit(IfElseStatement node, Object param) {
+	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
+	public Object visit(IfElse node, Object param) {
 
 		// super.visit(node, param);
 
@@ -197,8 +197,8 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class WhileStatement { Expression expression;  List<Sentence> sentence; }
-	public Object visit(WhileStatement node, Object param) {
+	//	class While { Expression expression;  List<Sentence> sentence; }
+	public Object visit(While node, Object param) {
 
 		// super.visit(node, param);
 
@@ -208,17 +208,6 @@ public class <nombre clase> extends DefaultVisitor {
 		if (node.getSentence() != null)
 			for (Sentence child : node.getSentence())
 				child.accept(this, param);
-
-		return null;
-	}
-
-	//	class Expresion { Expression expression; }
-	public Object visit(Expresion node, Object param) {
-
-		// super.visit(node, param);
-
-		if (node.getExpression() != null)
-			node.getExpression().accept(this, param);
 
 		return null;
 	}
@@ -238,8 +227,8 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class ArithmeticExpression { Expression left;  String operator;  Expression right; }
-	public Object visit(ArithmeticExpression node, Object param) {
+	//	class BinaryExpression { Expression left;  String operator;  Expression right; }
+	public Object visit(BinaryExpression node, Object param) {
 
 		// super.visit(node, param);
 
@@ -252,14 +241,13 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class FunCall { String name;  List<Expression> params; }
-	public Object visit(FunCall node, Object param) {
+	//	class UnaryExpression { Expression expr;  String operator; }
+	public Object visit(UnaryExpression node, Object param) {
 
 		// super.visit(node, param);
 
-		if (node.getParams() != null)
-			for (Expression child : node.getParams())
-				child.accept(this, param);
+		if (node.getExpr() != null)
+			node.getExpr().accept(this, param);
 
 		return null;
 	}
@@ -278,8 +266,20 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class FunCallMethod { Expression expression;  String name; }
-	public Object visit(FunCallMethod node, Object param) {
+	//	class FunInvocationExpression { String name;  List<Expression> params; }
+	public Object visit(FunInvocationExpression node, Object param) {
+
+		// super.visit(node, param);
+
+		if (node.getParams() != null)
+			for (Expression child : node.getParams())
+				child.accept(this, param);
+
+		return null;
+	}
+
+	//	class FunFieldAccessExpression { Expression expression;  String name; }
+	public Object visit(FunFieldAccessExpression node, Object param) {
 
 		// super.visit(node, param);
 
@@ -289,8 +289,8 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class ArrayCall { Expression call;  Expression index; }
-	public Object visit(ArrayCall node, Object param) {
+	//	class IndexExpression { Expression call;  Expression index; }
+	public Object visit(IndexExpression node, Object param) {
 
 		// super.visit(node, param);
 

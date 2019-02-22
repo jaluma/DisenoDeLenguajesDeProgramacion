@@ -4,16 +4,16 @@
 
 package ast;
 
-import org.antlr.v4.runtime.Token;
-import visitor.Visitor;
+import java.util.*;
+import visitor.*;
 
-import java.util.List;
+import org.antlr.v4.runtime.*;
 
-//	funCall:expression -> name:String  params:expression*
+//	funInvocationExpression:expression -> name:String  params:expression*
 
-public class FunCall extends AbstractExpression {
+public class FunInvocationExpression extends AbstractExpression {
 
-	public FunCall(String name, List<Expression> params) {
+	public FunInvocationExpression(String name, List<Expression> params) {
 		this.name = name;
 		this.params = params;
 
@@ -23,7 +23,7 @@ public class FunCall extends AbstractExpression {
 	}
 
 	@SuppressWarnings("unchecked")
-	public FunCall(Object name, Object params) {
+	public FunInvocationExpression(Object name, Object params) {
 		this.name = (name instanceof Token) ? ((Token)name).getText() : (String) name;
 		this.params = (List<Expression>) params;
 

@@ -9,11 +9,11 @@ import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	funDefinition:definition -> name:String  params:param*  return_t:type  definitions:definition*  sentences:sentence*
+//	funDefinition:definition -> name:String  params:definition*  return_t:type  definitions:definition*  sentences:sentence*
 
 public class FunDefinition extends AbstractDefinition {
 
-	public FunDefinition(String name, List<Param> params, Type return_t, List<Definition> definitions, List<Sentence> sentences) {
+	public FunDefinition(String name, List<Definition> params, Type return_t, List<Definition> definitions, List<Sentence> sentences) {
 		this.name = name;
 		this.params = params;
 		this.return_t = return_t;
@@ -28,7 +28,7 @@ public class FunDefinition extends AbstractDefinition {
 	@SuppressWarnings("unchecked")
 	public FunDefinition(Object name, Object params, Object return_t, Object definitions, Object sentences) {
 		this.name = (name instanceof Token) ? ((Token)name).getText() : (String) name;
-		this.params = (List<Param>) params;
+		this.params = (List<Definition>) params;
 		this.return_t = (Type) ((return_t instanceof ParserRuleContext) ? getAST(return_t) : return_t);
 		this.definitions = (List<Definition>) definitions;
 		this.sentences = (List<Sentence>) sentences;
@@ -45,10 +45,10 @@ public class FunDefinition extends AbstractDefinition {
 		this.name = name;
 	}
 
-	public List<Param> getParams() {
+	public List<Definition> getParams() {
 		return params;
 	}
-	public void setParams(List<Param> params) {
+	public void setParams(List<Definition> params) {
 		this.params = params;
 	}
 
@@ -79,7 +79,7 @@ public class FunDefinition extends AbstractDefinition {
 	}
 
 	private String name;
-	private List<Param> params;
+	private List<Definition> params;
 	private Type return_t;
 	private List<Definition> definitions;
 	private List<Sentence> sentences;

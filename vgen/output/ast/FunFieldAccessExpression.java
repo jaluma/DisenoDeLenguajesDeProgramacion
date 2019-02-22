@@ -4,15 +4,15 @@
 
 package ast;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import visitor.Visitor;
+import visitor.*;
 
-//	funCallMethod:expression -> expression:expression  name:String
+import org.antlr.v4.runtime.*;
 
-public class FunCallMethod extends AbstractExpression {
+//	funFieldAccessExpression:expression -> expression:expression  name:String
 
-	public FunCallMethod(Expression expression, String name) {
+public class FunFieldAccessExpression extends AbstractExpression {
+
+	public FunFieldAccessExpression(Expression expression, String name) {
 		this.expression = expression;
 		this.name = name;
 
@@ -21,7 +21,7 @@ public class FunCallMethod extends AbstractExpression {
        setPositions(expression);
 	}
 
-	public FunCallMethod(Object expression, Object name) {
+	public FunFieldAccessExpression(Object expression, Object name) {
 		this.expression = (Expression) ((expression instanceof ParserRuleContext) ? getAST(expression) : expression);
 		this.name = (name instanceof Token) ? ((Token)name).getText() : (String) name;
 

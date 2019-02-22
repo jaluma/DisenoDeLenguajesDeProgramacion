@@ -14,24 +14,24 @@ DefaultVisitor. Implementación base del visitor para ser derivada por nuevos vi
 */
 public class DefaultVisitor implements Visitor {
 
-	//	class Program { List<Instruccion> instruccions; }
+	//	class Program { List<Instruction> instructions; }
 	public Object visit(Program node, Object param) {
-		visitChildren(node.getInstruccions(), param);
+		visitChildren(node.getInstructions(), param);
 		return null;
 	}
 
-	//	class Instruccion { Definition definitions; }
-	public Object visit(Instruccion node, Object param) {
+	//	class Instruction { Definition definitions; }
+	public Object visit(Instruction node, Object param) {
 		if (node.getDefinitions() != null)
 			node.getDefinitions().accept(this, param);
 		return null;
 	}
 
-	//	class VarDefinition { Type type;  String name;  List<Expression> size; }
+	//	class VarDefinition { String name;  Type type;  List<Expression> arraySizes; }
 	public Object visit(VarDefinition node, Object param) {
 		if (node.getType() != null)
 			node.getType().accept(this, param);
-		visitChildren(node.getSize(), param);
+		visitChildren(node.getArraySizes(), param);
 		return null;
 	}
 
@@ -41,7 +41,7 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class FunDefinition { String name;  List<Param> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
+	//	class FunDefinition { String name;  List<Definition> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
 	public Object visit(FunDefinition node, Object param) {
 		visitChildren(node.getParams(), param);
 		if (node.getReturn_t() != null)
@@ -73,7 +73,7 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class VarType {  }
+	//	class VarType { String type; }
 	public Object visit(VarType node, Object param) {
 		return null;
 	}
@@ -101,8 +101,8 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class IfElseStatement { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
-	public Object visit(IfElseStatement node, Object param) {
+	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
+	public Object visit(IfElse node, Object param) {
 		if (node.getExpression() != null)
 			node.getExpression().accept(this, param);
 		visitChildren(node.getIf_s(), param);
@@ -110,18 +110,11 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class WhileStatement { Expression expression;  List<Sentence> sentence; }
-	public Object visit(WhileStatement node, Object param) {
+	//	class While { Expression expression;  List<Sentence> sentence; }
+	public Object visit(While node, Object param) {
 		if (node.getExpression() != null)
 			node.getExpression().accept(this, param);
 		visitChildren(node.getSentence(), param);
-		return null;
-	}
-
-	//	class Expresion { Expression expression; }
-	public Object visit(Expresion node, Object param) {
-		if (node.getExpression() != null)
-			node.getExpression().accept(this, param);
 		return null;
 	}
 
@@ -140,8 +133,8 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class ArithmeticExpression { Expression left;  String operator;  Expression right; }
-	public Object visit(ArithmeticExpression node, Object param) {
+	//	class BinaryExpression { Expression left;  String operator;  Expression right; }
+	public Object visit(BinaryExpression node, Object param) {
 		if (node.getLeft() != null)
 			node.getLeft().accept(this, param);
 		if (node.getRight() != null)
@@ -149,9 +142,10 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class FunCall { String name;  List<Expression> params; }
-	public Object visit(FunCall node, Object param) {
-		visitChildren(node.getParams(), param);
+	//	class UnaryExpression { Expression expr;  String operator; }
+	public Object visit(UnaryExpression node, Object param) {
+		if (node.getExpr() != null)
+			node.getExpr().accept(this, param);
 		return null;
 	}
 
@@ -164,15 +158,21 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class FunCallMethod { Expression expression;  String name; }
-	public Object visit(FunCallMethod node, Object param) {
+	//	class FunInvocationExpression { String name;  List<Expression> params; }
+	public Object visit(FunInvocationExpression node, Object param) {
+		visitChildren(node.getParams(), param);
+		return null;
+	}
+
+	//	class FunFieldAccessExpression { Expression expression;  String name; }
+	public Object visit(FunFieldAccessExpression node, Object param) {
 		if (node.getExpression() != null)
 			node.getExpression().accept(this, param);
 		return null;
 	}
 
-	//	class ArrayCall { Expression call;  Expression index; }
-	public Object visit(ArrayCall node, Object param) {
+	//	class IndexExpression { Expression call;  Expression index; }
+	public Object visit(IndexExpression node, Object param) {
 		if (node.getCall() != null)
 			node.getCall().accept(this, param);
 		if (node.getIndex() != null)

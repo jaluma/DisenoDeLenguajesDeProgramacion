@@ -9,36 +9,29 @@ import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	varDefinition:definition -> type:type  name:String  size:expression*
+//	varDefinition:definition -> name:String  type:type  arraySizes:expression*
 
 public class VarDefinition extends AbstractDefinition {
 
-	public VarDefinition(Type type, String name, List<Expression> size) {
-		this.type = type;
+	public VarDefinition(String name, Type type, List<Expression> arraySizes) {
 		this.name = name;
-		this.size = size;
+		this.type = type;
+		this.arraySizes = arraySizes;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(type, size);
+       setPositions(type, arraySizes);
 	}
 
 	@SuppressWarnings("unchecked")
-	public VarDefinition(Object type, Object name, Object size) {
-		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
+	public VarDefinition(Object name, Object type, Object arraySizes) {
 		this.name = (name instanceof Token) ? ((Token)name).getText() : (String) name;
-		this.size = (List<Expression>) size;
+		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
+		this.arraySizes = (List<Expression>) arraySizes;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(type, name, size);
-	}
-
-	public Type getType() {
-		return type;
-	}
-	public void setType(Type type) {
-		this.type = type;
+       setPositions(name, type, arraySizes);
 	}
 
 	public String getName() {
@@ -48,11 +41,18 @@ public class VarDefinition extends AbstractDefinition {
 		this.name = name;
 	}
 
-	public List<Expression> getSize() {
-		return size;
+	public Type getType() {
+		return type;
 	}
-	public void setSize(List<Expression> size) {
-		this.size = size;
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public List<Expression> getArraySizes() {
+		return arraySizes;
+	}
+	public void setArraySizes(List<Expression> arraySizes) {
+		this.arraySizes = arraySizes;
 	}
 
 	@Override
@@ -60,11 +60,11 @@ public class VarDefinition extends AbstractDefinition {
 		return v.visit(this, param);
 	}
 
-	private Type type;
 	private String name;
-	private List<Expression> size;
+	private Type type;
+	private List<Expression> arraySizes;
 
 	public String toString() {
-       return "{type:" + getType() + ", name:" + getName() + ", size:" + getSize() + "}";
+       return "{name:" + getName() + ", type:" + getType() + ", arraySizes:" + getArraySizes() + "}";
    }
 }

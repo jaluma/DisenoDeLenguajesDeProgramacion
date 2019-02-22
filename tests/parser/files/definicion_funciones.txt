@@ -10,8 +10,8 @@ noReturnNoParam() {
 noReturn2Param(a:int, b:int) {
 	var local:int;
 
-	local = (a + b) * 2;
-	print cast<int>(bebe);
+	local = a + b * 2 == a || b && a;
+	print cast<float>(local);
 }
 
 // funciones con return
@@ -19,6 +19,8 @@ noReturn2Param(a:int, b:int) {
 
 escribeEdad(): char {
     printsp microsoft.empleados[num].edad;
+    noReturn2Param(a,b);
+    noReturn2Param(v[i+5], 10.2, a);
     return microsoft.empleados[num][num][num].edad;
 }
 
@@ -39,7 +41,7 @@ dobleSuma(a:int, b:int): int {
 }
 
 dobleSuma(a:int, b:int) {
-    dobleSuma(a,b);
+
 }
 
 // definicion de variables globales
