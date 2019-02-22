@@ -29,4 +29,3 @@ struct Empresa {
 };
 
 var microsoft: Empresa;
-asnkfkaksan

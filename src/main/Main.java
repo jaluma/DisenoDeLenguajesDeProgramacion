@@ -27,8 +27,9 @@ import java.io.Writer;
  *
  * @author Raúl Izquierdo
  */
+@SuppressWarnings("Duplicates")
 public class Main {
-	private static final String program = "Hipoteca.txt"; // Prueba a compilar durante el desarrollo
+	private static final String program = "definicion_variables.txt"; // Prueba a compilar durante el desarrollo
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();
@@ -56,8 +57,8 @@ public class Main {
 
 		AST ast = null;
 		// IMPORTANTE: Cuando se genere el AST, INTERCAMBIAR las dos líneas siguientes:
-		parser.start();
-		// ast = parser.start().ast;
+		//parser.start();
+		ast = parser.start().ast;
 
 		if(parser.getNumberOfSyntaxErrors() > 0) {
 			errorManager.notify("Sintactico", "La entrada no pertenece al lenguaje.");

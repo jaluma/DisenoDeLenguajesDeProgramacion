@@ -1,0 +1,33 @@
+CATEGORIES
+expression, sentence, type, definition, param
+
+NODES
+program -> instruccions:instruccion*;
+
+instruccion -> definitions:definition;
+
+varDefinition:definition -> type name:string size:expression*;
+structDefinition:definition -> name:string definitions:definition*;
+funDefinition:definition -> name:string params:param* return_t:type definitions:definition* sentences:sentence*;
+paramDefinition:param -> name:string type;
+
+intType:type -> ;
+realType:type -> ;
+charType:type -> ;
+varType:type -> ;
+
+print:sentence -> expression lex:string;
+assignment:sentence -> left:expression right:expression;
+return:sentence -> expression;
+ifElseStatement:sentence -> expression if_s:sentence* else_s:sentence*;
+whileStatement:sentence -> expression sentence*;
+expresion:sentence -> expression;
+
+intConstant:expression -> value:string;
+realConstant:expression -> value:string;
+variable:expression -> name:string;
+arithmeticExpression:expression -> left:expression operator:string right:expression;
+funCall:expression -> name:string params:expression*;
+castExpression:expression -> type:type expression:expression;
+funCallMethod:expression -> expression:expression name:string;
+arrayCall:expression -> call:expression index:expression;
