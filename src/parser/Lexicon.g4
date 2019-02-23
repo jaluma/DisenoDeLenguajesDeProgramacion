@@ -2,9 +2,14 @@ lexer grammar Lexicon
 	;
 
 INT_CONSTANT
-	: [0-9]+;
+	: DIGIT+;
 REAL_CONSTANT
-	: [0-9]+ '.' [0-9]+;
+	: DIGIT+ '.' DIGIT+;
+CHAR_CONSTANT
+	: QUOTE (DIGIT | LOWERCASE | UPPERCASE | '\\n') QUOTE;
+
+QUOTE
+	: '\'' -> skip;
 	
 INT
 	:'int';
@@ -13,14 +18,18 @@ FLOAT
 CHAR
 	:'char';
 
-CAST
-	:'cast';
-
 PTO_COMA
 	: ';';
 
 IDENT
-	: [a-zA-Z0-9]+;
+	: (DIGIT | LOWERCASE | UPPERCASE)+;
+
+DIGIT
+	: [0-9];
+LOWERCASE
+	: [a-z];
+UPPERCASE
+	: [A-Z];
 
 LINE_COMMENT:		'//' .*? '\n'	-> skip;
 MULTILINE_COMMENT:	'/*' .*? '*/'	-> skip;

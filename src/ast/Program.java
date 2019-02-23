@@ -32,7 +32,6 @@ public class Program extends AbstractAST  {
 	public List<Instruction> getInstructions() {
 		return instructions;
 	}
-
 	public void setInstructions(List<Instruction> instructions) {
 		this.instructions = instructions;
 	}

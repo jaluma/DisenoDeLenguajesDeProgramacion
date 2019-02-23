@@ -102,6 +102,13 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
+	//	class Read { Expression expression; }
+	public Object visit(Read node, Object param) {
+		if(node.getExpression() != null)
+			node.getExpression().accept(this, param);
+		return null;
+	}
+
 	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
 	public Object visit(IfElse node, Object param) {
 		if (node.getExpression() != null)
@@ -119,6 +126,14 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
+	//	class FunInvocation { String name;  List<Expression> params;  Expression expressions; }
+	public Object visit(FunInvocation node, Object param) {
+		visitChildren(node.getParams(), param);
+		if(node.getExpressions() != null)
+			node.getExpressions().accept(this, param);
+		return null;
+	}
+
 	//	class IntConstant { String value; }
 	public Object visit(IntConstant node, Object param) {
 		return null;
@@ -126,6 +141,11 @@ public class DefaultVisitor implements Visitor {
 
 	//	class RealConstant { String value; }
 	public Object visit(RealConstant node, Object param) {
+		return null;
+	}
+
+	//	class CharConstant { String value; }
+	public Object visit(CharConstant node, Object param) {
 		return null;
 	}
 

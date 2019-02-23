@@ -33,7 +33,6 @@ public class UnaryExpression extends AbstractExpression {
 	public Expression getExpr() {
 		return expr;
 	}
-
 	public void setExpr(Expression expr) {
 		this.expr = expr;
 	}
@@ -41,13 +40,12 @@ public class UnaryExpression extends AbstractExpression {
 	public String getOperator() {
 		return operator;
 	}
-
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

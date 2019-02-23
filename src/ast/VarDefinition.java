@@ -38,7 +38,6 @@ public class VarDefinition extends AbstractDefinition {
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -53,7 +52,6 @@ public class VarDefinition extends AbstractDefinition {
 	public List<Expression> getArraySizes() {
 		return arraySizes;
 	}
-
 	public void setArraySizes(List<Expression> arraySizes) {
 		this.arraySizes = arraySizes;
 	}

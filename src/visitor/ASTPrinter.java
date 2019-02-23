@@ -230,6 +230,16 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
+	//	class Read { Expression expression; }
+	public Object visit(Read node, Object param) {
+		int indent = ((Integer) param).intValue();
+
+		printName(indent, "Read", node, false);
+
+		visit(indent + 1, "expression", "Expression", node.getExpression());
+		return null;
+	}
+
 	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
 	public Object visit(IfElse node, Object param) {
 		int indent = ((Integer)param).intValue();
@@ -253,6 +263,18 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
+	//	class FunInvocation { String name;  List<Expression> params;  Expression expressions; }
+	public Object visit(FunInvocation node, Object param) {
+		int indent = ((Integer) param).intValue();
+
+		printName(indent, "FunInvocation", node, false);
+
+		print(indent + 1, "name", "String", node.getName());
+		visit(indent + 1, "params", "List<Expression>", node.getParams());
+		visit(indent + 1, "expressions", "Expression", node.getExpressions());
+		return null;
+	}
+
 	//	class IntConstant { String value; }
 	public Object visit(IntConstant node, Object param) {
 		int indent = ((Integer)param).intValue();
@@ -266,6 +288,14 @@ public class ASTPrinter extends DefaultVisitor {
 		int indent = ((Integer)param).intValue();
 
 		printCompact(indent, "RealConstant", node, "value", node.getValue());
+		return null;
+	}
+
+	//	class CharConstant { String value; }
+	public Object visit(CharConstant node, Object param) {
+		int indent = ((Integer) param).intValue();
+
+		printCompact(indent, "CharConstant", node, "value", node.getValue());
 		return null;
 	}
 

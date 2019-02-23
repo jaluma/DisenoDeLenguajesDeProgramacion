@@ -49,7 +49,6 @@ public class FunDefinition extends AbstractDefinition {
 	public List<Definition> getParams() {
 		return params;
 	}
-
 	public void setParams(List<Definition> params) {
 		this.params = params;
 	}

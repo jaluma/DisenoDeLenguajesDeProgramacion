@@ -5,6 +5,7 @@ noReturnNoParam() {
 	var local:int;
 
 	local = (a + b) * 2;
+	local = noReturn2Param(a,b);
 }
 
 noReturn2Param(a:int, b:int) {
@@ -18,16 +19,25 @@ noReturn2Param(a:int, b:int) {
     // sin parametros
 
 escribeEdad(): char {
+	print microsoft.empleados[num].edad;
     printsp microsoft.empleados[num].edad;
+    println microsoft.empleados[num].edad;
+    local = noReturnNoParam();
+    noReturnNoParam();
     noReturn2Param(a,b);
     noReturn2Param(v[i+5], 10.2, a);
-    return microsoft.empleados[num][num][num].edad;
+    return microsoft(a,b).empleados[num][num][num].edad;
 }
 
     // con parametros
 dobleSuma(a:int, b:int): int {
     var local:float;
     var array:[5][8] float;
+
+    local = 'h';
+    salto = '\n';
+
+    read local;
 
     array[i+5] = array[i+6][i+7];
 
