@@ -193,7 +193,6 @@ public class GrammarParser extends Parser {
 			return getRuleContext(DefsContext.class, 0);
 		}
 		public TerminalNode PTO_COMA() { return getToken(GrammarParser.PTO_COMA, 0); }
-
 		public ParamsDefContext paramsDef() {
 			return getRuleContext(ParamsDefContext.class, 0);
 		}
@@ -329,7 +328,6 @@ public class GrammarParser extends Parser {
 		public TerminalNode IDENT() {
 			return getToken(GrammarParser.IDENT, 0);
 		}
-
 		public ParamsContext params() {
 			return getRuleContext(ParamsContext.class, 0);
 		}
@@ -608,7 +606,7 @@ public class GrammarParser extends Parser {
 				{
 					setState(152);
 					((ExprContext) _localctx).CHAR_CONSTANT = match(CHAR_CONSTANT);
-					((ExprContext) _localctx).ast = new CharConstant(((ExprContext) _localctx).CHAR_CONSTANT);
+					((ExprContext) _localctx).ast = new CharConstant(((ExprContext) _localctx).CHAR_CONSTANT.getText().replace("'", ""));
 				}
 			break;
 					case 4: {
@@ -941,19 +939,15 @@ public class GrammarParser extends Parser {
 		public List<TerminalNode> IDENT() {
 			return getTokens(GrammarParser.IDENT);
 		}
-
 		public TerminalNode IDENT(int i) {
 			return getToken(GrammarParser.IDENT, i);
 		}
-
 		public List<TipoContext> tipo() {
 			return getRuleContexts(TipoContext.class);
 		}
-
 		public TipoContext tipo(int i) {
 			return getRuleContext(TipoContext.class, i);
 		}
-
 		public ParamsDefContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1343,11 +1337,9 @@ public class GrammarParser extends Parser {
 	public static class ParamsContext extends ParserRuleContext {
 		public List<Expression> list = new ArrayList<Expression>();
 		public ExprContext expr;
-
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
-
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class, i);
 		}

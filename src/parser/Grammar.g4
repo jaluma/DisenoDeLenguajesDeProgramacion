@@ -39,7 +39,7 @@ sentence returns [Sentence ast]
 expr returns [Expression ast]
 	: INT_CONSTANT                              { $ast = new IntConstant($INT_CONSTANT); }
 	| REAL_CONSTANT                             { $ast = new RealConstant($REAL_CONSTANT); }
-	| CHAR_CONSTANT                             { $ast = new CharConstant($CHAR_CONSTANT); }
+	| CHAR_CONSTANT                             { $ast = new CharConstant($CHAR_CONSTANT.getText().replace("'", "")); }        // temporal
 	| IDENT                                     { $ast = new Variable($IDENT); }
 	| IDENT '(' params ')'                      { $ast = new FunInvocationExpression($IDENT, $params.list); }
 	| expr '[' expr ']'                         { $ast = new IndexExpression($ctx.expr(0), $ctx.expr(1)); }
