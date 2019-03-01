@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.atn.PredictionMode;
 import parser.GrammarLexer;
 import parser.GrammarParser;
 import semantic.SemanticAnalisys;
+import visitor.ASTExample;
 import visitor.ASTPrinter;
 
 import java.io.File;
@@ -40,7 +41,7 @@ public class Main {
 			System.out.println("El programa se ha compilado correctamente.");
 
 		ASTPrinter.toHtml(program, ast, "AST"); // Utilidad generada por VGen (opcional)
-		//		ASTExample.toExample(ast); // Utilidad generada por VGen (opcional)
+		ASTExample.toExample(ast); // Utilidad generada por VGen (opcional)
 	}
 
 	/**
