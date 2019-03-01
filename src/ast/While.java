@@ -35,6 +35,7 @@ public class While extends AbstractSentence {
 	public Expression getExpression() {
 		return expression;
 	}
+
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
@@ -42,12 +43,13 @@ public class While extends AbstractSentence {
 	public List<Sentence> getSentence() {
 		return sentence;
 	}
+
 	public void setSentence(List<Sentence> sentence) {
 		this.sentence = sentence;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 

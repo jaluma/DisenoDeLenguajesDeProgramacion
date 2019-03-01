@@ -30,7 +30,7 @@ import java.io.Writer;
 @SuppressWarnings("Duplicates")
 public class Main {
 	private static final String path = "tests/parser/files/";
-	private static final String program = path + "definicion_funciones.txt"; // Prueba a compilar durante el desarrollo
+	private static final String program = path + "ejemplo.txt"; // Prueba a compilar durante el desarrollo
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();
@@ -40,6 +40,7 @@ public class Main {
 			System.out.println("El programa se ha compilado correctamente.");
 
 		ASTPrinter.toHtml(program, ast, "AST"); // Utilidad generada por VGen (opcional)
+		//		ASTExample.toExample(ast); // Utilidad generada por VGen (opcional)
 	}
 
 	/**

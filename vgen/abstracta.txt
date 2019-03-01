@@ -6,7 +6,7 @@ program -> instructions:instruction*;
 
 instruction -> definitions:definition;
 
-varDefinition:definition -> name:string type arraySizes:expression*;
+varDefinition:definition -> name:string type arraySizes:arraySize;
 structDefinition:definition -> name:string definitions:definition*;
 funDefinition:definition -> name:string params:definition* return_t:type definitions:definition* sentences:sentence*;
 paramDefinition:definition -> name:string type;
@@ -15,6 +15,7 @@ intType:type -> ;
 realType:type -> ;
 charType:type -> ;
 varType:type -> type:string;
+voidType:type ->;
 
 print:sentence -> expression lex:string;
 assignment:sentence -> left:expression right:expression;
@@ -27,6 +28,7 @@ funInvocation:sentence -> name:string params:expression* expressions:expression;
 intConstant:expression -> value:string;
 realConstant:expression -> value:string;
 charConstant:expression -> value:string;
+voidConstant:expression ->;
 variable:expression -> name:string;
 binaryExpression:expression -> left:expression operator:string right:expression;
 unaryExpression:expression -> expr:expression operator:string;
@@ -34,3 +36,5 @@ castExpression:expression -> type:type expression:expression;
 funInvocationExpression:expression, sentence -> name:string params:expression*;
 funFieldAccessExpression:expression -> expression:expression name:string;
 indexExpression:expression -> call:expression index:expression;
+
+arraySize -> value:intConstant composition:arraySize;

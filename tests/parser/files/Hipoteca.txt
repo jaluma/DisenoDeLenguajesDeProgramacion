@@ -39,11 +39,11 @@ main() {
 	var anosHipoteca:int;
 	var interes:float;
 
-/*
+
 	read precioVivienda;
 	read anosHipoteca;
 	read interes;
-*/
+
 	precioVivienda = 200000.0;
 	anosHipoteca = 30;
 	interes = 2.04;

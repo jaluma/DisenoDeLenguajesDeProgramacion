@@ -8,12 +8,12 @@ import visitor.Visitor;
 
 public interface AST {
 
-    public Object accept(Visitor visitor, Object param);
+	public Object accept(Visitor visitor, Object param);
 
-    Position getStart();
+	Position getStart();
 
-    Position getEnd();
+	Position getEnd();
 
-    public void setPositions(Object... children);
+	public void setPositions(Object... children);
 
 }

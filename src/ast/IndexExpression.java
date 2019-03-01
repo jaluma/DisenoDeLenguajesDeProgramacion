@@ -32,6 +32,7 @@ public class IndexExpression extends AbstractExpression {
 	public Expression getCall() {
 		return call;
 	}
+
 	public void setCall(Expression call) {
 		this.call = call;
 	}
@@ -39,12 +40,13 @@ public class IndexExpression extends AbstractExpression {
 	public Expression getIndex() {
 		return index;
 	}
+
 	public void setIndex(Expression index) {
 		this.index = index;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 

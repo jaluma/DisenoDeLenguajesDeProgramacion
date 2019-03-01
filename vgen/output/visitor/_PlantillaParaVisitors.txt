@@ -61,7 +61,7 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class VarDefinition { String name;  Type type;  List<Expression> arraySizes; }
+	//	class VarDefinition { String name;  Type type;  ArraySize arraySizes; }
 	public Object visit(VarDefinition node, Object param) {
 
 		// super.visit(node, param);
@@ -70,8 +70,7 @@ public class <nombre clase> extends DefaultVisitor {
 			node.getType().accept(this, param);
 
 		if (node.getArraySizes() != null)
-			for (Expression child : node.getArraySizes())
-				child.accept(this, param);
+			node.getArraySizes().accept(this, param);
 
 		return null;
 	}
@@ -139,6 +138,11 @@ public class <nombre clase> extends DefaultVisitor {
 
 	//	class VarType { String type; }
 	public Object visit(VarType node, Object param) {
+		return null;
+	}
+
+	//	class VoidType {  }
+	public Object visit(VoidType node, Object param) {
 		return null;
 	}
 
@@ -253,6 +257,11 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
+	//	class VoidConstant {  }
+	public Object visit(VoidConstant node, Object param) {
+		return null;
+	}
+
 	//	class Variable { String name; }
 	public Object visit(Variable node, Object param) {
 		return null;
@@ -330,6 +339,20 @@ public class <nombre clase> extends DefaultVisitor {
 
 		if (node.getIndex() != null)
 			node.getIndex().accept(this, param);
+
+		return null;
+	}
+
+	//	class ArraySize { IntConstant value;  ArraySize composition; }
+	public Object visit(ArraySize node, Object param) {
+
+		// super.visit(node, param);
+
+		if (node.getValue() != null)
+			node.getValue().accept(this, param);
+
+		if (node.getComposition() != null)
+			node.getComposition().accept(this, param);
 
 		return null;
 	}
