@@ -4,59 +4,57 @@
 
 package ast;
 
-import org.antlr.v4.runtime.Token;
-import visitor.Visitor;
+import java.util.*;
+import visitor.*;
 
-import java.util.List;
+import org.antlr.v4.runtime.*;
 
-//	structDefinition:definition -> name:String  definitions:definition*
+//	structDefinition:definition -> name:String  definitions:structField*
 
 public class StructDefinition extends AbstractDefinition {
 
-	public StructDefinition(String name, List<Definition> definitions) {
+	public StructDefinition(String name, List<StructField> definitions) {
 		this.name = name;
 		this.definitions = definitions;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(definitions);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(definitions);
 	}
 
 	@SuppressWarnings("unchecked")
 	public StructDefinition(Object name, Object definitions) {
-		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
-		this.definitions = (List<Definition>) definitions;
+		this.name = (name instanceof Token) ? ((Token)name).getText() : (String) name;
+		this.definitions = (List<StructField>) definitions;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(name, definitions);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(name, definitions);
 	}
 
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public List<Definition> getDefinitions() {
+	public List<StructField> getDefinitions() {
 		return definitions;
 	}
-
-	public void setDefinitions(List<Definition> definitions) {
+	public void setDefinitions(List<StructField> definitions) {
 		this.definitions = definitions;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
 	private String name;
-	private List<Definition> definitions;
+	private List<StructField> definitions;
 
 	public String toString() {
-		return "{name:" + getName() + ", definitions:" + getDefinitions() + "}";
-	}
+       return "{name:" + getName() + ", definitions:" + getDefinitions() + "}";
+   }
 }

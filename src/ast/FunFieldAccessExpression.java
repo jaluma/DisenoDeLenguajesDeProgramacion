@@ -33,7 +33,6 @@ public class FunFieldAccessExpression extends AbstractExpression {
 	public Expression getExpression() {
 		return expression;
 	}
-
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
@@ -41,13 +40,12 @@ public class FunFieldAccessExpression extends AbstractExpression {
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

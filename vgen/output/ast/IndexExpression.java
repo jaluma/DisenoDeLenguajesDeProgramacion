@@ -4,8 +4,9 @@
 
 package ast;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.Visitor;
+import visitor.*;
+
+import org.antlr.v4.runtime.*;
 
 //	indexExpression:expression -> call:expression  index:expression
 
@@ -15,24 +16,23 @@ public class IndexExpression extends AbstractExpression {
 		this.call = call;
 		this.index = index;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(call, index);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(call, index);
 	}
 
 	public IndexExpression(Object call, Object index) {
 		this.call = (Expression) ((call instanceof ParserRuleContext) ? getAST(call) : call);
 		this.index = (Expression) ((index instanceof ParserRuleContext) ? getAST(index) : index);
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(call, index);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(call, index);
 	}
 
 	public Expression getCall() {
 		return call;
 	}
-
 	public void setCall(Expression call) {
 		this.call = call;
 	}
@@ -40,13 +40,12 @@ public class IndexExpression extends AbstractExpression {
 	public Expression getIndex() {
 		return index;
 	}
-
 	public void setIndex(Expression index) {
 		this.index = index;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
@@ -54,6 +53,6 @@ public class IndexExpression extends AbstractExpression {
 	private Expression index;
 
 	public String toString() {
-		return "{call:" + getCall() + ", index:" + getIndex() + "}";
-	}
+       return "{call:" + getCall() + ", index:" + getIndex() + "}";
+   }
 }

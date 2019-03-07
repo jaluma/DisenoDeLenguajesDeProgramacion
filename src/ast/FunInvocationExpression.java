@@ -35,7 +35,6 @@ public class FunInvocationExpression extends AbstractAST implements Expression, 
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -43,13 +42,12 @@ public class FunInvocationExpression extends AbstractAST implements Expression, 
 	public List<Expression> getParams() {
 		return params;
 	}
-
 	public void setParams(List<Expression> params) {
 		this.params = params;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

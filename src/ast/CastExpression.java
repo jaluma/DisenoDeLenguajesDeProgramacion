@@ -32,7 +32,6 @@ public class CastExpression extends AbstractExpression {
 	public Type getType() {
 		return type;
 	}
-
 	public void setType(Type type) {
 		this.type = type;
 	}
@@ -40,13 +39,12 @@ public class CastExpression extends AbstractExpression {
 	public Expression getExpression() {
 		return expression;
 	}
-
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

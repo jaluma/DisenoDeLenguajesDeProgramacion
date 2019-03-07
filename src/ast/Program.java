@@ -32,13 +32,12 @@ public class Program extends AbstractAST {
 	public List<Instruction> getInstructions() {
 		return instructions;
 	}
-
 	public void setInstructions(List<Instruction> instructions) {
 		this.instructions = instructions;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

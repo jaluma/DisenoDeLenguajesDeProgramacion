@@ -28,16 +28,14 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class VarDefinition { String name;  Type type;  ArraySize arraySizes; }
+	//	class VarDefinition { String name;  Type type; }
 	public Object visit(VarDefinition node, Object param) {
 		if(node.getType() != null)
 			node.getType().accept(this, param);
-		if(node.getArraySizes() != null)
-			node.getArraySizes().accept(this, param);
 		return null;
 	}
 
-	//	class StructDefinition { String name;  List<Definition> definitions; }
+	//	class StructDefinition { String name;  List<StructField> definitions; }
 	public Object visit(StructDefinition node, Object param) {
 		visitChildren(node.getDefinitions(), param);
 		return null;
@@ -82,6 +80,15 @@ public class DefaultVisitor implements Visitor {
 
 	//	class VoidType {  }
 	public Object visit(VoidType node, Object param) {
+		return null;
+	}
+
+	//	class ArrayType { IntConstant size;  Type type; }
+	public Object visit(ArrayType node, Object param) {
+		if(node.getSize() != null)
+			node.getSize().accept(this, param);
+		if(node.getType() != null)
+			node.getType().accept(this, param);
 		return null;
 	}
 
@@ -212,12 +219,10 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class ArraySize { IntConstant value;  ArraySize composition; }
-	public Object visit(ArraySize node, Object param) {
-		if(node.getValue() != null)
-			node.getValue().accept(this, param);
-		if(node.getComposition() != null)
-			node.getComposition().accept(this, param);
+	//	class StructField { String name;  Type type; }
+	public Object visit(StructField node, Object param) {
+		if(node.getType() != null)
+			node.getType().accept(this, param);
 		return null;
 	}
 

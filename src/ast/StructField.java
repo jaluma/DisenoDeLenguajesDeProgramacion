@@ -8,11 +8,11 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import visitor.Visitor;
 
-//	paramDefinition:definition -> name:String  type:type
+//	structField -> name:String  type:type
 
-public class ParamDefinition extends AbstractDefinition {
+public class StructField extends AbstractAST {
 
-	public ParamDefinition(String name, Type type) {
+	public StructField(String name, Type type) {
 		this.name = name;
 		this.type = type;
 
@@ -21,7 +21,7 @@ public class ParamDefinition extends AbstractDefinition {
 		setPositions(type);
 	}
 
-	public ParamDefinition(Object name, Object type) {
+	public StructField(Object name, Object type) {
 		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
 		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
 
@@ -33,6 +33,7 @@ public class ParamDefinition extends AbstractDefinition {
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -40,12 +41,13 @@ public class ParamDefinition extends AbstractDefinition {
 	public Type getType() {
 		return type;
 	}
+
 	public void setType(Type type) {
 		this.type = type;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 

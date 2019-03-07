@@ -33,7 +33,6 @@ public class Print extends AbstractSentence {
 	public Expression getExpression() {
 		return expression;
 	}
-
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
@@ -41,13 +40,12 @@ public class Print extends AbstractSentence {
 	public String getLex() {
 		return lex;
 	}
-
 	public void setLex(String lex) {
 		this.lex = lex;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

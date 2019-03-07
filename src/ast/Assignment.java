@@ -32,7 +32,6 @@ public class Assignment extends AbstractSentence {
 	public Expression getLeft() {
 		return left;
 	}
-
 	public void setLeft(Expression left) {
 		this.left = left;
 	}
@@ -40,13 +39,12 @@ public class Assignment extends AbstractSentence {
 	public Expression getRight() {
 		return right;
 	}
-
 	public void setRight(Expression right) {
 		this.right = right;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

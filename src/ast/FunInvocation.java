@@ -38,7 +38,6 @@ public class FunInvocation extends AbstractSentence {
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -46,7 +45,6 @@ public class FunInvocation extends AbstractSentence {
 	public List<Expression> getParams() {
 		return params;
 	}
-
 	public void setParams(List<Expression> params) {
 		this.params = params;
 	}
@@ -54,13 +52,12 @@ public class FunInvocation extends AbstractSentence {
 	public Expression getExpressions() {
 		return expressions;
 	}
-
 	public void setExpressions(Expression expressions) {
 		this.expressions = expressions;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

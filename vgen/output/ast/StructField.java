@@ -8,26 +8,33 @@ import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	castExpression:expression -> type:type  expression:expression
+//	structField -> name:String  type:type
 
-public class CastExpression extends AbstractExpression {
+public class StructField extends AbstractAST  {
 
-	public CastExpression(Type type, Expression expression) {
+	public StructField(String name, Type type) {
+		this.name = name;
 		this.type = type;
-		this.expression = expression;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(type, expression);
+       setPositions(type);
 	}
 
-	public CastExpression(Object type, Object expression) {
+	public StructField(Object name, Object type) {
+		this.name = (name instanceof Token) ? ((Token)name).getText() : (String) name;
 		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
-		this.expression = (Expression) ((expression instanceof ParserRuleContext) ? getAST(expression) : expression);
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(type, expression);
+       setPositions(name, type);
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Type getType() {
@@ -37,22 +44,15 @@ public class CastExpression extends AbstractExpression {
 		this.type = type;
 	}
 
-	public Expression getExpression() {
-		return expression;
-	}
-	public void setExpression(Expression expression) {
-		this.expression = expression;
-	}
-
 	@Override
 	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
+	private String name;
 	private Type type;
-	private Expression expression;
 
 	public String toString() {
-       return "{type:" + getType() + ", expression:" + getExpression() + "}";
+       return "{name:" + getName() + ", type:" + getType() + "}";
    }
 }

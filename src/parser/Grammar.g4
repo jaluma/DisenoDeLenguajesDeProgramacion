@@ -18,7 +18,7 @@ instructions returns[List<Instruction> list = new ArrayList<Instruction>()]
 	
 instruction returns[Instruction ast]
     : 'var' def                                                          { $ast = new Instruction($def.ast); }
-    | 'struct' IDENT '{' defs '}' PTO_COMA                               { $ast = new Instruction(new StructDefinition($IDENT, $defs.list)); }
+    | 'struct' IDENT '{' defStruct '}' PTO_COMA                          { $ast = new Instruction(new StructDefinition($IDENT, $defStruct.list)); }
     | IDENT '(' paramsDef ')' '{' funcionDef funcionSen '}'              { $ast = new Instruction(new FunDefinition($IDENT, $paramsDef.list, new VoidType(), $funcionDef.list, $funcionSen.list)); }
     | IDENT '(' paramsDef ')' ':' tipo '{' funcionDef funcionSen '}'     { $ast = new Instruction(new FunDefinition($IDENT, $paramsDef.list, $tipo.ast, $funcionDef.list, $funcionSen.list)); }
 	;
@@ -81,18 +81,17 @@ funcionSen returns [List<Sentence> list = new ArrayList<Sentence>()]
     ;
 
 // para defenir variables
-defs returns [List<Definition> list = new ArrayList<Definition>()]
-    : ( def         { $list.add($def.ast); } )*
+defStruct returns [List<StructField> list = new ArrayList<StructField>()]
+    : ( IDENT ':' defVarArray PTO_COMA      { $list.add(new StructField($IDENT, $defVarArray.ast)); } )*
     ;
 
 def returns [VarDefinition ast]
-    : IDENT ':' defVarArray tipo PTO_COMA { $ast = new VarDefinition($IDENT, $tipo.ast, $defVarArray.ast); }
-    | IDENT ':' tipo PTO_COMA             { $ast = new VarDefinition($IDENT, $tipo.ast, null); }
+    : IDENT ':' defVarArray PTO_COMA        { $ast = new VarDefinition($IDENT, $defVarArray.ast); }
     ;
 
-defVarArray returns [ArraySize ast]
-    : '[' INT_CONSTANT ']'                  { $ast = new ArraySize(new IntConstant($INT_CONSTANT), null); }
-    | defVarArray '[' INT_CONSTANT ']'      { $ast = new ArraySize(new IntConstant($INT_CONSTANT), $ctx.defVarArray().ast); }
+defVarArray returns [Type ast]
+    : tipo                                  { $ast = $tipo.ast; }
+    | '[' INT_CONSTANT ']' defVarArray      { $ast = new ArrayType(new IntConstant($INT_CONSTANT), $defVarArray.ast); }
     ;
 
 // lista de sentences

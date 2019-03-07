@@ -4,19 +4,21 @@
 
 package ast;
 
-import visitor.Visitor;
+import visitor.*;
+
+import org.antlr.v4.runtime.*;
 
 //	voidConstant:expression -> 
 
 public class VoidConstant extends AbstractExpression {
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
 
 	public String toString() {
-		return "{VoidConstant}";
-	}
+       return "{VoidConstant}";
+   }
 }

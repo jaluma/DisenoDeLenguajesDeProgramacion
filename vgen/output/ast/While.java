@@ -4,10 +4,10 @@
 
 package ast;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.Visitor;
+import java.util.*;
+import visitor.*;
 
-import java.util.List;
+import org.antlr.v4.runtime.*;
 
 //	while:sentence -> expression:expression  sentence:sentence*
 
@@ -17,9 +17,9 @@ public class While extends AbstractSentence {
 		this.expression = expression;
 		this.sentence = sentence;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(expression, sentence);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(expression, sentence);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -27,15 +27,14 @@ public class While extends AbstractSentence {
 		this.expression = (Expression) ((expression instanceof ParserRuleContext) ? getAST(expression) : expression);
 		this.sentence = (List<Sentence>) sentence;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(expression, sentence);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(expression, sentence);
 	}
 
 	public Expression getExpression() {
 		return expression;
 	}
-
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
@@ -43,13 +42,12 @@ public class While extends AbstractSentence {
 	public List<Sentence> getSentence() {
 		return sentence;
 	}
-
 	public void setSentence(List<Sentence> sentence) {
 		this.sentence = sentence;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
@@ -57,6 +55,6 @@ public class While extends AbstractSentence {
 	private List<Sentence> sentence;
 
 	public String toString() {
-		return "{expression:" + getExpression() + ", sentence:" + getSentence() + "}";
-	}
+       return "{expression:" + getExpression() + ", sentence:" + getSentence() + "}";
+   }
 }

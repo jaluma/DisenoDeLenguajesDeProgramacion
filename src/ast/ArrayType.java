@@ -5,54 +5,55 @@
 package ast;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import visitor.Visitor;
 
-//	paramDefinition:definition -> name:String  type:type
+//	arrayType:type -> size:intConstant  type:type
 
-public class ParamDefinition extends AbstractDefinition {
+public class ArrayType extends AbstractType {
 
-	public ParamDefinition(String name, Type type) {
-		this.name = name;
+	public ArrayType(IntConstant size, Type type) {
+		this.size = size;
 		this.type = type;
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
 		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(type);
+		setPositions(size, type);
 	}
 
-	public ParamDefinition(Object name, Object type) {
-		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
+	public ArrayType(Object size, Object type) {
+		this.size = (IntConstant) ((size instanceof ParserRuleContext) ? getAST(size) : size);
 		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
 		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(name, type);
+		setPositions(size, type);
 	}
 
-	public String getName() {
-		return name;
+	public IntConstant getSize() {
+		return size;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setSize(IntConstant size) {
+		this.size = size;
 	}
 
 	public Type getType() {
 		return type;
 	}
+
 	public void setType(Type type) {
 		this.type = type;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 
-	private String name;
+	private IntConstant size;
 	private Type type;
 
 	public String toString() {
-		return "{name:" + getName() + ", type:" + getType() + "}";
+		return "{size:" + getSize() + ", type:" + getType() + "}";
 	}
 }

@@ -15,9 +15,10 @@ import java.util.List;
  * - Muestra la estructura del árbol en HTML.
  * - Destaca los hijos/propiedades a null.
  * - Muestra a qué texto apuntan las posiciones de cada nodo (linea/columna)
- * ayudando a decidir cual de ellas usar en los errores y generación de código.
- * <p>
+ *      ayudando a decidir cual de ellas usar en los errores y generación de código.
+ *
  * Esta clase se genera con VGen. El uso de esta clase es opcional (puede eliminarse del proyecto).
+ *
  */
 public class ASTPrinter extends DefaultVisitor {
 
@@ -95,7 +96,7 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
-	//	class VarDefinition { String name;  Type type;  ArraySize arraySizes; }
+	//	class VarDefinition { String name;  Type type; }
 	public Object visit(VarDefinition node, Object param) {
 		int indent = ((Integer) param).intValue();
 
@@ -103,18 +104,17 @@ public class ASTPrinter extends DefaultVisitor {
 
 		print(indent + 1, "name", "String", node.getName());
 		visit(indent + 1, "type", "Type", node.getType());
-		visit(indent + 1, "arraySizes", "ArraySize", node.getArraySizes());
 		return null;
 	}
 
-	//	class StructDefinition { String name;  List<Definition> definitions; }
+	//	class StructDefinition { String name;  List<StructField> definitions; }
 	public Object visit(StructDefinition node, Object param) {
 		int indent = ((Integer) param).intValue();
 
 		printName(indent, "StructDefinition", node, false);
 
 		print(indent + 1, "name", "String", node.getName());
-		visit(indent + 1, "definitions", "List<Definition>", node.getDefinitions());
+		visit(indent + 1, "definitions", "List<StructField>", node.getDefinitions());
 		return null;
 	}
 
@@ -184,6 +184,17 @@ public class ASTPrinter extends DefaultVisitor {
 
 		printName(indent, "VoidType", node, true);
 
+		return null;
+	}
+
+	//	class ArrayType { IntConstant size;  Type type; }
+	public Object visit(ArrayType node, Object param) {
+		int indent = ((Integer) param).intValue();
+
+		printName(indent, "ArrayType", node, false);
+
+		visit(indent + 1, "size", "IntConstant", node.getSize());
+		visit(indent + 1, "type", "Type", node.getType());
 		return null;
 	}
 
@@ -372,14 +383,14 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
-	//	class ArraySize { IntConstant value;  ArraySize composition; }
-	public Object visit(ArraySize node, Object param) {
+	//	class StructField { String name;  Type type; }
+	public Object visit(StructField node, Object param) {
 		int indent = ((Integer) param).intValue();
 
-		printName(indent, "ArraySize", node, false);
+		printName(indent, "StructField", node, false);
 
-		visit(indent + 1, "value", "IntConstant", node.getValue());
-		visit(indent + 1, "composition", "ArraySize", node.getComposition());
+		print(indent + 1, "name", "String", node.getName());
+		visit(indent + 1, "type", "Type", node.getType());
 		return null;
 	}
 

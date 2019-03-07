@@ -48,15 +48,14 @@
         </tr>
 <tr><td><span class="nodo">program</span>&nbsp;&rarr;  <span class="nombreAtt">instructions</span><span class="tipoAtt">:instruction*</span></td><td></td><td></td></tr>
 <tr><td><span class="nodo">instruction</span>&nbsp;&rarr;  <span class="nombreAtt">definitions</span><span class="tipoAtt">:definition</span></td><td></td><td></td></tr>
-<tr><td><span class="nodo">arraySize</span>&nbsp;&rarr;  <span class="nombreAtt">value</span><span class="tipoAtt">:intConstant</span> <span
-		class="nombreAtt">composition</span><span class="tipoAtt">:arraySize</span></td><td></td><td></td></tr>
+<tr><td><span class="nodo">structField</span>&nbsp;&rarr;  <span class="nombreAtt">name</span><span class="tipoAtt">:String</span> <span
+		class="nombreAtt">type</span><span class="tipoAtt">:type</span></td><td></td><td></td></tr>
 <tr><td>&nbsp;</td><td></td><td></td></tr>
 
 <tr><td><span class="nodo">varDefinition</span>:<span class="categoria">definition</span>&nbsp;&rarr;  <span class="nombreAtt">name</span><span
-		class="tipoAtt">:String</span> <span class="nombreAtt">type</span><span class="tipoAtt">:type</span> <span class="nombreAtt">arraySizes</span><span
-		class="tipoAtt">:arraySize</span></td><td></td><td></td></tr>
+		class="tipoAtt">:String</span> <span class="nombreAtt">type</span><span class="tipoAtt">:type</span></td><td></td><td></td></tr>
 <tr><td><span class="nodo">structDefinition</span>:<span class="categoria">definition</span>&nbsp;&rarr;  <span class="nombreAtt">name</span><span
-		class="tipoAtt">:String</span> <span class="nombreAtt">definitions</span><span class="tipoAtt">:definition*</span></td><td></td><td></td></tr>
+		class="tipoAtt">:String</span> <span class="nombreAtt">definitions</span><span class="tipoAtt">:structField*</span></td><td></td><td></td></tr>
 <tr><td><span class="nodo">funDefinition</span>:<span class="categoria">definition</span>&nbsp;&rarr;  <span class="nombreAtt">name</span><span
 		class="tipoAtt">:String</span> <span class="nombreAtt">params</span><span class="tipoAtt">:definition*</span> <span
 		class="nombreAtt">return_t</span><span class="tipoAtt">:type</span> <span class="nombreAtt">definitions</span><span class="tipoAtt">:definition*</span> <span
@@ -70,6 +69,8 @@
 <tr><td><span class="nodo">charType</span>:<span class="categoria">type</span>&nbsp;&rarr; &lambda;</td><td></td><td></td></tr>
 <tr><td><span class="nodo">varType</span>:<span class="categoria">type</span>&nbsp;&rarr;  <span class="nombreAtt">type</span><span class="tipoAtt">:String</span></td><td></td><td></td></tr>
 <tr><td><span class="nodo">voidType</span>:<span class="categoria">type</span>&nbsp;&rarr; &lambda;</td><td></td><td></td></tr>
+<tr><td><span class="nodo">arrayType</span>:<span class="categoria">type</span>&nbsp;&rarr;  <span class="nombreAtt">size</span><span class="tipoAtt">:intConstant</span> <span
+		class="nombreAtt">type</span><span class="tipoAtt">:type</span></td><td></td><td></td></tr>
 <tr><td>&nbsp;</td><td></td><td></td></tr>
 
 <tr><td><span class="nodo">print</span>:<span class="categoria">sentence</span>&nbsp;&rarr;  <span class="nombreAtt">expression</span><span

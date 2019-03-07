@@ -8,26 +8,33 @@ import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	castExpression:expression -> type:type  expression:expression
+//	arrayType:type -> size:intConstant  type:type
 
-public class CastExpression extends AbstractExpression {
+public class ArrayType extends AbstractType {
 
-	public CastExpression(Type type, Expression expression) {
+	public ArrayType(IntConstant size, Type type) {
+		this.size = size;
 		this.type = type;
-		this.expression = expression;
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(type, expression);
+       setPositions(size, type);
 	}
 
-	public CastExpression(Object type, Object expression) {
+	public ArrayType(Object size, Object type) {
+		this.size = (IntConstant) ((size instanceof ParserRuleContext) ? getAST(size) : size);
 		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
-		this.expression = (Expression) ((expression instanceof ParserRuleContext) ? getAST(expression) : expression);
 
        // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
        // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(type, expression);
+       setPositions(size, type);
+	}
+
+	public IntConstant getSize() {
+		return size;
+	}
+	public void setSize(IntConstant size) {
+		this.size = size;
 	}
 
 	public Type getType() {
@@ -37,22 +44,15 @@ public class CastExpression extends AbstractExpression {
 		this.type = type;
 	}
 
-	public Expression getExpression() {
-		return expression;
-	}
-	public void setExpression(Expression expression) {
-		this.expression = expression;
-	}
-
 	@Override
 	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
+	private IntConstant size;
 	private Type type;
-	private Expression expression;
 
 	public String toString() {
-       return "{type:" + getType() + ", expression:" + getExpression() + "}";
+       return "{size:" + getSize() + ", type:" + getType() + "}";
    }
 }
