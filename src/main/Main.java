@@ -9,7 +9,6 @@ import org.antlr.v4.runtime.atn.PredictionMode;
 import parser.GrammarLexer;
 import parser.GrammarParser;
 import semantic.SemanticAnalisys;
-import visitor.ASTExample;
 import visitor.ASTPrinter;
 
 import java.io.File;
@@ -30,8 +29,8 @@ import java.io.Writer;
  */
 @SuppressWarnings("Duplicates")
 public class Main {
-	private static final String path = "tests/parser/files/";
-	private static final String program = path + "ejemplo.txt"; // Prueba a compilar durante el desarrollo
+	private static final String path = "tests/semantic/files/";
+	private static final String program = path + "prog1.txt"; // Prueba a compilar durante el desarrollo
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();
@@ -41,7 +40,7 @@ public class Main {
 			System.out.println("El programa se ha compilado correctamente.");
 
 		ASTPrinter.toHtml(program, ast, "AST"); // Utilidad generada por VGen (opcional)
-		ASTExample.toExample(ast); // Utilidad generada por VGen (opcional)
+		//ASTExample.toExample(ast); // Utilidad generada por VGen (opcional)
 	}
 
 	/**

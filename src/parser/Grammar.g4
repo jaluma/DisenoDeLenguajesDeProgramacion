@@ -18,7 +18,7 @@ instructions returns[List<Instruction> list = new ArrayList<Instruction>()]
 	
 instruction returns[Instruction ast]
     : 'var' def                                                          { $ast = new Instruction($def.ast); }
-    | 'struct' IDENT '{' defStruct '}' PTO_COMA                          { $ast = new Instruction(new StructDefinition($IDENT, $defStruct.list)); }
+    | 'struct' IDENT '{' defStruct '}' PTO_COMA                          { $ast = new Instruction(new StructDefinition(new VarType($IDENT), $defStruct.list)); }
     | IDENT '(' paramsDef ')' '{' funcionDef funcionSen '}'              { $ast = new Instruction(new FunDefinition($IDENT, $paramsDef.list, new VoidType(), $funcionDef.list, $funcionSen.list)); }
     | IDENT '(' paramsDef ')' ':' tipo '{' funcionDef funcionSen '}'     { $ast = new Instruction(new FunDefinition($IDENT, $paramsDef.list, $tipo.ast, $funcionDef.list, $funcionSen.list)); }
 	;
@@ -31,7 +31,7 @@ sentence returns [Sentence ast]
 	| 'return' PTO_COMA                                             { $ast = new Return(new VoidConstant()); }
 	| 'return' expr PTO_COMA                                        { $ast = new Return($ctx.expr(0)); }
 	| 'read' expr PTO_COMA                                          { $ast = new Read($ctx.expr(0)); }
-	| IDENT '(' params ')' PTO_COMA                                 { $ast = new FunInvocation($IDENT, $params.list, null); }        // dudo que este bn
+	| IDENT '(' params ')' PTO_COMA                                 { $ast = new FunInvocation($IDENT, $params.list); }
 	| 'if' '(' expr ')' '{' sentences '}'                           { $ast = new IfElse($expr.ast, $ctx.sentences(0).list, null); }
 	| 'if' '(' expr ')' '{' sentences '}' 'else' '{' sentences '}'  { $ast = new IfElse($expr.ast, $ctx.sentences(0).list, $ctx.sentences(1).list); }
 	| 'while' '(' expr ')' '{' sentences '}'                        { $ast = new While($expr.ast, $sentences.list); }
@@ -40,7 +40,7 @@ sentence returns [Sentence ast]
 expr returns [Expression ast]
 	: INT_CONSTANT                              { $ast = new IntConstant($INT_CONSTANT); }
 	| REAL_CONSTANT                             { $ast = new RealConstant($REAL_CONSTANT); }
-	| CHAR_CONSTANT                             { $ast = new CharConstant($CHAR_CONSTANT.getText().replace("'", "")); }        // temporal
+	| CHAR_CONSTANT                             { $ast = new CharConstant($CHAR_CONSTANT.getText().replace("'", "")); }
 	| IDENT                                     { $ast = new Variable($IDENT); }
 	| '(' expr ')'                              { $ast = $expr.ast; }
 	| expr '[' expr ']'                         { $ast = new IndexExpression($ctx.expr(0), $ctx.expr(1)); }
@@ -53,7 +53,7 @@ expr returns [Expression ast]
 	| expr op=('==' | '!=') expr                { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
 	| expr op='&&' expr                         { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
 	| expr op='||' expr                         { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
-	| IDENT '(' params ')'                      { $ast = new FunInvocationExpression($IDENT, $params.list); }
+	| IDENT '(' params ')'                      { $ast = new FunInvocation($IDENT, $params.list); }
 	;
 	
 tipo returns [Type ast]
@@ -69,7 +69,7 @@ tipo returns [Type ast]
 
 // para defenir funciones
 paramsDef returns [List<Definition> list = new ArrayList<Definition>()]
-    : ( IDENT ':' tipo { $list.add(new ParamDefinition($IDENT, $ctx.tipo(0).ast)); } ( ',' IDENT ':' tipo { $list.add(new ParamDefinition($IDENT, $ctx.tipo(1).ast)); } )*  )?
+    : ( IDENT ':' tipo { $list.add(new VarDefinition($IDENT, $ctx.tipo(0).ast)); } ( ',' IDENT ':' tipo { $list.add(new VarDefinition($IDENT, $ctx.tipo(1).ast)); } )*  )?
     ;
 
 funcionDef returns [List<Definition> list = new ArrayList<Definition>()]

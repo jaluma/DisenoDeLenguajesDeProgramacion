@@ -34,7 +34,6 @@ public interface Visitor {
 	public Object visit(BinaryExpression node, Object param);
 	public Object visit(UnaryExpression node, Object param);
 	public Object visit(CastExpression node, Object param);
-	public Object visit(FunInvocationExpression node, Object param);
 	public Object visit(FunFieldAccessExpression node, Object param);
 	public Object visit(IndexExpression node, Object param);
 	public Object visit(StructField node, Object param);

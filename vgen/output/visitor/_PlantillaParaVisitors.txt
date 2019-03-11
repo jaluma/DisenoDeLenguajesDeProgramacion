@@ -238,7 +238,7 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class FunInvocation { String name;  List<Expression> params;  Expression expressions; }
+	//	class FunInvocation { String name;  List<Expression> params; }
 	public Object visit(FunInvocation node, Object param) {
 
 		// super.visit(node, param);
@@ -246,9 +246,6 @@ public class <nombre clase> extends DefaultVisitor {
 		if (node.getParams() != null)
 			for (Expression child : node.getParams())
 				child.accept(this, param);
-
-		if (node.getExpressions() != null)
-			node.getExpressions().accept(this, param);
 
 		return null;
 	}
@@ -313,18 +310,6 @@ public class <nombre clase> extends DefaultVisitor {
 
 		if (node.getExpression() != null)
 			node.getExpression().accept(this, param);
-
-		return null;
-	}
-
-	//	class FunInvocationExpression { String name;  List<Expression> params; }
-	public Object visit(FunInvocationExpression node, Object param) {
-
-		// super.visit(node, param);
-
-		if (node.getParams() != null)
-			for (Expression child : node.getParams())
-				child.accept(this, param);
 
 		return null;
 	}

@@ -198,7 +198,6 @@ public class GrammarParser extends Parser {
 		public TerminalNode IDENT() {
 			return getToken(GrammarParser.IDENT, 0);
 		}
-
 		public DefStructContext defStruct() {
 			return getRuleContext(DefStructContext.class, 0);
 		}
@@ -260,7 +259,7 @@ public class GrammarParser extends Parser {
 					match(T__3);
 					setState(48);
 					match(PTO_COMA);
-					((InstructionContext) _localctx).ast = new Instruction(new StructDefinition(((InstructionContext) _localctx).IDENT, ((InstructionContext) _localctx).defStruct.list));
+					((InstructionContext) _localctx).ast = new Instruction(new StructDefinition(new VarType(((InstructionContext) _localctx).IDENT), ((InstructionContext) _localctx).defStruct.list));
 				}
 				break;
 				case 3:
@@ -465,7 +464,7 @@ public class GrammarParser extends Parser {
 					match(T__5);
 					setState(113);
 					match(PTO_COMA);
-					((SentenceContext) _localctx).ast = new FunInvocation(((SentenceContext) _localctx).IDENT, ((SentenceContext) _localctx).params.list, null);
+					((SentenceContext) _localctx).ast = new FunInvocation(((SentenceContext) _localctx).IDENT, ((SentenceContext) _localctx).params.list);
 				}
 				break;
 				case 9:
@@ -683,7 +682,7 @@ public class GrammarParser extends Parser {
 						((ExprContext) _localctx).params = params();
 						setState(179);
 						match(T__5);
-						((ExprContext) _localctx).ast = new FunInvocationExpression(((ExprContext) _localctx).IDENT, ((ExprContext) _localctx).params.list);
+						((ExprContext) _localctx).ast = new FunInvocation(((ExprContext) _localctx).IDENT, ((ExprContext) _localctx).params.list);
 					}
 					break;
 				}
@@ -985,7 +984,7 @@ public class GrammarParser extends Parser {
 						match(T__6);
 						setState(241);
 						tipo();
-						_localctx.list.add(new ParamDefinition(((ParamsDefContext) _localctx).IDENT, _localctx.tipo(0).ast));
+						_localctx.list.add(new VarDefinition(((ParamsDefContext) _localctx).IDENT, _localctx.tipo(0).ast));
 						setState(251);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
@@ -1000,7 +999,7 @@ public class GrammarParser extends Parser {
 									match(T__6);
 									setState(246);
 									tipo();
-									_localctx.list.add(new ParamDefinition(((ParamsDefContext) _localctx).IDENT, _localctx.tipo(1).ast));
+									_localctx.list.add(new VarDefinition(((ParamsDefContext) _localctx).IDENT, _localctx.tipo(1).ast));
 								}
 							}
 							setState(253);
@@ -1135,15 +1134,12 @@ public class GrammarParser extends Parser {
 		public List<TerminalNode> IDENT() {
 			return getTokens(GrammarParser.IDENT);
 		}
-
 		public TerminalNode IDENT(int i) {
 			return getToken(GrammarParser.IDENT, i);
 		}
-
 		public List<DefVarArrayContext> defVarArray() {
 			return getRuleContexts(DefVarArrayContext.class);
 		}
-
 		public DefVarArrayContext defVarArray(int i) {
 			return getRuleContext(DefVarArrayContext.class, i);
 		}
@@ -1151,11 +1147,9 @@ public class GrammarParser extends Parser {
 		public List<TerminalNode> PTO_COMA() {
 			return getTokens(GrammarParser.PTO_COMA);
 		}
-
 		public TerminalNode PTO_COMA(int i) {
 			return getToken(GrammarParser.PTO_COMA, i);
 		}
-
 		public DefStructContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1261,7 +1255,6 @@ public class GrammarParser extends Parser {
 		public TipoContext tipo;
 		public Token INT_CONSTANT;
 		public DefVarArrayContext defVarArray;
-
 		public TipoContext tipo() {
 			return getRuleContext(TipoContext.class, 0);
 		}

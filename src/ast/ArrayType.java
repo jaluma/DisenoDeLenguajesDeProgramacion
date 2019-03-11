@@ -32,7 +32,6 @@ public class ArrayType extends AbstractType {
 	public IntConstant getSize() {
 		return size;
 	}
-
 	public void setSize(IntConstant size) {
 		this.size = size;
 	}
@@ -40,13 +39,12 @@ public class ArrayType extends AbstractType {
 	public Type getType() {
 		return type;
 	}
-
 	public void setType(Type type) {
 		this.type = type;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 

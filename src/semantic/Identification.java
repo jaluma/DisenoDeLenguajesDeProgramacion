@@ -1,28 +1,113 @@
 package semantic;
 
-import ast.AST;
-import ast.Position;
+import ast.*;
 import main.ErrorManager;
 import visitor.DefaultVisitor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Identification extends DefaultVisitor {
 
-	public Identification(ErrorManager errorManager) {
-		this.errorManager = errorManager;
-	}
+	private ErrorManager errorManager;
+	private Map<String, FunDefinition> functions;
+	private Map<String, VarType> varTypes;
+	private ContextMap<String, Definition> variables;
 
 	/*
 	 * Poner aquí los visit necesarios.
 	 * Si se ha usado VGen, solo hay que copiarlos de la clase 'visitor/_PlantillaParaVisitors.txt'.
 	 */
 
-	// public Object visit(Programa prog, Object param) {
-	//      ...
-	// }
+	public Identification(ErrorManager errorManager) {
+		this.errorManager = errorManager;
+		this.variables = new ContextMap<>();
+		this.functions = new HashMap<>();
+		this.varTypes = new HashMap<>();
+	}
 
-	// ...
-	// ...
-	// ...
+	public Object visit(FunDefinition node, Object param) {
+		predicado(functions.get(node.getName()) == null, "Función ya definida " + node.getName(), node);
+		functions.put(node.getName(), node);
+
+		variables.set();
+		node.getParams().forEach(x -> x.accept(this, ScopeEnum.LOCAL));
+		node.getDefinitions().forEach(x -> x.accept(this, ScopeEnum.LOCAL));
+		node.getSentences().forEach(x -> x.accept(this, param));
+
+		node.getReturn_t().accept(this, param);
+
+		variables.reset();
+
+		return null;
+	}
+
+	public Object visit(FunInvocation node, Object param) {
+		Definition definition = functions.get(node.getName());
+		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
+		node.setDefinition(definition);
+
+		return null;
+	}
+
+	public Object visit(VarDefinition node, Object param) {
+		node.getType().accept(this, param);
+		predicado(variables.getFromTop(node.getName()) == null, "Variable ya definida: " + node.getName(), node);
+
+		if(param instanceof ScopeEnum)
+			node.setScope((ScopeEnum) param);
+		else
+			node.setScope(ScopeEnum.GLOBAL);
+
+		variables.put(node.getName(), node);
+
+		return null;
+	}
+
+	public Object visit(Variable node, Object param) {
+		Definition definition = variables.getFromAny(node.getName());
+		predicado(definition != null, "Variable no definida: " + node.getName(), node);
+		node.setDefinition(definition);
+
+		return null;
+	}
+
+	public Object visit(StructDefinition node, Object param) {
+		predicado(variables.getFromAny(node.getName().getType()) == null, "Estructura ya definida: " + node.getName().getType(), node);
+
+		variables.put(node.getName().getType(), node);
+		varTypes.put(node.getName().getType(), node.getName());
+
+		variables.set();
+		node.getDefinitions().forEach(x -> x.accept(this, param));
+		variables.reset();
+
+		return null;
+	}
+
+	public Object visit(StructField node, Object param) {
+		node.getType().accept(this, param);
+		Definition definition = variables.getFromTop(node.getName());
+
+		predicado(definition == null, "Atributo " + node.getName() + " repetido en la estructura", node);
+
+		node.setDefinition(definition);
+		variables.put(node.getName(), node);
+
+		return null;
+	}
+
+	public Object visit(VarType node, Object param) {
+		predicado(varTypes.get(node.getType()) != null, "Tipo de dato no definido: " + node.getType(), node);
+
+		return null;
+	}
+
+	public Object visit(ArrayType node, Object param) {
+		node.getType().accept(this, param);
+
+		return null;
+	}
 
 	/**
 	 * predicado. Método auxiliar para implementar los predicados. Borrar si no se quiere usar.
@@ -56,7 +141,4 @@ public class Identification extends DefaultVisitor {
 	private void predicado(boolean condicion, String mensajeError) {
 		predicado(condicion, mensajeError, (Position) null);
 	}
-
-
-	private ErrorManager errorManager;
 }

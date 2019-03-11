@@ -9,11 +9,15 @@ import visitor.Visitor;
 
 import java.util.List;
 
-//	funInvocationExpression:expression, sentence -> name:String  params:expression*
+//	funInvocation:sentence -> name:String  params:expression*  expressions:expression
 
-public class FunInvocationExpression extends AbstractAST implements Expression, Sentence {
+public class FunInvocation extends AbstractSentence {
 
-	public FunInvocationExpression(String name, List<Expression> params) {
+	private String name;
+	private List<Expression> params;
+	private Definition definition;
+
+	public FunInvocation(String name, List<Expression> params) {
 		this.name = name;
 		this.params = params;
 
@@ -23,18 +27,19 @@ public class FunInvocationExpression extends AbstractAST implements Expression, 
 	}
 
 	@SuppressWarnings("unchecked")
-	public FunInvocationExpression(Object name, Object params) {
+	public FunInvocation(Object name, Object params, Object expressions) {
 		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
 		this.params = (List<Expression>) params;
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
 		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(name, params);
+		setPositions(name, params, expressions);
 	}
 
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -42,19 +47,26 @@ public class FunInvocationExpression extends AbstractAST implements Expression, 
 	public List<Expression> getParams() {
 		return params;
 	}
+
 	public void setParams(List<Expression> params) {
 		this.params = params;
 	}
 
-	@Override
-	public Object accept(Visitor v, Object param) { 
-		return v.visit(this, param);
+	public Definition getDefinition() {
+		return definition;
 	}
 
-	private String name;
-	private List<Expression> params;
+	public void setDefinition(Definition definition) {
+		this.definition = definition;
+	}
+
+	@Override
+	public Object accept(Visitor v, Object param) {
+		return v.visit(this, param);
+	}
 
 	public String toString() {
 		return "{name:" + getName() + ", params:" + getParams() + "}";
 	}
+
 }

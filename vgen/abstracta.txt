@@ -7,9 +7,10 @@ program -> instructions:instruction*;
 instruction -> definitions:definition;
 
 varDefinition:definition -> name:string type;
-structDefinition:definition -> name:string definitions:structField*;
+structDefinition:definition -> name:varType definitions:structField*;
 funDefinition:definition -> name:string params:definition* return_t:type definitions:definition* sentences:sentence*;
 paramDefinition:definition -> name:string type;
+structField:definition -> name:string type:type;
 
 intType:type -> ;
 realType:type -> ;
@@ -24,7 +25,7 @@ return:sentence -> expression;
 read:sentence -> expression;
 ifElse:sentence -> expression if_s:sentence* else_s:sentence*;
 while:sentence -> expression sentence*;
-funInvocation:sentence -> name:string params:expression* expressions:expression;
+funInvocation:expression, sentence -> name:string params:expression*;
 
 intConstant:expression -> value:string;
 realConstant:expression -> value:string;
@@ -34,8 +35,5 @@ variable:expression -> name:string;
 binaryExpression:expression -> left:expression operator:string right:expression;
 unaryExpression:expression -> expr:expression operator:string;
 castExpression:expression -> type:type expression:expression;
-funInvocationExpression:expression, sentence -> name:string params:expression*;
 funFieldAccessExpression:expression -> expression:expression name:string;
 indexExpression:expression -> call:expression index:expression;
-
-structField -> name:string type:type;

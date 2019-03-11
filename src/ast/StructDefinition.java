@@ -13,7 +13,10 @@ import java.util.List;
 
 public class StructDefinition extends AbstractDefinition {
 
-	public StructDefinition(String name, List<StructField> definitions) {
+	private VarType name;
+	private List<StructField> definitions;
+
+	public StructDefinition(VarType name, List<StructField> definitions) {
 		this.name = name;
 		this.definitions = definitions;
 
@@ -24,7 +27,7 @@ public class StructDefinition extends AbstractDefinition {
 
 	@SuppressWarnings("unchecked")
 	public StructDefinition(Object name, Object definitions) {
-		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
+		this.name = (VarType) ((name instanceof Token) ? getAST(name) : name);
 		this.definitions = (List<StructField>) definitions;
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
@@ -32,10 +35,11 @@ public class StructDefinition extends AbstractDefinition {
 		setPositions(name, definitions);
 	}
 
-	public String getName() {
+	public VarType getName() {
 		return name;
 	}
-	public void setName(String name) {
+
+	public void setName(VarType name) {
 		this.name = name;
 	}
 
@@ -48,12 +52,9 @@ public class StructDefinition extends AbstractDefinition {
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private String name;
-	private List<StructField> definitions;
 
 	public String toString() {
 		return "{name:" + getName() + ", definitions:" + getDefinitions() + "}";

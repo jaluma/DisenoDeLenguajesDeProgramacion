@@ -139,11 +139,9 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class FunInvocation { String name;  List<Expression> params;  Expression expressions; }
+	//	class FunInvocation { String name;  List<Expression> params; }
 	public Object visit(FunInvocation node, Object param) {
 		visitChildren(node.getParams(), param);
-		if(node.getExpressions() != null)
-			node.getExpressions().accept(this, param);
 		return null;
 	}
 
@@ -194,12 +192,6 @@ public class DefaultVisitor implements Visitor {
 			node.getType().accept(this, param);
 		if(node.getExpression() != null)
 			node.getExpression().accept(this, param);
-		return null;
-	}
-
-	//	class FunInvocationExpression { String name;  List<Expression> params; }
-	public Object visit(FunInvocationExpression node, Object param) {
-		visitChildren(node.getParams(), param);
 		return null;
 	}
 

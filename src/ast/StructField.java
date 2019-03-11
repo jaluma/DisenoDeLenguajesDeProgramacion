@@ -10,7 +10,11 @@ import visitor.Visitor;
 
 //	structField -> name:String  type:type
 
-public class StructField extends AbstractAST {
+public class StructField extends AbstractAST implements Definition {
+
+	private String name;
+	private Type type;
+	private Definition definition;
 
 	public StructField(String name, Type type) {
 		this.name = name;
@@ -46,13 +50,18 @@ public class StructField extends AbstractAST {
 		this.type = type;
 	}
 
+	public Definition getDefinition() {
+		return definition;
+	}
+
+	public void setDefinition(Definition definition) {
+		this.definition = definition;
+	}
+
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private String name;
-	private Type type;
 
 	public String toString() {
 		return "{name:" + getName() + ", type:" + getType() + "}";

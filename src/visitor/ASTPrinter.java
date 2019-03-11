@@ -263,7 +263,7 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
-	//	class FunInvocation { String name;  List<Expression> params;  Expression expressions; }
+	//	class FunInvocation { String name;  List<Expression> params; }
 	public Object visit(FunInvocation node, Object param) {
 		int indent = ((Integer) param).intValue();
 
@@ -271,7 +271,6 @@ public class ASTPrinter extends DefaultVisitor {
 
 		print(indent + 1, "name", "String", node.getName());
 		visit(indent + 1, "params", "List<Expression>", node.getParams());
-		visit(indent + 1, "expressions", "Expression", node.getExpressions());
 		return null;
 	}
 
@@ -347,17 +346,6 @@ public class ASTPrinter extends DefaultVisitor {
 
 		visit(indent + 1, "type", "Type", node.getType());
 		visit(indent + 1, "expression", "Expression", node.getExpression());
-		return null;
-	}
-
-	//	class FunInvocationExpression { String name;  List<Expression> params; }
-	public Object visit(FunInvocationExpression node, Object param) {
-		int indent = ((Integer) param).intValue();
-
-		printName(indent, "FunInvocationExpression", node, false);
-
-		print(indent + 1, "name", "String", node.getName());
-		visit(indent + 1, "params", "List<Expression>", node.getParams());
 		return null;
 	}
 

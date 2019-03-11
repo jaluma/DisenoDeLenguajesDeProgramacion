@@ -12,6 +12,10 @@ import visitor.Visitor;
 
 public class VarDefinition extends AbstractDefinition {
 
+	private String name;
+	private Type type;
+	private ScopeEnum scope;
+
 	public VarDefinition(String name, Type type) {
 		this.name = name;
 		this.type = type;
@@ -33,6 +37,7 @@ public class VarDefinition extends AbstractDefinition {
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -40,17 +45,23 @@ public class VarDefinition extends AbstractDefinition {
 	public Type getType() {
 		return type;
 	}
+
 	public void setType(Type type) {
 		this.type = type;
 	}
 
-	@Override
-	public Object accept(Visitor v, Object param) { 
-		return v.visit(this, param);
+	public ScopeEnum getScope() {
+		return scope;
 	}
 
-	private String name;
-	private Type type;
+	public void setScope(ScopeEnum scope) {
+		this.scope = scope;
+	}
+
+	@Override
+	public Object accept(Visitor v, Object param) {
+		return v.visit(this, param);
+	}
 
 	public String toString() {
 		return "{name:" + getName() + ", type:" + getType() + "}";
