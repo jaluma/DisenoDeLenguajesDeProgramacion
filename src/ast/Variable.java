@@ -12,7 +12,7 @@ import visitor.Visitor;
 public class Variable extends AbstractExpression {
 
 	private String name;
-	private Definition definition;
+	private VarDefinition definition;
 
 	public Variable(String name) {
 		this.name = name;
@@ -34,11 +34,11 @@ public class Variable extends AbstractExpression {
 		this.name = name;
 	}
 
-	public Definition getDefinition() {
+	public VarDefinition getDefinition() {
 		return definition;
 	}
 
-	public void setDefinition(Definition definition) {
+	public void setDefinition(VarDefinition definition) {
 		this.definition = definition;
 	}
 

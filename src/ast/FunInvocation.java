@@ -15,7 +15,7 @@ public class FunInvocation extends AbstractSentence {
 
 	private String name;
 	private List<Expression> params;
-	private Definition definition;
+	private FunDefinition definition;
 
 	public FunInvocation(String name, List<Expression> params) {
 		this.name = name;
@@ -52,11 +52,11 @@ public class FunInvocation extends AbstractSentence {
 		this.params = params;
 	}
 
-	public Definition getDefinition() {
+	public FunDefinition getDefinition() {
 		return definition;
 	}
 
-	public void setDefinition(Definition definition) {
+	public void setDefinition(FunDefinition definition) {
 		this.definition = definition;
 	}
 

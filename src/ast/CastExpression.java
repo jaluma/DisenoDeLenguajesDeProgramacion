@@ -11,17 +11,20 @@ import visitor.Visitor;
 
 public class CastExpression extends AbstractExpression {
 
-	public CastExpression(Type type, Expression expression) {
-		this.type = type;
+	private Type typeChange;
+	private Expression expression;
+
+	public CastExpression(Type typeChange, Expression expression) {
+		this.typeChange = typeChange;
 		this.expression = expression;
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
 		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(type, expression);
+		setPositions(typeChange, expression);
 	}
 
-	public CastExpression(Object type, Object expression) {
-		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
+	public CastExpression(Object typeChange, Object expression) {
+		this.typeChange = (Type) ((typeChange instanceof ParserRuleContext) ? getAST(type) : type);
 		this.expression = (Expression) ((expression instanceof ParserRuleContext) ? getAST(expression) : expression);
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
@@ -29,27 +32,26 @@ public class CastExpression extends AbstractExpression {
 		setPositions(type, expression);
 	}
 
-	public Type getType() {
-		return type;
+	public Type getTypeChange() {
+		return typeChange;
 	}
-	public void setType(Type type) {
-		this.type = type;
+
+	public void setTypeChange(Type typeChange) {
+		this.typeChange = typeChange;
 	}
 
 	public Expression getExpression() {
 		return expression;
 	}
+
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Type type;
-	private Expression expression;
 
 	public String toString() {
 		return "{type:" + getType() + ", expression:" + getExpression() + "}";

@@ -15,7 +15,7 @@ public class FunInvocationExpression extends AbstractExpression {
 
 	private String name;
 	private List<Expression> params;
-	private Definition definition;
+	private FunDefinition definition;
 
 	public FunInvocationExpression(String name, List<Expression> params) {
 		this.name = name;
@@ -52,11 +52,11 @@ public class FunInvocationExpression extends AbstractExpression {
 		this.params = params;
 	}
 
-	public Definition getDefinition() {
+	public FunDefinition getDefinition() {
 		return definition;
 	}
 
-	public void setDefinition(Definition definition) {
+	public void setDefinition(FunDefinition definition) {
 		this.definition = definition;
 	}
 

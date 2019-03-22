@@ -70,7 +70,7 @@ tipo returns [Type ast]
 
 // para defenir funciones
 paramsDef returns [List<Definition> list = new ArrayList<Definition>()]
-    : ( IDENT ':' tipo { $list.add(new VarDefinition($IDENT, $ctx.tipo(0).ast)); } ( ',' IDENT ':' tipo { $list.add(new VarDefinition($IDENT, $ctx.tipo(1).ast)); } )*  )?
+    : ( IDENT ':' defVarArray { $list.add(new VarDefinition($IDENT, $defVarArray.ast)); } ( ',' IDENT ':' defVarArray { $list.add(new VarDefinition($IDENT, $defVarArray.ast)); } )*  )?
     ;
 
 funcionDef returns [List<Definition> list = new ArrayList<Definition>()]

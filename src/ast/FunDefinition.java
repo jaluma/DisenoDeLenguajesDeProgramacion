@@ -15,12 +15,12 @@ import java.util.List;
 public class FunDefinition extends AbstractDefinition {
 
 	private String name;
-	private List<Definition> params;
+	private List<VarDefinition> params;
 	private Type return_t;
 	private List<Definition> definitions;
 	private List<Sentence> sentences;
 
-	public FunDefinition(String name, List<Definition> params, Type return_t, List<Definition> definitions, List<Sentence> sentences) {
+	public FunDefinition(String name, List<VarDefinition> params, Type return_t, List<Definition> definitions, List<Sentence> sentences) {
 		this.name = name;
 		this.params = params;
 		this.return_t = return_t;
@@ -35,7 +35,7 @@ public class FunDefinition extends AbstractDefinition {
 	@SuppressWarnings("unchecked")
 	public FunDefinition(Object name, Object params, Object return_t, Object definitions, Object sentences) {
 		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
-		this.params = (List<Definition>) params;
+		this.params = (List<VarDefinition>) params;
 		this.return_t = (Type) ((return_t instanceof ParserRuleContext) ? getAST(return_t) : return_t);
 		this.definitions = (List<Definition>) definitions;
 		this.sentences = (List<Sentence>) sentences;
@@ -53,11 +53,11 @@ public class FunDefinition extends AbstractDefinition {
 		this.name = name;
 	}
 
-	public List<Definition> getParams() {
+	public List<VarDefinition> getParams() {
 		return params;
 	}
 
-	public void setParams(List<Definition> params) {
+	public void setParams(List<VarDefinition> params) {
 		this.params = params;
 	}
 

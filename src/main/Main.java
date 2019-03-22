@@ -30,7 +30,7 @@ import java.io.Writer;
 @SuppressWarnings("Duplicates")
 public class Main {
 	private static final String path = "tests/semantic/files/";
-	private static final String program = path + "prog1.txt"; // Prueba a compilar durante el desarrollo
+	private static final String program = path + "Test Comprobación de Tipos.txt"; // Prueba a compilar durante el desarrollo
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();

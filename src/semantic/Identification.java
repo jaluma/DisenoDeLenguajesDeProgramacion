@@ -45,7 +45,7 @@ public class Identification extends DefaultVisitor {
 	public Object visit(FunInvocation node, Object param) {
 		Definition definition = functions.get(node.getName());
 		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
-		node.setDefinition(definition);
+		node.setDefinition((FunDefinition) definition);
 
 		return null;
 	}
@@ -53,7 +53,7 @@ public class Identification extends DefaultVisitor {
 	public Object visit(FunInvocationExpression node, Object param) {
 		Definition definition = functions.get(node.getName());
 		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
-		node.setDefinition(definition);
+		node.setDefinition((FunDefinition) definition);
 
 		return null;
 	}
@@ -72,7 +72,7 @@ public class Identification extends DefaultVisitor {
 	public Object visit(Variable node, Object param) {
 		Definition definition = variables.getFromAny(node.getName());
 		predicado(definition != null, "Variable no definida: " + node.getName(), node);
-		node.setDefinition(definition);
+		node.setDefinition((VarDefinition) definition);
 
 		return null;
 	}
@@ -114,6 +114,7 @@ public class Identification extends DefaultVisitor {
 		return null;
 	}
 
+
 	/**
 	 * predicado. Método auxiliar para implementar los predicados. Borrar si no se quiere usar.
 	 * <p>
@@ -136,7 +137,7 @@ public class Identification extends DefaultVisitor {
 	 */
 	private void predicado(boolean condicion, String mensajeError, Position posicionError) {
 		if(!condicion)
-			errorManager.notify("Comprobación de tipos", mensajeError, posicionError);
+			errorManager.notify("Identificación", mensajeError, posicionError);
 	}
 
 	private void predicado(boolean condicion, String mensajeError, AST node) {

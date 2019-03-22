@@ -30,7 +30,7 @@ public class SematicTest {
 	@Test
 	public void estructuras() {
 		filename = "2.Estructuras.txt";
-		test(2);
+		test(3);
 	}
 
 	@Test
@@ -48,7 +48,14 @@ public class SematicTest {
 	@Test
 	public void prog2() {
 		filename = "prog2.txt";
-		test(0);
+		test(4);        // 0 identificacion / 4 tipos
+	}
+
+	@Test
+	public void comprobacionDeTipos() {
+		filename = "Test Comprobación de Tipos.txt";
+		fail();
+		//test(40);
 	}
 
 	private void test(int expected) {
