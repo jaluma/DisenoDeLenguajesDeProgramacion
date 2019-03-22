@@ -35,8 +35,10 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class StructDefinition { String name;  List<StructField> definitions; }
+	//	class StructDefinition { VarType name;  List<StructField> definitions; }
 	public Object visit(StructDefinition node, Object param) {
+		if(node.getName() != null)
+			node.getName().accept(this, param);
 		visitChildren(node.getDefinitions(), param);
 		return null;
 	}
@@ -53,6 +55,13 @@ public class DefaultVisitor implements Visitor {
 
 	//	class ParamDefinition { String name;  Type type; }
 	public Object visit(ParamDefinition node, Object param) {
+		if(node.getType() != null)
+			node.getType().accept(this, param);
+		return null;
+	}
+
+	//	class StructField { String name;  Type type; }
+	public Object visit(StructField node, Object param) {
 		if(node.getType() != null)
 			node.getType().accept(this, param);
 		return null;
@@ -145,6 +154,12 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
+	//	class FunInvocationExpression { String name;  List<Expression> params; }
+	public Object visit(FunInvocationExpression node, Object param) {
+		visitChildren(node.getParams(), param);
+		return null;
+	}
+
 	//	class IntConstant { String value; }
 	public Object visit(IntConstant node, Object param) {
 		return null;
@@ -170,8 +185,26 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class BinaryExpression { Expression left;  String operator;  Expression right; }
-	public Object visit(BinaryExpression node, Object param) {
+	//	class ArithmeticExpression { Expression left;  String operator;  Expression right; }
+	public Object visit(ArithmeticExpression node, Object param) {
+		if(node.getLeft() != null)
+			node.getLeft().accept(this, param);
+		if(node.getRight() != null)
+			node.getRight().accept(this, param);
+		return null;
+	}
+
+	//	class ComparableExpression { Expression left;  String operator;  Expression right; }
+	public Object visit(ComparableExpression node, Object param) {
+		if(node.getLeft() != null)
+			node.getLeft().accept(this, param);
+		if(node.getRight() != null)
+			node.getRight().accept(this, param);
+		return null;
+	}
+
+	//	class LogicalExpression { Expression left;  String operator;  Expression right; }
+	public Object visit(LogicalExpression node, Object param) {
 		if(node.getLeft() != null)
 			node.getLeft().accept(this, param);
 		if(node.getRight() != null)
@@ -208,13 +241,6 @@ public class DefaultVisitor implements Visitor {
 			node.getCall().accept(this, param);
 		if(node.getIndex() != null)
 			node.getIndex().accept(this, param);
-		return null;
-	}
-
-	//	class StructField { String name;  Type type; }
-	public Object visit(StructField node, Object param) {
-		if(node.getType() != null)
-			node.getType().accept(this, param);
 		return null;
 	}
 

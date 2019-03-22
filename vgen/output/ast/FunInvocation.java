@@ -4,42 +4,37 @@
 
 package ast;
 
-import org.antlr.v4.runtime.Token;
-import visitor.Visitor;
+import java.util.*;
+import visitor.*;
 
-import java.util.List;
+import org.antlr.v4.runtime.*;
 
-//	funInvocation:sentence -> name:String  params:expression*  expressions:expression
+//	funInvocation:sentence -> name:String  params:expression*
 
-public class FunInvocation extends AbstractSentence implements Expression, Sentence {
-
-	private String name;
-	private List<Expression> params;
-	private Definition definition;
+public class FunInvocation extends AbstractSentence {
 
 	public FunInvocation(String name, List<Expression> params) {
 		this.name = name;
 		this.params = params;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(params);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(params);
 	}
 
 	@SuppressWarnings("unchecked")
-	public FunInvocation(Object name, Object params, Object expressions) {
-		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
+	public FunInvocation(Object name, Object params) {
+		this.name = (name instanceof Token) ? ((Token)name).getText() : (String) name;
 		this.params = (List<Expression>) params;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(name, params, expressions);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(name, params);
 	}
 
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -47,26 +42,19 @@ public class FunInvocation extends AbstractSentence implements Expression, Sente
 	public List<Expression> getParams() {
 		return params;
 	}
-
 	public void setParams(List<Expression> params) {
 		this.params = params;
 	}
 
-	public Definition getDefinition() {
-		return definition;
-	}
-
-	public void setDefinition(Definition definition) {
-		this.definition = definition;
-	}
-
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
-	public String toString() {
-		return "{name:" + getName() + ", params:" + getParams() + "}";
-	}
+	private String name;
+	private List<Expression> params;
 
+	public String toString() {
+       return "{name:" + getName() + ", params:" + getParams() + "}";
+   }
 }

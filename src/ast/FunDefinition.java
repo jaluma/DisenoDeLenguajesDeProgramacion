@@ -14,6 +14,12 @@ import java.util.List;
 
 public class FunDefinition extends AbstractDefinition {
 
+	private String name;
+	private List<Definition> params;
+	private Type return_t;
+	private List<Definition> definitions;
+	private List<Sentence> sentences;
+
 	public FunDefinition(String name, List<Definition> params, Type return_t, List<Definition> definitions, List<Sentence> sentences) {
 		this.name = name;
 		this.params = params;
@@ -42,6 +48,7 @@ public class FunDefinition extends AbstractDefinition {
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -49,6 +56,7 @@ public class FunDefinition extends AbstractDefinition {
 	public List<Definition> getParams() {
 		return params;
 	}
+
 	public void setParams(List<Definition> params) {
 		this.params = params;
 	}
@@ -56,6 +64,7 @@ public class FunDefinition extends AbstractDefinition {
 	public Type getReturn_t() {
 		return return_t;
 	}
+
 	public void setReturn_t(Type return_t) {
 		this.return_t = return_t;
 	}
@@ -63,6 +72,7 @@ public class FunDefinition extends AbstractDefinition {
 	public List<Definition> getDefinitions() {
 		return definitions;
 	}
+
 	public void setDefinitions(List<Definition> definitions) {
 		this.definitions = definitions;
 	}
@@ -70,20 +80,15 @@ public class FunDefinition extends AbstractDefinition {
 	public List<Sentence> getSentences() {
 		return sentences;
 	}
+
 	public void setSentences(List<Sentence> sentences) {
 		this.sentences = sentences;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private String name;
-	private List<Definition> params;
-	private Type return_t;
-	private List<Definition> definitions;
-	private List<Sentence> sentences;
 
 	public String toString() {
 		return "{name:" + getName() + ", params:" + getParams() + ", return_t:" + getReturn_t() + ", definitions:" + getDefinitions() + ", sentences:" + getSentences() + "}";

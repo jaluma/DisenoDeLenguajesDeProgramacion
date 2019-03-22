@@ -4,34 +4,36 @@
 
 package ast;
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import visitor.Visitor;
 
-//	structField -> name:String  type:type
+import java.util.List;
 
-public class StructField extends AbstractAST {
+//	funInvocationExpression:expression -> name:String  params:expression*
+
+public class FunInvocationExpression extends AbstractExpression {
 
 	private String name;
-	private Type type;
+	private List<Expression> params;
 	private Definition definition;
 
-	public StructField(String name, Type type) {
+	public FunInvocationExpression(String name, List<Expression> params) {
 		this.name = name;
-		this.type = type;
+		this.params = params;
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
 		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(type);
+		setPositions(params);
 	}
 
-	public StructField(Object name, Object type) {
+	@SuppressWarnings("unchecked")
+	public FunInvocationExpression(Object name, Object params) {
 		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
-		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
+		this.params = (List<Expression>) params;
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
 		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(name, type);
+		setPositions(name, params);
 	}
 
 	public String getName() {
@@ -42,12 +44,12 @@ public class StructField extends AbstractAST {
 		this.name = name;
 	}
 
-	public Type getType() {
-		return type;
+	public List<Expression> getParams() {
+		return params;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public void setParams(List<Expression> params) {
+		this.params = params;
 	}
 
 	public Definition getDefinition() {
@@ -64,6 +66,6 @@ public class StructField extends AbstractAST {
 	}
 
 	public String toString() {
-		return "{name:" + getName() + ", type:" + getType() + "}";
+		return "{name:" + getName() + ", params:" + getParams() + "}";
 	}
 }

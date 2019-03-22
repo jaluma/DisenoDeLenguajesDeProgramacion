@@ -72,10 +72,13 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class StructDefinition { String name;  List<StructField> definitions; }
+	//	class StructDefinition { VarType name;  List<StructField> definitions; }
 	public Object visit(StructDefinition node, Object param) {
 
 		// super.visit(node, param);
+
+		if (node.getName() != null)
+			node.getName().accept(this, param);
 
 		if (node.getDefinitions() != null)
 			for (StructField child : node.getDefinitions())
@@ -109,6 +112,17 @@ public class <nombre clase> extends DefaultVisitor {
 
 	//	class ParamDefinition { String name;  Type type; }
 	public Object visit(ParamDefinition node, Object param) {
+
+		// super.visit(node, param);
+
+		if (node.getType() != null)
+			node.getType().accept(this, param);
+
+		return null;
+	}
+
+	//	class StructField { String name;  Type type; }
+	public Object visit(StructField node, Object param) {
 
 		// super.visit(node, param);
 
@@ -250,6 +264,18 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
+	//	class FunInvocationExpression { String name;  List<Expression> params; }
+	public Object visit(FunInvocationExpression node, Object param) {
+
+		// super.visit(node, param);
+
+		if (node.getParams() != null)
+			for (Expression child : node.getParams())
+				child.accept(this, param);
+
+		return null;
+	}
+
 	//	class IntConstant { String value; }
 	public Object visit(IntConstant node, Object param) {
 		return null;
@@ -275,8 +301,36 @@ public class <nombre clase> extends DefaultVisitor {
 		return null;
 	}
 
-	//	class BinaryExpression { Expression left;  String operator;  Expression right; }
-	public Object visit(BinaryExpression node, Object param) {
+	//	class ArithmeticExpression { Expression left;  String operator;  Expression right; }
+	public Object visit(ArithmeticExpression node, Object param) {
+
+		// super.visit(node, param);
+
+		if (node.getLeft() != null)
+			node.getLeft().accept(this, param);
+
+		if (node.getRight() != null)
+			node.getRight().accept(this, param);
+
+		return null;
+	}
+
+	//	class ComparableExpression { Expression left;  String operator;  Expression right; }
+	public Object visit(ComparableExpression node, Object param) {
+
+		// super.visit(node, param);
+
+		if (node.getLeft() != null)
+			node.getLeft().accept(this, param);
+
+		if (node.getRight() != null)
+			node.getRight().accept(this, param);
+
+		return null;
+	}
+
+	//	class LogicalExpression { Expression left;  String operator;  Expression right; }
+	public Object visit(LogicalExpression node, Object param) {
 
 		// super.visit(node, param);
 
@@ -335,17 +389,6 @@ public class <nombre clase> extends DefaultVisitor {
 
 		if (node.getIndex() != null)
 			node.getIndex().accept(this, param);
-
-		return null;
-	}
-
-	//	class StructField { String name;  Type type; }
-	public Object visit(StructField node, Object param) {
-
-		// super.visit(node, param);
-
-		if (node.getType() != null)
-			node.getType().accept(this, param);
 
 		return null;
 	}

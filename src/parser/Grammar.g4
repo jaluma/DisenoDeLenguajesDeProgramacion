@@ -26,6 +26,7 @@ instruction returns[Instruction ast]
 sentence returns [Sentence ast]
 	: 'print' expr PTO_COMA                                         { $ast = new Print($expr.ast, ""); }
 	| 'printsp' expr PTO_COMA                                       { $ast = new Print($expr.ast, " "); }
+	| 'println' PTO_COMA                                            { $ast = new Print(null, System.getProperty("line.separator")); }
     | 'println' expr PTO_COMA                                       { $ast = new Print($expr.ast, System.getProperty("line.separator")); }
 	| expr '=' expr PTO_COMA                                        { $ast = new Assignment($ctx.expr(0), $ctx.expr(1)); }
 	| 'return' PTO_COMA                                             { $ast = new Return(new VoidConstant()); }
@@ -47,13 +48,13 @@ expr returns [Expression ast]
     | expr '.' IDENT                            { $ast = new FunFieldAccessExpression($ctx.expr(0), $IDENT); }
 	| 'cast' '<' tipo '>' '(' expr ')'          { $ast = new CastExpression($tipo.ast, $expr.ast); }
 	| op='!' expr                               { $ast = new UnaryExpression($ctx.expr(0), $op); }
-	| expr op=('*' | '/') expr                  { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
-	| expr op=('+' | '-') expr                  { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
-	| expr op=('>' | '>=' | '<' | '<=') expr    { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
-	| expr op=('==' | '!=') expr                { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
-	| expr op='&&' expr                         { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
-	| expr op='||' expr                         { $ast = new BinaryExpression($ctx.expr(0), $op, $ctx.expr(1)); }
-	| IDENT '(' params ')'                      { $ast = new FunInvocation($IDENT, $params.list); }
+	| expr op=('*' | '/') expr                  { $ast = new ArithmeticExpression($ctx.expr(0), $op, $ctx.expr(1)); }
+	| expr op=('+' | '-') expr                  { $ast = new ArithmeticExpression($ctx.expr(0), $op, $ctx.expr(1)); }
+	| expr op=('>' | '>=' | '<' | '<=') expr    { $ast = new ComparableExpression($ctx.expr(0), $op, $ctx.expr(1)); }
+	| expr op=('==' | '!=') expr                { $ast = new ComparableExpression($ctx.expr(0), $op, $ctx.expr(1)); }
+	| expr op='&&' expr                         { $ast = new LogicalExpression($ctx.expr(0), $op, $ctx.expr(1)); }
+	| expr op='||' expr                         { $ast = new LogicalExpression($ctx.expr(0), $op, $ctx.expr(1)); }
+	| IDENT '(' params ')'                      { $ast = new FunInvocationExpression($IDENT, $params.list); }
 	;
 	
 tipo returns [Type ast]

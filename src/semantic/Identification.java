@@ -50,14 +50,19 @@ public class Identification extends DefaultVisitor {
 		return null;
 	}
 
+	public Object visit(FunInvocationExpression node, Object param) {
+		Definition definition = functions.get(node.getName());
+		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
+		node.setDefinition(definition);
+
+		return null;
+	}
+
 	public Object visit(VarDefinition node, Object param) {
 		node.getType().accept(this, param);
 		predicado(variables.getFromTop(node.getName()) == null, "Variable ya definida: " + node.getName(), node);
 
-		if(param instanceof ScopeEnum)
-			node.setScope((ScopeEnum) param);
-		else
-			node.setScope(ScopeEnum.GLOBAL);
+		node.setScope(param instanceof ScopeEnum ? (ScopeEnum) param : ScopeEnum.GLOBAL);
 
 		variables.put(node.getName(), node);
 

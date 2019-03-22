@@ -9,9 +9,9 @@ import visitor.Visitor;
 
 import java.util.List;
 
-//	funInvocation:sentence -> name:String  params:expression*  expressions:expression
+//	funInvocation:sentence -> name:String  params:expression*
 
-public class FunInvocation extends AbstractSentence implements Expression, Sentence {
+public class FunInvocation extends AbstractSentence {
 
 	private String name;
 	private List<Expression> params;
@@ -68,5 +68,4 @@ public class FunInvocation extends AbstractSentence implements Expression, Sente
 	public String toString() {
 		return "{name:" + getName() + ", params:" + getParams() + "}";
 	}
-
 }

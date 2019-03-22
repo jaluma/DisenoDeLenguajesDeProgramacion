@@ -4,40 +4,35 @@
 
 package ast;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import visitor.Visitor;
+import visitor.*;
 
-//	structField -> name:String  type:type
+import org.antlr.v4.runtime.*;
 
-public class StructField extends AbstractAST {
+//	structField:definition -> name:String  type:type
 
-	private String name;
-	private Type type;
-	private Definition definition;
+public class StructField extends AbstractDefinition {
 
 	public StructField(String name, Type type) {
 		this.name = name;
 		this.type = type;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(type);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(type);
 	}
 
 	public StructField(Object name, Object type) {
-		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
+		this.name = (name instanceof Token) ? ((Token)name).getText() : (String) name;
 		this.type = (Type) ((type instanceof ParserRuleContext) ? getAST(type) : type);
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(name, type);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(name, type);
 	}
 
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -45,25 +40,19 @@ public class StructField extends AbstractAST {
 	public Type getType() {
 		return type;
 	}
-
 	public void setType(Type type) {
 		this.type = type;
 	}
 
-	public Definition getDefinition() {
-		return definition;
-	}
-
-	public void setDefinition(Definition definition) {
-		this.definition = definition;
-	}
-
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
+	private String name;
+	private Type type;
+
 	public String toString() {
-		return "{name:" + getName() + ", type:" + getType() + "}";
-	}
+       return "{name:" + getName() + ", type:" + getType() + "}";
+   }
 }
