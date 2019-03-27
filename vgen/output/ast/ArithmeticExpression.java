@@ -4,9 +4,9 @@
 
 package ast;
 
-import visitor.*;
-
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import visitor.Visitor;
 
 //	arithmeticExpression:expression -> left:expression  operator:String  right:expression
 
@@ -17,24 +17,25 @@ public class ArithmeticExpression extends AbstractExpression {
 		this.operator = operator;
 		this.right = right;
 
-       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-       // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(left, right);
+		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+		// Obtiene la linea/columna a partir de las de los hijos.
+		setPositions(left, right);
 	}
 
 	public ArithmeticExpression(Object left, Object operator, Object right) {
 		this.left = (Expression) ((left instanceof ParserRuleContext) ? getAST(left) : left);
-		this.operator = (operator instanceof Token) ? ((Token)operator).getText() : (String) operator;
+		this.operator = (operator instanceof Token) ? ((Token) operator).getText() : (String) operator;
 		this.right = (Expression) ((right instanceof ParserRuleContext) ? getAST(right) : right);
 
-       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-       // Obtiene la linea/columna a partir de las de los hijos.
-       setPositions(left, operator, right);
+		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+		// Obtiene la linea/columna a partir de las de los hijos.
+		setPositions(left, operator, right);
 	}
 
 	public Expression getLeft() {
 		return left;
 	}
+
 	public void setLeft(Expression left) {
 		this.left = left;
 	}
@@ -42,6 +43,7 @@ public class ArithmeticExpression extends AbstractExpression {
 	public String getOperator() {
 		return operator;
 	}
+
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
@@ -49,12 +51,13 @@ public class ArithmeticExpression extends AbstractExpression {
 	public Expression getRight() {
 		return right;
 	}
+
 	public void setRight(Expression right) {
 		this.right = right;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 
@@ -63,6 +66,6 @@ public class ArithmeticExpression extends AbstractExpression {
 	private Expression right;
 
 	public String toString() {
-       return "{left:" + getLeft() + ", operator:" + getOperator() + ", right:" + getRight() + "}";
-   }
+		return "{left:" + getLeft() + ", operator:" + getOperator() + ", right:" + getRight() + "}";
+	}
 }

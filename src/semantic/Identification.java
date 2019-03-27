@@ -31,7 +31,7 @@ public class Identification extends DefaultVisitor {
 		functions.put(node.getName(), node);
 
 		variables.set();
-		node.getParams().forEach(x -> x.accept(this, ScopeEnum.LOCAL));
+		node.getParams().forEach(x -> x.accept(this, ScopeEnum.PARAM));
 		node.getDefinitions().forEach(x -> x.accept(this, ScopeEnum.LOCAL));
 		node.getSentences().forEach(x -> x.accept(this, param));
 
@@ -43,17 +43,17 @@ public class Identification extends DefaultVisitor {
 	}
 
 	public Object visit(FunInvocation node, Object param) {
-		Definition definition = functions.get(node.getName());
+		FunDefinition definition = functions.get(node.getName());
 		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
-		node.setDefinition((FunDefinition) definition);
+		node.setDefinition(definition);
 
 		return null;
 	}
 
 	public Object visit(FunInvocationExpression node, Object param) {
-		Definition definition = functions.get(node.getName());
+		FunDefinition definition = functions.get(node.getName());
 		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
-		node.setDefinition((FunDefinition) definition);
+		node.setDefinition(definition);
 
 		return null;
 	}
@@ -72,6 +72,7 @@ public class Identification extends DefaultVisitor {
 	public Object visit(Variable node, Object param) {
 		Definition definition = variables.getFromAny(node.getName());
 		predicado(definition != null, "Variable no definida: " + node.getName(), node);
+
 		node.setDefinition((VarDefinition) definition);
 
 		return null;
@@ -109,11 +110,16 @@ public class Identification extends DefaultVisitor {
 	}
 
 	public Object visit(ArrayType node, Object param) {
-		node.getType().accept(this, param);
+		super.visit(node, param);
 
 		return null;
 	}
 
+	public Object visit(FieldAccessExpression node, Object param) {
+		super.visit(node, param);
+
+		return null;
+	}
 
 	/**
 	 * predicado. Método auxiliar para implementar los predicados. Borrar si no se quiere usar.

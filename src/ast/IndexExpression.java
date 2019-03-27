@@ -11,6 +11,9 @@ import visitor.Visitor;
 
 public class IndexExpression extends AbstractExpression {
 
+	private Expression call;
+	private Expression index;
+
 	public IndexExpression(Expression call, Expression index) {
 		this.call = call;
 		this.index = index;
@@ -32,6 +35,7 @@ public class IndexExpression extends AbstractExpression {
 	public Expression getCall() {
 		return call;
 	}
+
 	public void setCall(Expression call) {
 		this.call = call;
 	}
@@ -39,17 +43,15 @@ public class IndexExpression extends AbstractExpression {
 	public Expression getIndex() {
 		return index;
 	}
+
 	public void setIndex(Expression index) {
 		this.index = index;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression call;
-	private Expression index;
 
 	public String toString() {
 		return "{call:" + getCall() + ", index:" + getIndex() + "}";

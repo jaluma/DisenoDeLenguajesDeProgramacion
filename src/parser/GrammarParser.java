@@ -852,7 +852,7 @@ public class GrammarParser extends Parser {
 									match(T__18);
 									setState(225);
 									((ExprContext) _localctx).IDENT = match(IDENT);
-									((ExprContext) _localctx).ast = new FunFieldAccessExpression(_localctx.expr(0), ((ExprContext) _localctx).IDENT);
+									((ExprContext) _localctx).ast = new FieldAccessExpression(_localctx.expr(0), ((ExprContext) _localctx).IDENT);
 								}
 								break;
 							}
@@ -965,11 +965,9 @@ public class GrammarParser extends Parser {
 		public TerminalNode IDENT(int i) {
 			return getToken(GrammarParser.IDENT, i);
 		}
-
 		public List<DefVarArrayContext> defVarArray() {
 			return getRuleContexts(DefVarArrayContext.class);
 		}
-
 		public DefVarArrayContext defVarArray(int i) {
 			return getRuleContext(DefVarArrayContext.class, i);
 		}

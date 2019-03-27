@@ -4,21 +4,19 @@
 
 package ast;
 
-import visitor.*;
-
-import org.antlr.v4.runtime.*;
+import visitor.Visitor;
 
 //	charType:type -> 
 
 public class CharType extends AbstractType {
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 
 
 	public String toString() {
-       return "{CharType}";
-   }
+		return "{CharType}";
+	}
 }

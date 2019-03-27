@@ -30,12 +30,13 @@ public class Instruction extends AbstractAST {
 	public Definition getDefinitions() {
 		return definitions;
 	}
+
 	public void setDefinitions(Definition definitions) {
 		this.definitions = definitions;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 

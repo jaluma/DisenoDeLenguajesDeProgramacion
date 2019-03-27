@@ -15,10 +15,9 @@ import java.util.List;
  * - Muestra la estructura del árbol en HTML.
  * - Destaca los hijos/propiedades a null.
  * - Muestra a qué texto apuntan las posiciones de cada nodo (linea/columna)
- *      ayudando a decidir cual de ellas usar en los errores y generación de código.
- *
+ * ayudando a decidir cual de ellas usar en los errores y generación de código.
+ * <p>
  * Esta clase se genera con VGen. El uso de esta clase es opcional (puede eliminarse del proyecto).
- *
  */
 public class ASTPrinter extends DefaultVisitor {
 
@@ -209,6 +208,16 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
+	//	class StructType { List<StructField> fields; }
+	public Object visit(StructType node, Object param) {
+		int indent = ((Integer) param).intValue();
+
+		printName(indent, "StructType", node, false);
+
+		visit(indent + 1, "fields", "List<StructField>", node.getFields());
+		return null;
+	}
+
 	//	class Print { Expression expression;  String lex; }
 	public Object visit(Print node, Object param) {
 		int indent = ((Integer) param).intValue();
@@ -395,11 +404,11 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
-	//	class FunFieldAccessExpression { Expression expression;  String name; }
-	public Object visit(FunFieldAccessExpression node, Object param) {
+	//	class FieldAccessExpression { Expression expression;  String name; }
+	public Object visit(FieldAccessExpression node, Object param) {
 		int indent = ((Integer) param).intValue();
 
-		printName(indent, "FunFieldAccessExpression", node, false);
+		printName(indent, "FieldAccessExpression", node, false);
 
 		visit(indent + 1, "expression", "Expression", node.getExpression());
 		print(indent + 1, "name", "String", node.getName());

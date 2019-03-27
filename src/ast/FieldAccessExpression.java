@@ -10,9 +10,9 @@ import visitor.Visitor;
 
 //	funFieldAccessExpression:expression -> expression:expression  name:String
 
-public class FunFieldAccessExpression extends AbstractExpression {
+public class FieldAccessExpression extends AbstractExpression {
 
-	public FunFieldAccessExpression(Expression expression, String name) {
+	public FieldAccessExpression(Expression expression, String name) {
 		this.expression = expression;
 		this.name = name;
 
@@ -21,7 +21,7 @@ public class FunFieldAccessExpression extends AbstractExpression {
 		setPositions(expression);
 	}
 
-	public FunFieldAccessExpression(Object expression, Object name) {
+	public FieldAccessExpression(Object expression, Object name) {
 		this.expression = (Expression) ((expression instanceof ParserRuleContext) ? getAST(expression) : expression);
 		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
 
@@ -33,6 +33,7 @@ public class FunFieldAccessExpression extends AbstractExpression {
 	public Expression getExpression() {
 		return expression;
 	}
+
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
@@ -40,12 +41,13 @@ public class FunFieldAccessExpression extends AbstractExpression {
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 

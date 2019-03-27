@@ -34,13 +34,23 @@ public class TypeChecking extends DefaultVisitor {
 	//	class FunDefinition { String name;  List<Definition> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
 	public Object visit(FunDefinition node, Object param) {
 
-		super.visit(node, param);
+		super.visit(node, node);        //pasamos referencia de la definición de la funcion para el return
 
 		predicado(isReturnable(node.getReturn_t()), "El tipo de retorno de la función " + node.getName() + " no es compatible.", node);
 
 		return null;
 	}
 
+	public Object visit(VarDefinition node, Object param) {
+
+		super.visit(node, param);
+
+		if(node.getScope().equals(ScopeEnum.PARAM)) {
+			predicado(isSimple(node.getType()), "El tipo del parametro de la función " + node.getName() + " no es simple.", node);
+		}
+
+		return null;
+	}
 
 	//	class Print { Expression expression;  String lex; }
 	public Object visit(Print node, Object param) {
@@ -76,7 +86,10 @@ public class TypeChecking extends DefaultVisitor {
 		super.visit(node, param);
 
 		predicado(isReturnable(node.getExpression().getType()), "El tipo de la expresión no es compatible con el Return de la función.", node);
-		//predicado(node.);
+		if(param instanceof FunDefinition) {
+			predicado(sameType(((FunDefinition) param).getReturn_t(), node.getExpression()
+					.getType()), "La expresión no es del tipo de retorno", node);
+		}
 
 		return null;
 	}
@@ -86,7 +99,8 @@ public class TypeChecking extends DefaultVisitor {
 
 		super.visit(node, param);
 
-		predicado(node.getExpression().isModificable(), "La expresión " + node.getExpression().getType() + " no es modificable.", node);
+		predicado(isSimple(node.getExpression().getType()), "El tipo del parametro de la función " + node.getExpression() + " no es simple.", node);
+		predicado(node.getExpression().isModificable(), "La expresión " + node.getExpression() + " no es modificable.", node);
 
 		return null;
 	}
@@ -266,15 +280,16 @@ public class TypeChecking extends DefaultVisitor {
 		return null;
 	}
 
-	//	class FunFieldAccessExpression { Expression expression;  String name; }
-	public Object visit(FunFieldAccessExpression node, Object param) {
+	//	class FieldAccessExpression { Expression expression;  String name; }
+	public Object visit(FieldAccessExpression node, Object param) {
 
 		super.visit(node, param);
 
 		predicado(sameType(node.getExpression().getType(), VarType.class), "Se esperaba una variable pero el tipo ha sido " + node.getExpression()
 				.getType(), node);
 
-		node.setType(node.); node.setModificable(true);
+		node.setType(node.getType());
+		node.setModificable(true);
 
 		return null;
 	}
@@ -289,8 +304,16 @@ public class TypeChecking extends DefaultVisitor {
 		predicado(sameType(node.getIndex().getType(), IntType.class), "Se esperaba un indice de tipo entero pero el tipo ha sido " + node.getIndex()
 				.getType(), node);
 
-		node.setType(node.getCall().getType());
+		node.setType(node.getDefinition().getType());
 		node.setModificable(false);
+
+		return null;
+	}
+
+	public Object visit(ArrayType node, Object param) {
+		super.visit(node, param);
+
+		node.setType(node.getType());
 
 		return null;
 	}

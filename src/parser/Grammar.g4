@@ -45,7 +45,7 @@ expr returns [Expression ast]
 	| IDENT                                     { $ast = new Variable($IDENT); }
 	| '(' expr ')'                              { $ast = $expr.ast; }
 	| expr '[' expr ']'                         { $ast = new IndexExpression($ctx.expr(0), $ctx.expr(1)); }
-    | expr '.' IDENT                            { $ast = new FunFieldAccessExpression($ctx.expr(0), $IDENT); }
+    | expr '.' IDENT                            { $ast = new FieldAccessExpression($ctx.expr(0), $IDENT); }
 	| 'cast' '<' tipo '>' '(' expr ')'          { $ast = new CastExpression($tipo.ast, $expr.ast); }
 	| op='!' expr                               { $ast = new UnaryExpression($ctx.expr(0), $op); }
 	| expr op=('*' | '/') expr                  { $ast = new ArithmeticExpression($ctx.expr(0), $op, $ctx.expr(1)); }

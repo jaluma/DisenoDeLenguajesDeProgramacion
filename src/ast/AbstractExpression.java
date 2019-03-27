@@ -9,7 +9,6 @@ public abstract class AbstractExpression extends AbstractAST implements Expressi
 	protected Type type;
 	protected boolean modificable;
 
-	@Override
 	public void setType(Type type) {
 		this.type = type;
 	}

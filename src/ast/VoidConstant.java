@@ -11,7 +11,7 @@ import visitor.Visitor;
 public class VoidConstant extends AbstractExpression {
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 

@@ -30,12 +30,13 @@ public class Read extends AbstractSentence {
 	public Expression getExpression() {
 		return expression;
 	}
+
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) { 
+	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 

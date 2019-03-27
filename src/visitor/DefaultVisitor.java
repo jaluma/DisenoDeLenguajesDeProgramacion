@@ -101,6 +101,12 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
+	//	class StructType { List<StructField> fields; }
+	public Object visit(StructType node, Object param) {
+		visitChildren(node.getFields(), param);
+		return null;
+	}
+
 	//	class Print { Expression expression;  String lex; }
 	public Object visit(Print node, Object param) {
 		if(node.getExpression() != null)
@@ -228,8 +234,8 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
-	//	class FunFieldAccessExpression { Expression expression;  String name; }
-	public Object visit(FunFieldAccessExpression node, Object param) {
+	//	class FieldAccessExpression { Expression expression;  String name; }
+	public Object visit(FieldAccessExpression node, Object param) {
 		if(node.getExpression() != null)
 			node.getExpression().accept(this, param);
 		return null;
