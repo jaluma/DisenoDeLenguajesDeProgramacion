@@ -11,7 +11,7 @@ public class Identification extends DefaultVisitor {
 
 	private ErrorManager errorManager;
 	private Map<String, FunDefinition> functions;
-	private Map<String, VarType> varTypes;
+	private Map<String, StructDefinition> symbols;
 	private ContextMap<String, Definition> variables;
 
 	/*
@@ -23,7 +23,7 @@ public class Identification extends DefaultVisitor {
 		this.errorManager = errorManager;
 		this.variables = new ContextMap<>();
 		this.functions = new HashMap<>();
-		this.varTypes = new HashMap<>();
+		this.symbols = new HashMap<>();
 	}
 
 	public Object visit(FunDefinition node, Object param) {
@@ -82,7 +82,7 @@ public class Identification extends DefaultVisitor {
 		predicado(variables.getFromAny(node.getName().getType()) == null, "Estructura ya definida: " + node.getName().getType(), node);
 
 		variables.put(node.getName().getType(), node);
-		varTypes.put(node.getName().getType(), node.getName());
+		symbols.put(node.getName().getType(), node);
 
 		variables.set();
 		node.getDefinitions().forEach(x -> x.accept(this, param));
@@ -104,19 +104,10 @@ public class Identification extends DefaultVisitor {
 	}
 
 	public Object visit(VarType node, Object param) {
-		predicado(varTypes.get(node.getType()) != null, "Tipo de dato no definido: " + node.getType(), node);
+		StructDefinition definition = symbols.get(node.getType());
+		predicado(definition != null, "Tipo de dato no definido: " + node.getType(), node);
 
-		return null;
-	}
-
-	public Object visit(ArrayType node, Object param) {
-		super.visit(node, param);
-
-		return null;
-	}
-
-	public Object visit(FieldAccessExpression node, Object param) {
-		super.visit(node, param);
+		node.setDefinition(definition);
 
 		return null;
 	}

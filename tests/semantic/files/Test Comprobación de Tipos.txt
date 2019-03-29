@@ -92,6 +92,7 @@ main() {
 	print cast<int>(juan);		// Expresiones de tipos simples
 	print cast<float>(2.5);		// Deben ser distintos tipos
 
+	print v[i+2];
 	print v[i+2][i+1];
 
 	print juan.edad;

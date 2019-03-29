@@ -4,10 +4,10 @@
 
 package ast;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import visitor.Visitor;
+import java.util.*;
+import visitor.*;
 
-import java.util.List;
+import org.antlr.v4.runtime.*;
 
 //	structDefinition:definition -> name:varType  definitions:structField*
 
@@ -17,9 +17,9 @@ public class StructDefinition extends AbstractDefinition {
 		this.name = name;
 		this.definitions = definitions;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(name, definitions);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(name, definitions);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -27,15 +27,14 @@ public class StructDefinition extends AbstractDefinition {
 		this.name = (VarType) ((name instanceof ParserRuleContext) ? getAST(name) : name);
 		this.definitions = (List<StructField>) definitions;
 
-		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
-		// Obtiene la linea/columna a partir de las de los hijos.
-		setPositions(name, definitions);
+       // Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
+       // Obtiene la linea/columna a partir de las de los hijos.
+       setPositions(name, definitions);
 	}
 
 	public VarType getName() {
 		return name;
 	}
-
 	public void setName(VarType name) {
 		this.name = name;
 	}
@@ -43,13 +42,12 @@ public class StructDefinition extends AbstractDefinition {
 	public List<StructField> getDefinitions() {
 		return definitions;
 	}
-
 	public void setDefinitions(List<StructField> definitions) {
 		this.definitions = definitions;
 	}
 
 	@Override
-	public Object accept(Visitor v, Object param) {
+	public Object accept(Visitor v, Object param) { 
 		return v.visit(this, param);
 	}
 
@@ -57,6 +55,6 @@ public class StructDefinition extends AbstractDefinition {
 	private List<StructField> definitions;
 
 	public String toString() {
-		return "{name:" + getName() + ", definitions:" + getDefinitions() + "}";
-	}
+       return "{name:" + getName() + ", definitions:" + getDefinitions() + "}";
+   }
 }

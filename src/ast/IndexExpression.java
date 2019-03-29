@@ -13,6 +13,7 @@ public class IndexExpression extends AbstractExpression {
 
 	private Expression call;
 	private Expression index;
+	private Type typeVector;
 
 	public IndexExpression(Expression call, Expression index) {
 		this.call = call;
@@ -46,6 +47,14 @@ public class IndexExpression extends AbstractExpression {
 
 	public void setIndex(Expression index) {
 		this.index = index;
+	}
+
+	public Type getTypeVector() {
+		return typeVector;
+	}
+
+	public void setTypeVector(Type typeVector) {
+		this.typeVector = typeVector;
 	}
 
 	@Override

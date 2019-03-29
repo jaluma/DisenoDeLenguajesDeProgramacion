@@ -15,9 +15,10 @@ import java.util.List;
  * - Muestra la estructura del árbol en HTML.
  * - Destaca los hijos/propiedades a null.
  * - Muestra a qué texto apuntan las posiciones de cada nodo (linea/columna)
- * ayudando a decidir cual de ellas usar en los errores y generación de código.
- * <p>
+ *      ayudando a decidir cual de ellas usar en los errores y generación de código.
+ *
  * Esta clase se genera con VGen. El uso de esta clase es opcional (puede eliminarse del proyecto).
+ *
  */
 public class ASTPrinter extends DefaultVisitor {
 
@@ -215,6 +216,15 @@ public class ASTPrinter extends DefaultVisitor {
 		printName(indent, "StructType", node, false);
 
 		visit(indent + 1, "fields", "List<StructField>", node.getFields());
+		return null;
+	}
+
+	//	class ErrorType {  }
+	public Object visit(ErrorType node, Object param) {
+		int indent = ((Integer) param).intValue();
+
+		printName(indent, "ErrorType", node, true);
+
 		return null;
 	}
 

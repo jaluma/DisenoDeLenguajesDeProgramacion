@@ -11,6 +11,9 @@ import visitor.Visitor;
 
 public class VarType extends AbstractType {
 
+	private String type;
+	private StructDefinition definition;
+
 	public VarType(String type) {
 		this.type = type;
 	}
@@ -31,12 +34,28 @@ public class VarType extends AbstractType {
 		this.type = type;
 	}
 
+	public StructDefinition getDefinition() {
+		return definition;
+	}
+
+	public void setDefinition(StructDefinition definition) {
+		this.definition = definition;
+	}
+
+	public StructField getField(String name) {
+		for(StructField field : definition.getDefinitions()) {
+			if(field.getName().equals(name)) {
+				return field;
+			}
+		}
+
+		return null;
+	}
+
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private String type;
 
 	public String toString() {
 		return "{type:" + getType() + "}";

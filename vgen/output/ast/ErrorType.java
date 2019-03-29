@@ -8,9 +8,9 @@ import visitor.*;
 
 import org.antlr.v4.runtime.*;
 
-//	voidConstant:expression -> 
+//	errorType:type -> 
 
-public class VoidConstant extends AbstractExpression {
+public class ErrorType extends AbstractType {
 
 	@Override
 	public Object accept(Visitor v, Object param) { 
@@ -19,6 +19,6 @@ public class VoidConstant extends AbstractExpression {
 
 
 	public String toString() {
-       return "{VoidConstant}";
+       return "{ErrorType}";
    }
 }

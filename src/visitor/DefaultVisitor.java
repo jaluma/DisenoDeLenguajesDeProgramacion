@@ -107,6 +107,11 @@ public class DefaultVisitor implements Visitor {
 		return null;
 	}
 
+	//	class ErrorType {  }
+	public Object visit(ErrorType node, Object param) {
+		return null;
+	}
+
 	//	class Print { Expression expression;  String lex; }
 	public Object visit(Print node, Object param) {
 		if(node.getExpression() != null)

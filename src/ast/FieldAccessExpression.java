@@ -12,6 +12,10 @@ import visitor.Visitor;
 
 public class FieldAccessExpression extends AbstractExpression {
 
+	private Expression expression;
+	private String name;
+	private StructField field;
+
 	public FieldAccessExpression(Expression expression, String name) {
 		this.expression = expression;
 		this.name = name;
@@ -46,13 +50,18 @@ public class FieldAccessExpression extends AbstractExpression {
 		this.name = name;
 	}
 
+	public StructField getField() {
+		return field;
+	}
+
+	public void setField(StructField field) {
+		this.field = field;
+	}
+
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression expression;
-	private String name;
 
 	public String toString() {
 		return "{expression:" + getExpression() + ", name:" + getName() + "}";
