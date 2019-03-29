@@ -19,13 +19,12 @@ public class TypeChecking extends DefaultVisitor {
 	 * Si se ha usado VGen, solo hay que copiarlos de la clase 'visitor/_PlantillaParaVisitors.txt'.
 	 */
 
-	public TypeChecking(ErrorManager errorManager) {
+	TypeChecking(ErrorManager errorManager) {
 		this.errorManager = errorManager;
 	}
 
 	//	class StructDefinition { VarType name;  List<StructField> definitions; }
 	public Object visit(StructDefinition node, Object param) {
-
 		super.visit(node, param);
 
 		return null;
@@ -33,7 +32,6 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class FunDefinition { String name;  List<Definition> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
 	public Object visit(FunDefinition node, Object param) {
-
 		super.visit(node, node);        //pasamos referencia de la definición de la funcion para el return
 
 		predicado(isReturnable(node.getReturn_t()), "El tipo de retorno de la función " + node.getName() + " no es compatible.", node);
@@ -42,7 +40,6 @@ public class TypeChecking extends DefaultVisitor {
 	}
 
 	public Object visit(VarDefinition node, Object param) {
-
 		super.visit(node, param);
 
 		if(node.getScope().equals(ScopeEnum.PARAM)) {
@@ -54,7 +51,6 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class Print { Expression expression;  String lex; }
 	public Object visit(Print node, Object param) {
-
 		super.visit(node, param);
 
 		if(node.getLex().equals(PrintSeparatorEnum.LINE_BREAK.getValue()))
@@ -69,8 +65,8 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class Assignment { Expression left;  Expression right; }
 	public Object visit(Assignment node, Object param) {
-
 		super.visit(node, param);
+
 		predicado(sameType(node.getLeft().getType(), node.getRight().getType()), "La asignación es incompatible. Tipos diferentes: " + node.getLeft()
 				.getType() + ", " + node.getRight().getType(), node);
 		predicado(isSimple(node.getLeft().getType()), "El tipo de la izquierda " + node.getLeft()
@@ -82,7 +78,6 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class Return { Expression expression; }
 	public Object visit(Return node, Object param) {
-
 		super.visit(node, param);
 
 		predicado(isReturnable(node.getExpression().getType()), "El tipo de la expresión no es compatible con el Return de la función.", node);
@@ -96,7 +91,6 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class Read { Expression expression; }
 	public Object visit(Read node, Object param) {
-
 		super.visit(node, param);
 
 		predicado(isSimple(node.getExpression().getType()), "El tipo del parametro de la función " + node.getExpression() + " no es simple.", node);
@@ -107,7 +101,6 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
 	public Object visit(IfElse node, Object param) {
-
 		super.visit(node, param);
 
 		predicado(sameType(node.getExpression()
@@ -118,7 +111,6 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class While { Expression expression;  List<Sentence> sentence; }
 	public Object visit(While node, Object param) {
-
 		super.visit(node, param);
 
 		predicado(sameType(node.getExpression()
@@ -129,8 +121,8 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class FunInvocation { String name;  List<Expression> params; }
 	public Object visit(FunInvocation node, Object param) {
-
 		super.visit(node, param);
+
 		predicado(node.getParams().size() == node.getDefinition()
 				.getParams()
 				.size(), "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node);
@@ -146,12 +138,11 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class FunInvocationExpression { String name;  List<Expression> params; }
 	public Object visit(FunInvocationExpression node, Object param) {
-
 		super.visit(node, param);
-		if(predicado(node.getParams().size() == node.getDefinition()
-				.getParams()
-				.size(), "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node)) {
-			node.setType(new ErrorType());
+
+		boolean condicion = node.getParams().size() == node.getDefinition().getParams().size();
+		predicado(condicion, "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node);
+		if(isErrorType(node, condicion)) {
 			return null;
 		}
 		node.getDefinition().getParams().forEach(p -> {
@@ -209,13 +200,15 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class ArithmeticExpression { Expression left;  String operator;  Expression right; }
 	public Object visit(ArithmeticExpression node, Object param) {
-
 		super.visit(node, param);
 
-		if(predicado(sameType(node.getLeft().getType(), node.getRight().getType()), "Las dos expresiones no tienen el mismo tipo " + node.getLeft()
-				.getType() + ", " + node.getRight().getType(), node) || predicado(sameType(node.getLeft()
-				.getType(), IntType.class, RealType.class), "Se esperaba un número pero el tipo ha sido " + node.getLeft().getType(), node)) {
-			node.setType(new ErrorType());
+		boolean condicion1 = sameType(node.getLeft().getType(), node.getRight().getType());
+		predicado(condicion1, "Las dos expresiones no tienen el mismo tipo " + node.getLeft().getType() + ", " + node.getRight().getType(), node);
+
+		boolean condicion2 = sameType(node.getLeft().getType(), IntType.class, RealType.class);
+		predicado(condicion2, "Se esperaba un número pero el tipo ha sido " + node.getLeft().getType(), node);
+
+		if(isErrorType(node, condicion1, condicion2)) {
 			return null;
 		}
 
@@ -227,13 +220,15 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class ComparableExpression { Expression left;  String operator;  Expression right; }
 	public Object visit(ComparableExpression node, Object param) {
-
 		super.visit(node, param);
 
-		if(predicado(sameType(node.getLeft().getType(), node.getRight().getType()), "Las dos expresiones no tienen el mismo tipo " + node.getLeft()
-				.getType() + ", " + node.getRight().getType(), node) || predicado(sameType(node.getLeft()
-				.getType(), IntType.class, RealType.class), "Se esperaba un número pero el tipo ha sido " + node.getLeft().getType(), node)) {
-			node.setType(new ErrorType());
+		boolean condicion1 = sameType(node.getLeft().getType(), node.getRight().getType());
+		predicado(condicion1, "Las dos expresiones no tienen el mismo tipo " + node.getLeft().getType() + ", " + node.getRight().getType(), node);
+
+		boolean condicion2 = sameType(node.getLeft().getType(), IntType.class, RealType.class);
+		predicado(condicion2, "Se esperaba un número pero el tipo ha sido " + node.getLeft().getType(), node);
+
+		if(isErrorType(node, condicion1, condicion2)) {
 			return null;
 		}
 
@@ -245,13 +240,15 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class LogicalExpression { Expression left;  String operator;  Expression right; }
 	public Object visit(LogicalExpression node, Object param) {
-
 		super.visit(node, param);
 
-		if(predicado(sameType(node.getLeft().getType(), node.getRight().getType()), "Las dos expresiones no tienen el mismo tipo " + node.getLeft()
-				.getType() + ", " + node.getRight().getType(), node) || predicado(sameType(node.getLeft()
-				.getType(), IntType.class), "Se esperaba un entero pero el tipo ha sido " + node.getLeft().getType(), node)) {
-			node.setType(new ErrorType());
+		boolean condicion1 = sameType(node.getLeft().getType(), node.getRight().getType());
+		predicado(condicion1, "Las dos expresiones no tienen el mismo tipo " + node.getLeft().getType() + ", " + node.getRight().getType(), node);
+
+		boolean condicion2 = sameType(node.getLeft().getType(), IntType.class);
+		predicado(sameType(node.getLeft().getType(), IntType.class), "Se esperaba un entero pero el tipo ha sido " + node.getLeft().getType(), node);
+
+		if(isErrorType(node, condicion1, condicion2)) {
 			return null;
 		}
 
@@ -263,12 +260,12 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class UnaryExpression { Expression expr;  String operator; }
 	public Object visit(UnaryExpression node, Object param) {
-
 		super.visit(node, param);
 
-		if(predicado(sameType(node.getExpr().getType(), IntType.class), "Se esperaba un número pero el tipo ha sido " + node.getExpr()
-				.getType(), node)) {
-			node.setType(new ErrorType());
+		boolean condicion = sameType(node.getExpr().getType(), IntType.class);
+		predicado(condicion, "Se esperaba un número pero el tipo ha sido " + node.getExpr().getType(), node);
+
+		if(isErrorType(node, condicion)) {
 			return null;
 		}
 
@@ -280,17 +277,20 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class CastExpression { Type type;  Expression expression; }
 	public Object visit(CastExpression node, Object param) {
-
 		super.visit(node, param);
 
-		if(predicado(!sameType(node.getExpression()
-				.getType(), node.getTypeChange()), "No se puede cambiar al mismo tipo de datos", node) || predicado(isSimple(node.getExpression()
-				.getType()), "El tipo de la expresión " + node.getExpression() + " no es compatible con el casteo. No es un tipo simple.", node) || predicado(isSimple(node
-				.getTypeChange()), "El tipo de la expresión " + node.getTypeChange() + " no es compatible con el casteo. No es un tipo simple.", node)) {
-			node.setType(new ErrorType());
+		boolean condicion1 = !sameType(node.getExpression().getType(), node.getTypeChange());
+		predicado(condicion1, "No se puede cambiar al mismo tipo de datos", node);
+
+		boolean condicion2 = isSimple(node.getExpression().getType());
+		predicado(condicion2, "El tipo de la expresión " + node.getExpression() + " no es compatible con el casteo. No es un tipo simple.", node);
+
+		boolean condicion3 = isSimple(node.getTypeChange());
+		predicado(condicion3, "El tipo de la expresión " + node.getTypeChange() + " no es compatible con el casteo. No es un tipo simple.", node);
+
+		if(isErrorType(node, condicion1, condicion2, condicion3)) {
 			return null;
 		}
-
 
 		node.setType(node.getTypeChange());
 		node.setModificable(false);
@@ -303,22 +303,23 @@ public class TypeChecking extends DefaultVisitor {
 
 		super.visit(node, param);
 
-		if(predicado(sameType(node.getExpression().getType(), VarType.class), "Se esperaba una variable", node)) {
-			node.setType(new ErrorType());
+
+		boolean condicion = sameType(node.getExpression().getType(), VarType.class);
+		predicado(condicion, "Se esperaba una variable", node);
+		if(isErrorType(node, condicion)) {
 			return null;
 		}
 
-		VarType type = ((VarType) node.getExpression().getType());
-		StructField field = type.getField(node.getName());
+		StructField field = ((VarType) node.getExpression().getType()).getField(node.getName());
 
-		if(predicado(field != null, "La definición no tiene el siguiente parametro " + node.getName(), node)) {
-			node.setType(new ErrorType());
+		condicion = field != null;
+		predicado(condicion, "La definición no tiene el siguiente parametro " + node.getName(), node);
+		if(isErrorType(node, condicion)) {
 			return null;
 		}
 
-		node.setType(field != null ? field.getType() : null);
+		node.setType(field.getType());
 		node.setModificable(true);
-
 
 		return null;
 	}
@@ -327,15 +328,13 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(IndexExpression node, Object param) {
 		super.visit(node, param);
 
-		if(predicado(node.getIndex() != null && sameType(node.getIndex()
-				.getType(), IntType.class), "Se esperaba un indice de tipo entero pero el tipo", node)) {
-			node.setType(new ErrorType());
-			return null;
-		}
+		boolean condicion1 = node.getIndex() != null && sameType(node.getIndex().getType(), IntType.class);
+		predicado(condicion1, "Se esperaba un indice de tipo entero pero el tipo", node);
 
-		if(predicado(sameType(node.getCall().getType(), ArrayType.class), "Se esperaba un vector pero el tipo ha sido " + node.getIndex()
-				.getType(), node)) {
-			node.setType(new ErrorType());
+		boolean condicion2 = sameType(node.getCall().getType(), ArrayType.class);
+		predicado(condicion2, "Se esperaba un vector pero el tipo ha sido " + node.getIndex().getType(), node);
+
+		if(isErrorType(node, condicion1, condicion2)) {
 			return null;
 		}
 
@@ -364,20 +363,14 @@ public class TypeChecking extends DefaultVisitor {
 	 * @param condicion     Debe cumplirse para que no se produzca un error
 	 * @param mensajeError  Se imprime si no se cumple la condición
 	 * @param posicionError Fila y columna del fichero donde se ha producido el error.
-	 * @return boolean La condicion
 	 */
-	private boolean predicado(boolean condicion, String mensajeError, Position posicionError) {
+	private void predicado(boolean condicion, String mensajeError, Position posicionError) {
 		if(!condicion)
 			errorManager.notify("Comprobación de tipos", mensajeError, posicionError);
-		return !condicion;
 	}
 
-	private boolean predicado(boolean condicion, String mensajeError, AST node) {
-		return predicado(condicion, mensajeError, node.getStart());
-	}
-
-	private boolean predicado(boolean condicion, String mensajeError) {
-		return predicado(condicion, mensajeError, (Position) null);
+	private void predicado(boolean condicion, String mensajeError, AST node) {
+		predicado(condicion, mensajeError, node.getStart());
 	}
 
 	private boolean isSimple(Type type) {
@@ -395,6 +388,19 @@ public class TypeChecking extends DefaultVisitor {
 	private boolean sameType(Type typeA, Class... typesB) {
 		for(Class type : typesB) {
 			if(typeA.getClass().equals(type)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isErrorType(Expression node, Boolean... conditions) {
+		// OR
+		for(boolean cond : conditions) {
+			if(!cond) {
+				node.setType(new ErrorType());
+				node.setModificable(false);
 				return true;
 			}
 		}

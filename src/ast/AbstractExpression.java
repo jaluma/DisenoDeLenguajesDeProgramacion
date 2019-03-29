@@ -1,5 +1,5 @@
-/**
- * @generated VGen (for ANTLR) 1.4.0
+/*
+  @generated VGen (for ANTLR) 1.4.0
  */
 
 package ast;
@@ -7,25 +7,25 @@ package ast;
 public abstract class AbstractExpression extends AbstractAST implements Expression {
 
 	protected Type type;
-	protected boolean modificable;
-
-	public void setType(Type type) {
-		this.type = type;
-	}
+	private boolean modificable;
 
 	@Override
 	public Type getType() {
 		return type;
 	}
 
-	@Override
-	public void setModificable(boolean modificable) {
-		this.modificable = modificable;
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	@Override
 	public boolean isModificable() {
 		return modificable;
+	}
+
+	@Override
+	public void setModificable(boolean modificable) {
+		this.modificable = modificable;
 	}
 
 }

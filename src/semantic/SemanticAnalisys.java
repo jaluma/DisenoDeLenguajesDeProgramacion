@@ -15,6 +15,8 @@ import main.ErrorManager;
  */
 public class SemanticAnalisys {
 
+	private ErrorManager errorManager;
+
 	public SemanticAnalisys(ErrorManager errorManager) {
 		this.errorManager = errorManager;
 	}
@@ -29,6 +31,4 @@ public class SemanticAnalisys {
 		TypeChecking checking = new TypeChecking(errorManager);
 		ast.accept(checking, null);
 	}
-
-	private ErrorManager errorManager;
 }

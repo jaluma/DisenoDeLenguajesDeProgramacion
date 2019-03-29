@@ -1,10 +1,12 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
 package ast;
 
 public class Position {
+
+	private int line, column;
 
 	public Position(int line, int column) {
 		this.line = line;
@@ -31,6 +33,4 @@ public class Position {
 	public String toString() {
 		return line + ":" + column;
 	}
-
-	private int line, column;
 }

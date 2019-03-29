@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -11,6 +11,9 @@ import visitor.Visitor;
 //	paramDefinition:definition -> name:String  type:type
 
 public class ParamDefinition extends AbstractDefinition {
+
+	private String name;
+	private Type type;
 
 	public ParamDefinition(String name, Type type) {
 		this.name = name;
@@ -50,9 +53,6 @@ public class ParamDefinition extends AbstractDefinition {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private String name;
-	private Type type;
 
 	public String toString() {
 		return "{name:" + getName() + ", type:" + getType() + "}";

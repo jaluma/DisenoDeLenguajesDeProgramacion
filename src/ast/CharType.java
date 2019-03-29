@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -9,6 +9,11 @@ import visitor.Visitor;
 //	charType:type -> 
 
 public class CharType extends AbstractType {
+
+	@Override
+	public int getSizeMemory() {
+		return 1;       // 8 bits (1Bytes)
+	}
 
 	@Override
 	public Object accept(Visitor v, Object param) {

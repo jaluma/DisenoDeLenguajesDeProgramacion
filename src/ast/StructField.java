@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -65,5 +65,15 @@ public class StructField extends AbstractAST implements Definition {
 
 	public String toString() {
 		return "{name:" + getName() + ", type:" + getType() + "}";
+	}
+
+	@Override
+	public int getAddress() {
+		return type.getSizeMemory();
+	}
+
+	@Override
+	public void setAddress(int address) {
+
 	}
 }

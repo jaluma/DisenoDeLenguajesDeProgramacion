@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -10,6 +10,9 @@ import visitor.Visitor;
 //	assignment:sentence -> left:expression  right:expression
 
 public class Assignment extends AbstractSentence {
+
+	private Expression left;
+	private Expression right;
 
 	public Assignment(Expression left, Expression right) {
 		this.left = left;
@@ -49,9 +52,6 @@ public class Assignment extends AbstractSentence {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression left;
-	private Expression right;
 
 	public String toString() {
 		return "{left:" + getLeft() + ", right:" + getRight() + "}";

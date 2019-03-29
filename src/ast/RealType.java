@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -9,6 +9,11 @@ import visitor.Visitor;
 //	realType:type -> 
 
 public class RealType extends AbstractType {
+
+	@Override
+	public int getSizeMemory() {
+		return 4;
+	}
 
 	@Override
 	public Object accept(Visitor v, Object param) {

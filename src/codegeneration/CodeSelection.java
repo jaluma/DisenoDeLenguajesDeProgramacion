@@ -7,10 +7,7 @@ import java.io.Writer;
 
 public class CodeSelection extends DefaultVisitor {
 
-	public CodeSelection(Writer writer, String sourceFile) {
-		this.writer = new PrintWriter(writer);
-		this.sourceFile = sourceFile;
-	}
+	private PrintWriter writer;
 
 	/*
 	 * Poner aquí los visit necesarios. Si se ha usado VGen, solo hay que copiarlos
@@ -27,12 +24,15 @@ public class CodeSelection extends DefaultVisitor {
 	//      super.visit(node, param); // Recorrer los hijos
 	//      return null;
 	// }
+	private String sourceFile;
+
+	public CodeSelection(Writer writer, String sourceFile) {
+		this.writer = new PrintWriter(writer);
+		this.sourceFile = sourceFile;
+	}
 
 	// Método auxiliar recomendado (opcional) -------------
 	private void out(String instruction) {
 		writer.println(instruction);
 	}
-
-	private PrintWriter writer;
-	private String sourceFile;
 }

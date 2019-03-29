@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -11,6 +11,9 @@ import visitor.Visitor;
 //	print:sentence -> expression:expression  lex:String
 
 public class Print extends AbstractSentence {
+
+	private Expression expression;
+	private String lex;
 
 	public Print(Expression expression, String lex) {
 		this.expression = expression;
@@ -50,9 +53,6 @@ public class Print extends AbstractSentence {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression expression;
-	private String lex;
 
 	public String toString() {
 		return "{expression:" + getExpression() + ", lex:" + getLex() + "}";

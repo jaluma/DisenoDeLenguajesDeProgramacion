@@ -17,6 +17,8 @@ import java.util.Stack;
  */
 public class ContextMap<S, D> {
 
+	private Stack<Map<S, D>> contextos = new Stack<>();
+
 	public ContextMap() {
 		set();
 	}
@@ -46,6 +48,4 @@ public class ContextMap<S, D> {
 	public void reset() {
 		contextos.pop();
 	}
-
-	private Stack<Map<S, D>> contextos = new Stack<Map<S, D>>();
 }

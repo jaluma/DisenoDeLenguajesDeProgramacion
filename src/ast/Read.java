@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -10,6 +10,8 @@ import visitor.Visitor;
 //	read:sentence -> expression:expression
 
 public class Read extends AbstractSentence {
+
+	private Expression expression;
 
 	public Read(Expression expression) {
 		this.expression = expression;
@@ -39,8 +41,6 @@ public class Read extends AbstractSentence {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression expression;
 
 	public String toString() {
 		return "{expression:" + getExpression() + "}";

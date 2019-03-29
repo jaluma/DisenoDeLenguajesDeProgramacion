@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -11,6 +11,9 @@ import visitor.Visitor;
 //	unaryExpression:expression -> expr:expression  operator:String
 
 public class UnaryExpression extends AbstractExpression {
+
+	private Expression expr;
+	private String operator;
 
 	public UnaryExpression(Expression expr, String operator) {
 		this.expr = expr;
@@ -50,9 +53,6 @@ public class UnaryExpression extends AbstractExpression {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression expr;
-	private String operator;
 
 	public String toString() {
 		return "{expr:" + getExpr() + ", operator:" + getOperator() + "}";

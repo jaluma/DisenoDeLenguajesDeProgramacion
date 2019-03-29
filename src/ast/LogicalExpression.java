@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -11,6 +11,10 @@ import visitor.Visitor;
 //	logicalExpression:expression -> left:expression  operator:String  right:expression
 
 public class LogicalExpression extends AbstractExpression {
+
+	private Expression left;
+	private String operator;
+	private Expression right;
 
 	public LogicalExpression(Expression left, String operator, Expression right) {
 		this.left = left;
@@ -60,10 +64,6 @@ public class LogicalExpression extends AbstractExpression {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression left;
-	private String operator;
-	private Expression right;
 
 	public String toString() {
 		return "{left:" + getLeft() + ", operator:" + getOperator() + ", right:" + getRight() + "}";

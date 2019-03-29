@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -11,6 +11,8 @@ import java.util.List;
 //	structType:type -> fields:structField*
 
 public class StructType extends AbstractType {
+
+	private List<StructField> fields;
 
 	public StructType(List<StructField> fields) {
 		this.fields = fields;
@@ -38,11 +40,19 @@ public class StructType extends AbstractType {
 	}
 
 	@Override
+	public int getSizeMemory() {
+		int size = 0;
+		for(StructField field : fields) {
+			size += field.getType().getSizeMemory();
+		}
+
+		return size;
+	}
+
+	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private List<StructField> fields;
 
 	public String toString() {
 		return "{fields:" + getFields() + "}";

@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -8,12 +8,12 @@ import visitor.Visitor;
 
 public interface AST {
 
-	public Object accept(Visitor visitor, Object param);
+	Object accept(Visitor visitor, Object param);
 
 	Position getStart();
 
 	Position getEnd();
 
-	public void setPositions(Object... children);
+	void setPositions(Object... children);
 
 }

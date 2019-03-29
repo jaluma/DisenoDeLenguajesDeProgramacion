@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -10,6 +10,8 @@ import visitor.Visitor;
 //	instruction -> definitions:definition
 
 public class Instruction extends AbstractAST {
+
+	private Definition definitions;
 
 	public Instruction(Definition definitions) {
 		this.definitions = definitions;
@@ -39,8 +41,6 @@ public class Instruction extends AbstractAST {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Definition definitions;
 
 	public String toString() {
 		return "{definitions:" + getDefinitions() + "}";

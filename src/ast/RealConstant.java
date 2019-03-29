@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -10,6 +10,8 @@ import visitor.Visitor;
 //	realConstant:expression -> value:String
 
 public class RealConstant extends AbstractExpression {
+
+	private String value;
 
 	public RealConstant(String value) {
 		this.value = value;
@@ -35,8 +37,6 @@ public class RealConstant extends AbstractExpression {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private String value;
 
 	public String toString() {
 		return "{value:" + getValue() + "}";

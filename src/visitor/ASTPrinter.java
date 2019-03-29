@@ -15,12 +15,23 @@ import java.util.List;
  * - Muestra la estructura del árbol en HTML.
  * - Destaca los hijos/propiedades a null.
  * - Muestra a qué texto apuntan las posiciones de cada nodo (linea/columna)
- *      ayudando a decidir cual de ellas usar en los errores y generación de código.
- *
+ * ayudando a decidir cual de ellas usar en los errores y generación de código.
+ * <p>
  * Esta clase se genera con VGen. El uso de esta clase es opcional (puede eliminarse del proyecto).
- *
  */
 public class ASTPrinter extends DefaultVisitor {
+
+	private static String ls = System.getProperty("line.separator");
+	private List<String> sourceLines;
+
+	// tabWidth deberían ser los espacios correspondientes a un tabulador en eclipse.
+	// Normalmente no sería necesario especificarlo. Usar mejor los dos métodos anteriores.
+	private PrintWriter writer;
+
+	private ASTPrinter(PrintWriter writer, List<String> sourceLines) {
+		this.writer = writer;
+		this.sourceLines = sourceLines;
+	}
 
 	/**
 	 * toHtml. Muestra la estructura del AST indicando qué hay en las posiciones
@@ -38,9 +49,6 @@ public class ASTPrinter extends DefaultVisitor {
 	public static void toHtml(AST raiz, String filename) {
 		toHtml(null, raiz, filename);
 	}
-
-	// tabWidth deberían ser los espacios correspondientes a un tabulador en eclipse.
-	// Normalmente no sería necesario especificarlo. Usar mejor los dos métodos anteriores.
 
 	public static void toHtml(String sourceFile, AST raiz, String filename, int tabWidth) {
 		try {
@@ -70,9 +78,35 @@ public class ASTPrinter extends DefaultVisitor {
 		writer.println("</pre>\r\n" + "</body>\r\n" + "</html>");
 	}
 
-	private ASTPrinter(PrintWriter writer, List<String> sourceLines) {
-		this.writer = writer;
-		this.sourceLines = sourceLines;
+	private static String tabula(int count) {
+		StringBuffer cadena = new StringBuffer("<span class=\"dots\">");
+		for(int i = 0; i < count; i++)
+			cadena.append(i % 2 == 0 && i > 0 ? "|  " : ".  ");
+		return cadena.toString() + "</span>";
+	}
+
+	private static List<String> loadLines(String sourceFile, int tabWidth) {
+		if(sourceFile == null)
+			return null;
+		try {
+			String spaces = new String(new char[tabWidth]).replace("\0", " ");
+
+			List<String> lines = new ArrayList<String>();
+			BufferedReader br = new BufferedReader(new FileReader(sourceFile));
+			String line;
+			while((line = br.readLine()) != null) {
+				//	lines.add(line.replace("\t", spaces)); // Si tab = 4 espaces (Eclipse)
+				lines.add(line);
+			}
+			br.close();
+			return lines;
+		} catch(FileNotFoundException e) {
+			System.out.println("Warning. No se pudo encontrar el fichero fuente '" + sourceFile + "'. No se mostrará informaicón de posición.");
+			return null;
+		} catch(IOException e) {
+			System.out.println("Warning. Error al leer del fichero fuente '" + sourceFile + "'. No se mostrará informaicón de posición.");
+			return null;
+		}
 	}
 
 	// ----------------------------------------------
@@ -104,6 +138,9 @@ public class ASTPrinter extends DefaultVisitor {
 
 		print(indent + 1, "name", "String", node.getName());
 		visit(indent + 1, "type", "Type", node.getType());
+
+		print(indent + 1, "address", node.getType().getClass().getName(), node.getAddress());
+
 		return null;
 	}
 
@@ -151,6 +188,8 @@ public class ASTPrinter extends DefaultVisitor {
 
 		print(indent + 1, "name", "String", node.getName());
 		visit(indent + 1, "type", "Type", node.getType());
+
+		print(indent + 1, "address", node.getType().getClass().getName(), node.getAddress());
 		return null;
 	}
 
@@ -380,6 +419,10 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
+
+	// -----------------------------------------------------------------
+	// Métodos invocados desde los métodos visit -----------------------
+
 	//	class LogicalExpression { Expression left;  String operator;  Expression right; }
 	public Object visit(LogicalExpression node, Object param) {
 		int indent = ((Integer) param).intValue();
@@ -436,10 +479,6 @@ public class ASTPrinter extends DefaultVisitor {
 		return null;
 	}
 
-
-	// -----------------------------------------------------------------
-	// Métodos invocados desde los métodos visit -----------------------
-
 	private void printName(int indent, String name, AST node, boolean empty) {
 		String text = ls + tabula(indent) + name + " &rarr;  ";
 		text = String.format("%1$-" + 93 + "s", text);
@@ -447,6 +486,9 @@ public class ASTPrinter extends DefaultVisitor {
 			text = text.replace(name, valueTag(name));
 		writer.print(text + getPosition(node));
 	}
+
+	// -----------------------------------------------------------------
+	// Métodos auxiliares privados -------------------------------------
 
 	private void print(int indent, String name, String type, Object value) {
 		write(indent, formatValue(value) + "  " + typeTag(type));
@@ -487,18 +529,12 @@ public class ASTPrinter extends DefaultVisitor {
 			write(indent, valueTag(null) + "  " + attName + ':' + typeTag(type));
 	}
 
+
 	// -----------------------------------------------------------------
-	// Métodos auxiliares privados -------------------------------------
+	// Métodos para mostrar las Posiciones -----------------------------
 
 	private void write(int indent, String text) {
 		writer.print(ls + tabula(indent) + text);
-	}
-
-	private static String tabula(int count) {
-		StringBuffer cadena = new StringBuffer("<span class=\"dots\">");
-		for(int i = 0; i < count; i++)
-			cadena.append(i % 2 == 0 && i > 0 ? "|  " : ".  ");
-		return cadena.toString() + "</span>";
 	}
 
 	private String typeTag(String type) {
@@ -519,10 +555,6 @@ public class ASTPrinter extends DefaultVisitor {
 			text = "\"" + text + '"';
 		return text;
 	}
-
-
-	// -----------------------------------------------------------------
-	// Métodos para mostrar las Posiciones -----------------------------
 
 	private String getPosition(AST node) {
 		String text = node.getStart() + "  " + node.getEnd();
@@ -563,33 +595,4 @@ public class ASTPrinter extends DefaultVisitor {
 		}
 		return "<span class=\"sourceText\">" + afterText.replaceAll("^\\s+", "") + "</span><span class=\"posText\">" + text + "</span><span class=\"sourceText\">" + beforeText + "</span>";
 	}
-
-	private static List<String> loadLines(String sourceFile, int tabWidth) {
-		if(sourceFile == null)
-			return null;
-		try {
-			String spaces = new String(new char[tabWidth]).replace("\0", " ");
-
-			List<String> lines = new ArrayList<String>();
-			BufferedReader br = new BufferedReader(new FileReader(sourceFile));
-			String line;
-			while((line = br.readLine()) != null) {
-				//	lines.add(line.replace("\t", spaces)); // Si tab = 4 espaces (Eclipse)
-				lines.add(line);
-			}
-			br.close();
-			return lines;
-		} catch(FileNotFoundException e) {
-			System.out.println("Warning. No se pudo encontrar el fichero fuente '" + sourceFile + "'. No se mostrará informaicón de posición.");
-			return null;
-		} catch(IOException e) {
-			System.out.println("Warning. Error al leer del fichero fuente '" + sourceFile + "'. No se mostrará informaicón de posición.");
-			return null;
-		}
-	}
-
-
-	private List<String> sourceLines;
-	private static String ls = System.getProperty("line.separator");
-	private PrintWriter writer;
 }

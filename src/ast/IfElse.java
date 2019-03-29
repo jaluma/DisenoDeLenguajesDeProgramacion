@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -12,6 +12,10 @@ import java.util.List;
 //	ifElse:sentence -> expression:expression  if_s:sentence*  else_s:sentence*
 
 public class IfElse extends AbstractSentence {
+
+	private Expression expression;
+	private List<Sentence> if_s;
+	private List<Sentence> else_s;
 
 	public IfElse(Expression expression, List<Sentence> if_s, List<Sentence> else_s) {
 		this.expression = expression;
@@ -62,10 +66,6 @@ public class IfElse extends AbstractSentence {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression expression;
-	private List<Sentence> if_s;
-	private List<Sentence> else_s;
 
 	public String toString() {
 		return "{expression:" + getExpression() + ", if_s:" + getIf_s() + ", else_s:" + getElse_s() + "}";

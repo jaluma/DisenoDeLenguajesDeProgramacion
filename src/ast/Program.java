@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -11,6 +11,8 @@ import java.util.List;
 //	program -> instructions:instruction*
 
 public class Program extends AbstractAST {
+
+	private List<Instruction> instructions;
 
 	public Program(List<Instruction> instructions) {
 		this.instructions = instructions;
@@ -41,8 +43,6 @@ public class Program extends AbstractAST {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private List<Instruction> instructions;
 
 	public String toString() {
 		return "{instructions:" + getInstructions() + "}";

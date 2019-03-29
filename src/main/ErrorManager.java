@@ -1,4 +1,4 @@
-/**
+/*
  * @author Raúl Izquierdo
  */
 
@@ -7,6 +7,8 @@ package main;
 import ast.Position;
 
 public class ErrorManager {
+
+	private int errorsCount = 0;
 
 	public void notify(String fase, String msg, Position position) {
 		String texto = "Error en " + fase + ": ";
@@ -27,6 +29,4 @@ public class ErrorManager {
 	public int errorsCount() {
 		return errorsCount;
 	}
-
-	private int errorsCount = 0;
 }

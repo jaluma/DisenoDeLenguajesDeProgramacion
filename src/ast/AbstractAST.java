@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -12,14 +12,11 @@ import java.util.List;
 
 public abstract class AbstractAST implements AST {
 
+	private Position start, end;
+
 	@Override
 	public Position getStart() {
 		return start;
-	}
-
-	@Override
-	public Position getEnd() {
-		return end;
 	}
 
 	// setPositions. Establece:
@@ -29,16 +26,21 @@ public abstract class AbstractAST implements AST {
 	// hijo que tenga posición final.
 
 	@Override
+	public Position getEnd() {
+		return end;
+	}
+
+	// -----------------------------------------------
+	// Métodos protected para ser llamado desde los
+	// constructores de las clases AST
+
+	@Override
 	public void setPositions(Object... children) {
 		List<Object> childrenList = Arrays.asList(children);
 		this.start = findStart(childrenList);
 		this.end = findEnd(childrenList);
 		invariant();
 	}
-
-	// -----------------------------------------------
-	// Métodos protected para ser llamado desde los
-	// constructores de las clases AST
 
 	// Dado un Contexto de una regla de ANTLR, extrae su campo "ast"
 	protected AST getAST(ParserRuleContext node) {
@@ -49,12 +51,12 @@ public abstract class AbstractAST implements AST {
 		}
 	}
 
+	// -----------------------------------------------
+	// Mótodos privados para ser llamados SÓLO desde los métodos anteriores
+
 	protected AST getAST(Object node) {
 		return getAST((ParserRuleContext) node);
 	}
-
-	// -----------------------------------------------
-	// Mótodos privados para ser llamados SÓLO desde los métodos anteriores
 
 	@SuppressWarnings("unchecked")
 	private Position findStart(Object node) {
@@ -115,6 +117,4 @@ public abstract class AbstractAST implements AST {
 		if((getStart() != null || getEnd() != null) && getStart().greaterThan(getEnd()))
 			throw new IllegalStateException("Las posiciones del nodo (start y end) son inválidas: o son ambas null o (start <= end)");
 	}
-
-	private Position start, end;
 }

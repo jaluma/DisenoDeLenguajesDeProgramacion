@@ -48,13 +48,13 @@ public class SematicTest {
 	@Test
 	public void prog2() {
 		filename = "prog2.txt";
-		test(13);        // 0 identificacion / 13 tipos
+		test(14);        // 0 identificacion / 13 tipos
 	}
 
 	@Test
 	public void comprobacionDeTipos() {
 		filename = "Test Comprobación de Tipos.txt";
-		test(44);
+		test(46);
 	}
 
 	private void test(int expected) {
@@ -77,10 +77,7 @@ public class SematicTest {
 			parser.addErrorListener(new DiagnosticErrorListener()); // Notificar entradas ambiguas
 			parser.getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);
 
-			AST ast = null;
-			// IMPORTANTE: Cuando se genere el AST, INTERCAMBIAR las dos líneas siguientes:
-			//parser.start();
-			ast = parser.start().ast;
+			AST ast = parser.start().ast;
 
 			if(parser.getNumberOfSyntaxErrors() > 0) {
 				fail("Error sintáctico");

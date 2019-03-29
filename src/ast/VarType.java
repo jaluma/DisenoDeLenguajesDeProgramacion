@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -50,6 +50,16 @@ public class VarType extends AbstractType {
 		}
 
 		return null;
+	}
+
+	@Override
+	public int getSizeMemory() {
+		int size = 0;
+		for(StructField def : definition.getDefinitions()) {
+			size += def.getType().getSizeMemory();
+		}
+
+		return size;
 	}
 
 	@Override

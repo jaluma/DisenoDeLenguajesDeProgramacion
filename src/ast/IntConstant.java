@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -10,6 +10,8 @@ import visitor.Visitor;
 //	intConstant:expression -> value:String
 
 public class IntConstant extends AbstractExpression {
+
+	private String value;
 
 	public IntConstant(String value) {
 		this.value = value;
@@ -35,8 +37,6 @@ public class IntConstant extends AbstractExpression {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private String value;
 
 	public String toString() {
 		return "{value:" + getValue() + "}";

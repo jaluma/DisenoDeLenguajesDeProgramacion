@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -10,6 +10,9 @@ import visitor.Visitor;
 //	arrayType:type -> size:intConstant  type:type
 
 public class ArrayType extends AbstractType {
+
+	private IntConstant size;
+	private Type type;
 
 	public ArrayType(IntConstant size, Type type) {
 		this.size = size;
@@ -46,12 +49,14 @@ public class ArrayType extends AbstractType {
 	}
 
 	@Override
+	public int getSizeMemory() {
+		return Integer.parseInt(size.getValue()) * type.getSizeMemory();
+	}
+
+	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private IntConstant size;
-	private Type type;
 
 	public String toString() {
 		return "{size:" + getSize() + ", type:" + getType() + "}";

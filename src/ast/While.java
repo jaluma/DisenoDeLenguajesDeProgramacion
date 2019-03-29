@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -12,6 +12,9 @@ import java.util.List;
 //	while:sentence -> expression:expression  sentence:sentence*
 
 public class While extends AbstractSentence {
+
+	private Expression expression;
+	private List<Sentence> sentence;
 
 	public While(Expression expression, List<Sentence> sentence) {
 		this.expression = expression;
@@ -52,9 +55,6 @@ public class While extends AbstractSentence {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
-
-	private Expression expression;
-	private List<Sentence> sentence;
 
 	public String toString() {
 		return "{expression:" + getExpression() + ", sentence:" + getSentence() + "}";
