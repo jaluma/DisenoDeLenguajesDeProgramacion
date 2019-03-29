@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -17,10 +17,10 @@ public class FunDefinition extends AbstractDefinition {
 	private String name;
 	private List<VarDefinition> params;
 	private Type return_t;
-	private List<Definition> definitions;
+	private List<VarDefinition> definitions;
 	private List<Sentence> sentences;
 
-	public FunDefinition(String name, List<VarDefinition> params, Type return_t, List<Definition> definitions, List<Sentence> sentences) {
+	public FunDefinition(String name, List<VarDefinition> params, Type return_t, List<VarDefinition> definitions, List<Sentence> sentences) {
 		this.name = name;
 		this.params = params;
 		this.return_t = return_t;
@@ -37,7 +37,7 @@ public class FunDefinition extends AbstractDefinition {
 		this.name = (name instanceof Token) ? ((Token) name).getText() : (String) name;
 		this.params = (List<VarDefinition>) params;
 		this.return_t = (Type) ((return_t instanceof ParserRuleContext) ? getAST(return_t) : return_t);
-		this.definitions = (List<Definition>) definitions;
+		this.definitions = (List<VarDefinition>) definitions;
 		this.sentences = (List<Sentence>) sentences;
 
 		// Lo siguiente se puede borrar si no se quiere la posicion en el fichero.
@@ -69,11 +69,11 @@ public class FunDefinition extends AbstractDefinition {
 		this.return_t = return_t;
 	}
 
-	public List<Definition> getDefinitions() {
+	public List<VarDefinition> getDefinitions() {
 		return definitions;
 	}
 
-	public void setDefinitions(List<Definition> definitions) {
+	public void setDefinitions(List<VarDefinition> definitions) {
 		this.definitions = definitions;
 	}
 

@@ -29,8 +29,8 @@ import java.io.Writer;
  */
 @SuppressWarnings("Duplicates")
 public class Main {
-	private static final String path = "tests/semantic/files/";
-	private static final String program = path + "Test Comprobación de Tipos.txt"; // Prueba a compilar durante el desarrollo
+	private static final String path = "tests/codegeneration/files/";
+	private static final String program = path + "Test Gestion de Memoria.txt"; // Prueba a compilar durante el desarrollo
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();
@@ -57,7 +57,7 @@ public class Main {
 		parser.addErrorListener(new DiagnosticErrorListener()); // Notificar entradas ambiguas
 		parser.getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);
 
-		AST ast = null;
+		AST ast;
 		// IMPORTANTE: Cuando se genere el AST, INTERCAMBIAR las dos líneas siguientes:
 		//parser.start();
 		ast = parser.start().ast;

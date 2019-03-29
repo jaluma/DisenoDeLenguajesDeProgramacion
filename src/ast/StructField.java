@@ -15,6 +15,7 @@ public class StructField extends AbstractAST implements Definition {
 	private String name;
 	private Type type;
 	private Definition definition;
+	private int address;
 
 	public StructField(String name, Type type) {
 		this.name = name;
@@ -69,11 +70,11 @@ public class StructField extends AbstractAST implements Definition {
 
 	@Override
 	public int getAddress() {
-		return type.getSizeMemory();
+		return address;
 	}
 
 	@Override
 	public void setAddress(int address) {
-
+		this.address = address;
 	}
 }
