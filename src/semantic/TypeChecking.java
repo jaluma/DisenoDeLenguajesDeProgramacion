@@ -149,7 +149,8 @@ public class TypeChecking extends DefaultVisitor {
 
 		super.visit(node, param);
 		if(predicado(node.getParams().size() == node.getDefinition()
-				.getParams().size(), "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node)) {
+				.getParams()
+				.size(), "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node)) {
 			node.setType(new ErrorType());
 			return null;
 		}
@@ -315,7 +316,7 @@ public class TypeChecking extends DefaultVisitor {
 			return null;
 		}
 
-		node.setType(field.getType());
+		node.setType(field != null ? field.getType() : null);
 		node.setModificable(true);
 
 
@@ -324,15 +325,7 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class IndexExpression { Expression call;  Expression index; }
 	public Object visit(IndexExpression node, Object param) {
-		Integer size = 0;
-		if(param instanceof Integer) {
-			size = (Integer) param;
-		}
-
-		if(node.getCall() != null)
-			node.getCall().accept(this, size++);
-		if(node.getIndex() != null)
-			node.getIndex().accept(this, param);
+		super.visit(node, param);
 
 		if(predicado(node.getIndex() != null && sameType(node.getIndex()
 				.getType(), IntType.class), "Se esperaba un indice de tipo entero pero el tipo", node)) {
@@ -340,20 +333,13 @@ public class TypeChecking extends DefaultVisitor {
 			return null;
 		}
 
-		if(size <= 0) {
-			if(predicado(sameType(node.getCall().getType(), ArrayType.class), "Se esperaba un vector pero el tipo ha sido " + node.getIndex()
-					.getType(), node)) {
-				node.setType(new ErrorType());
-				return null;
-			}
+		if(predicado(sameType(node.getCall().getType(), ArrayType.class), "Se esperaba un vector pero el tipo ha sido " + node.getIndex()
+				.getType(), node)) {
+			node.setType(new ErrorType());
+			return null;
 		}
 
-		if(sameType(node.getCall().getType(), ArrayType.class)) {
-			node.setType(((ArrayType) node.getCall().getType()).getType());
-		} else {
-			node.setType(node.getCall().getType());
-		}
-
+		node.setType(((ArrayType) node.getCall().getType()).getType());
 		node.setModificable(false);
 
 		return null;
@@ -378,7 +364,7 @@ public class TypeChecking extends DefaultVisitor {
 	 * @param condicion     Debe cumplirse para que no se produzca un error
 	 * @param mensajeError  Se imprime si no se cumple la condición
 	 * @param posicionError Fila y columna del fichero donde se ha producido el error.
-	 * @return
+	 * @return boolean La condicion
 	 */
 	private boolean predicado(boolean condicion, String mensajeError, Position posicionError) {
 		if(!condicion)
