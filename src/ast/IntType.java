@@ -16,6 +16,16 @@ public class IntType extends AbstractType {
 	}
 
 	@Override
+	public String getMAPLName() {
+		return "int";
+	}
+
+	@Override
+	public char getSuffix() {
+		return 'i';
+	}
+
+	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}

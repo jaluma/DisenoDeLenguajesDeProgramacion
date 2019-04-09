@@ -16,6 +16,16 @@ public class RealType extends AbstractType {
 	}
 
 	@Override
+	public char getSuffix() {
+		return 'f';
+	}
+
+	@Override
+	public String getMAPLName() {
+		return "float";
+	}
+
+	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}

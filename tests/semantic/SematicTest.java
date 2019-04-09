@@ -57,6 +57,12 @@ public class SematicTest {
 		test(46);
 	}
 
+	@Test
+	public void hipoteca() {
+		filename = "Hipoteca.txt";
+		test(0);
+	}
+
 	private void test(int expected) {
 		run();
 		// comprobamos que no hay erroes del sintáctico

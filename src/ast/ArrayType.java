@@ -54,6 +54,11 @@ public class ArrayType extends AbstractType {
 	}
 
 	@Override
+	public String getMAPLName() {
+		return size.getValue() + " * " + type.getMAPLName();
+	}
+
+	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}

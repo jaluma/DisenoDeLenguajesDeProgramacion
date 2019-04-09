@@ -26,7 +26,19 @@ public class CodeGenerationTest {
 
 	@Test
 	public void gestionMemoria() {
-		filename = "Test Gestion de Memoria.txt";
+		filename = "memory.txt";
+		test();
+	}
+
+	@Test
+	public void basicGenerationCode() {
+		filename = "basic_code_generation.txt";
+		test();
+	}
+
+	@Test
+	public void hipoteca() {
+		filename = "Hipoteca.txt";
 		test();
 	}
 
@@ -39,7 +51,7 @@ public class CodeGenerationTest {
 	private void run() {
 		// 1. Fases de Análisis Léxico y Sintáctico
 		try {
-			String path = "tests/semantic/files/" + filename;
+			String path = "tests/codegeneration/files/" + filename;
 
 			GrammarLexer lexer = new GrammarLexer(CharStreams.fromFileName(path));
 			parser = new GrammarParser(new CommonTokenStream(lexer));
@@ -61,7 +73,7 @@ public class CodeGenerationTest {
 
 			// 3. Fase de Generación de Código
 			File sourceFile = new File(path);
-			Writer out = new FileWriter(new File(sourceFile.getParent(), "output.txt"));
+			Writer out = new FileWriter(new File(sourceFile.getParent(), "output/" + filename));
 
 			CodeGeneration generator = new CodeGeneration();
 			generator.generate(sourceFile.getName(), ast, out);

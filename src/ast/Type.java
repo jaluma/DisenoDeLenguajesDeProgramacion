@@ -8,4 +8,8 @@ public interface Type extends AST {
 
 	int getSizeMemory();
 
+	char getSuffix();
+
+	String getMAPLName();
+
 }

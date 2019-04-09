@@ -63,6 +63,11 @@ public class VarType extends AbstractType {
 	}
 
 	@Override
+	public String getMAPLName() {
+		return type;
+	}
+
+	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}

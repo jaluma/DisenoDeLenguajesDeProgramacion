@@ -16,6 +16,16 @@ public class CharType extends AbstractType {
 	}
 
 	@Override
+	public String getMAPLName() {
+		return "char";
+	}
+
+	@Override
+	public char getSuffix() {
+		return 'c';
+	}
+
+	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}

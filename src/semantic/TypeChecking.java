@@ -32,7 +32,24 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class FunDefinition { String name;  List<Definition> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
 	public Object visit(FunDefinition node, Object param) {
-		super.visit(node, node);        //pasamos referencia de la definición de la funcion para el return
+		//pasamos referencia de la definición de la funcion para el return
+		visitChildren(node.getParams(), node);
+		if(node.getReturn_t() != null)
+			node.getReturn_t().accept(this, node);
+		visitChildren(node.getDefinitions(), node);
+
+		Boolean retB = false;
+		for(AST child : node.getSentences()) {
+			Object ret = child.accept(this, node);
+			if(ret instanceof Boolean && (Boolean) ret) {      // sentencia de return
+				retB = (Boolean) ret;
+			}
+		}
+
+		if(!(node.getReturn_t() instanceof VoidType)) {
+			predicado(!retB, "No hay sentencia return y es necesaria", node);
+		}
+
 
 		predicado(isReturnable(node.getReturn_t()), "El tipo de retorno de la función " + node.getName() + " no es compatible.", node);
 
@@ -84,9 +101,10 @@ public class TypeChecking extends DefaultVisitor {
 		if(param instanceof FunDefinition) {
 			predicado(sameType(((FunDefinition) param).getReturn_t(), node.getExpression()
 					.getType()), "La expresión no es del tipo de retorno", node);
+			return false;
 		}
 
-		return null;
+		return true;
 	}
 
 	//	class Read { Expression expression; }
@@ -101,12 +119,35 @@ public class TypeChecking extends DefaultVisitor {
 
 	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
 	public Object visit(IfElse node, Object param) {
-		super.visit(node, param);
+		if(node.getExpression() != null)
+			node.getExpression().accept(this, param);
+
+		// si hay sentencia de return en el if
+		Boolean retIf = false;
+		if(node.getIf_s() != null) {
+			for(AST child : node.getIf_s()) {
+				Object ret = child.accept(this, param);
+				if(ret instanceof Boolean && (Boolean) ret) {      // sentencia de return
+					retIf = (Boolean) ret;
+				}
+			}
+		}
+
+		Boolean retElse = false;
+		if(node.getElse_s() != null) {
+			for(AST child : node.getElse_s()) {
+				Object ret = child.accept(this, param);
+				if(ret instanceof Boolean && (Boolean) ret) {      // sentencia de return
+					retElse = (Boolean) ret;
+				}
+			}
+		}
+
 
 		predicado(sameType(node.getExpression()
 				.getType(), IntType.class), "El tipo de la expresión " + node.getExpression() + " no es un número entero.", node);
 
-		return null;
+		return retIf || retElse;
 	}
 
 	//	class While { Expression expression;  List<Sentence> sentence; }
@@ -232,7 +273,7 @@ public class TypeChecking extends DefaultVisitor {
 			return null;
 		}
 
-		node.setType(node.getLeft().getType());
+		node.setType(new IntType());
 		node.setModificable(false);
 
 		return null;
@@ -252,7 +293,7 @@ public class TypeChecking extends DefaultVisitor {
 			return null;
 		}
 
-		node.setType(node.getLeft().getType());
+		node.setType(new IntType());
 		node.setModificable(false);
 
 		return null;
@@ -339,7 +380,7 @@ public class TypeChecking extends DefaultVisitor {
 		}
 
 		node.setType(((ArrayType) node.getCall().getType()).getType());
-		node.setModificable(false);
+		node.setModificable(true);
 
 		return null;
 	}

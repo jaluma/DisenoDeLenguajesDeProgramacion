@@ -13,6 +13,7 @@ public class Variable extends AbstractExpression {
 
 	private String name;
 	private VarDefinition definition;
+	private int address;
 
 	public Variable(String name) {
 		this.name = name;
@@ -40,6 +41,14 @@ public class Variable extends AbstractExpression {
 
 	public void setDefinition(VarDefinition definition) {
 		this.definition = definition;
+	}
+
+	public int getAddress() {
+		return address;
+	}
+
+	public void setAddress(int address) {
+		this.address = address;
 	}
 
 	@Override

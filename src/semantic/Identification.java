@@ -43,6 +43,8 @@ public class Identification extends DefaultVisitor {
 	}
 
 	public Object visit(FunInvocation node, Object param) {
+		super.visit(node, param);
+
 		FunDefinition definition = functions.get(node.getName());
 		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
 		node.setDefinition(definition);
@@ -51,6 +53,8 @@ public class Identification extends DefaultVisitor {
 	}
 
 	public Object visit(FunInvocationExpression node, Object param) {
+		super.visit(node, param);
+
 		FunDefinition definition = functions.get(node.getName());
 		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
 		node.setDefinition(definition);
@@ -59,7 +63,8 @@ public class Identification extends DefaultVisitor {
 	}
 
 	public Object visit(VarDefinition node, Object param) {
-		node.getType().accept(this, param);
+		super.visit(node, param);
+
 		predicado(variables.getFromTop(node.getName()) == null, "Variable ya definida: " + node.getName(), node);
 
 		node.setScope(param instanceof ScopeEnum ? (ScopeEnum) param : ScopeEnum.GLOBAL);
@@ -85,25 +90,28 @@ public class Identification extends DefaultVisitor {
 		symbols.put(node.getName().getType(), node);
 
 		variables.set();
-		node.getDefinitions().forEach(x -> x.accept(this, param));
+		node.getDefinitions().forEach(x -> x.accept(this, node));
 		variables.reset();
 
 		return null;
 	}
 
 	public Object visit(StructField node, Object param) {
-		node.getType().accept(this, param);
+		super.visit(node, param);
+
 		Definition definition = variables.getFromTop(node.getName());
 
 		predicado(definition == null, "Atributo " + node.getName() + " repetido en la estructura", node);
 
-		node.setDefinition(definition);
+		node.setDefinition((StructDefinition) param);
 		variables.put(node.getName(), node);
 
 		return null;
 	}
 
 	public Object visit(VarType node, Object param) {
+		super.visit(node, param);
+
 		StructDefinition definition = symbols.get(node.getType());
 		predicado(definition != null, "Tipo de dato no definido: " + node.getType(), node);
 

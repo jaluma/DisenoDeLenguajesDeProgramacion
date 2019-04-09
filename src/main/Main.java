@@ -30,7 +30,7 @@ import java.io.Writer;
 @SuppressWarnings("Duplicates")
 public class Main {
 	private static final String path = "tests/codegeneration/files/";
-	private static final String program = path + "Test Gestion de Memoria.txt"; // Prueba a compilar durante el desarrollo
+	private static final String program = path + "basic_code_generation.txt"; // Prueba a compilar durante el desarrollo
 
 	public static void main(String[] args) throws Exception {
 		ErrorManager errorManager = new ErrorManager();

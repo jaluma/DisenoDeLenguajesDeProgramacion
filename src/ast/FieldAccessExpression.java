@@ -14,7 +14,7 @@ public class FieldAccessExpression extends AbstractExpression {
 
 	private Expression expression;
 	private String name;
-	private StructField field;
+	private int address;
 
 	public FieldAccessExpression(Expression expression, String name) {
 		this.expression = expression;
@@ -50,12 +50,12 @@ public class FieldAccessExpression extends AbstractExpression {
 		this.name = name;
 	}
 
-	public StructField getField() {
-		return field;
+	public int getAddress() {
+		return address;
 	}
 
-	public void setField(StructField field) {
-		this.field = field;
+	public void setAddress(int address) {
+		this.address = address;
 	}
 
 	@Override
