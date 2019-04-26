@@ -12,6 +12,7 @@ import visitor.Visitor;
 public class Read extends AbstractSentence {
 
 	private Expression expression;
+	private VarDefinition definition;
 
 	public Read(Expression expression) {
 		this.expression = expression;
@@ -35,6 +36,14 @@ public class Read extends AbstractSentence {
 
 	public void setExpression(Expression expression) {
 		this.expression = expression;
+	}
+
+	public VarDefinition getDefinition() {
+		return definition;
+	}
+
+	public void setDefinition(VarDefinition definition) {
+		this.definition = definition;
 	}
 
 	@Override

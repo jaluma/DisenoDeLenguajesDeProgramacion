@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -14,7 +14,7 @@ public class FieldAccessExpression extends AbstractExpression {
 
 	private Expression expression;
 	private String name;
-	private int address;
+	private StructField field;
 
 	public FieldAccessExpression(Expression expression, String name) {
 		this.expression = expression;
@@ -50,14 +50,6 @@ public class FieldAccessExpression extends AbstractExpression {
 		this.name = name;
 	}
 
-	public int getAddress() {
-		return address;
-	}
-
-	public void setAddress(int address) {
-		this.address = address;
-	}
-
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
@@ -65,5 +57,13 @@ public class FieldAccessExpression extends AbstractExpression {
 
 	public String toString() {
 		return "{expression:" + getExpression() + ", name:" + getName() + "}";
+	}
+
+	public StructField getStructField() {
+		return field;
+	}
+
+	public void setStructField(StructField field) {
+		this.field = field;
 	}
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -14,7 +14,6 @@ public class IndexExpression extends AbstractExpression {
 	private Expression call;
 	private Expression index;
 	private Type typeVector;
-	private int address;
 
 	public IndexExpression(Expression call, Expression index) {
 		this.call = call;
@@ -56,14 +55,6 @@ public class IndexExpression extends AbstractExpression {
 
 	public void setTypeVector(Type typeVector) {
 		this.typeVector = typeVector;
-	}
-
-	public int getAddress() {
-		return address;
-	}
-
-	public void setAddress(int address) {
-		this.address = address;
 	}
 
 	@Override

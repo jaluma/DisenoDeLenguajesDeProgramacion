@@ -3,8 +3,6 @@ package codegeneration;
 import ast.*;
 import visitor.DefaultVisitor;
 
-import java.util.List;
-
 /**
  * Clase encargada de asignar direcciones a las variables.
  */
@@ -75,48 +73,6 @@ public class MemoryAllocation extends DefaultVisitor {
 		node.setAddress(currentAddress);
 
 		return node.getType().getSizeMemory() + currentAddress;
-	}
-
-	public Object visit(Return node, Object param) {
-		super.visit(node, param);
-
-		return null;
-	}
-
-	public Object visit(IndexExpression node, Object param) {
-
-		node.getCall().accept(this, param);
-		int offset = (int) node.getIndex().accept(this, param);
-
-		node.setAddress(casting(node.getCall(), Variable.class).getDefinition().getAddress() + (offset * node.getType().getSizeMemory()));
-
-		return null;
-	}
-
-	public Object visit(IntConstant node, Object param) {
-		return Integer.parseInt(node.getValue());
-	}
-
-	//	class FieldAccessExpression { Expression expression;  String name; }
-	public Object visit(FieldAccessExpression node, Object param) {
-
-		VarDefinition definition = (VarDefinition) node.getExpression().accept(this, param);
-		List<StructField> fields = ((VarType) definition.getType()).getDefinition().getDefinitions();
-
-		int address = definition.getAddress();
-		for(StructField structField : fields) {
-			if(node.getName().equals(structField.getName())) {
-				node.setAddress(address);
-			}
-			address += structField.getType().getSizeMemory();
-		}
-
-		return null;
-	}
-
-	//	class Variable { String name; }
-	public Object visit(Variable node, Object param) {
-		return node.getDefinition();
 	}
 
 	private <T> T casting(Object obj, Class<T> type) {

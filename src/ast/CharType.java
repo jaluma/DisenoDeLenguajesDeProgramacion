@@ -22,7 +22,7 @@ public class CharType extends AbstractType {
 
 	@Override
 	public char getSuffix() {
-		return 'c';
+		return 'b';
 	}
 
 	@Override

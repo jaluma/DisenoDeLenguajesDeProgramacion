@@ -14,7 +14,7 @@ public abstract class AbstractDefinition extends AbstractAST implements Definiti
 	}
 
 	@Override
-	public void setAddress(int address) {
-		this.address = address;
+	public void setAddress(int offset) {
+		this.address = offset;
 	}
 }

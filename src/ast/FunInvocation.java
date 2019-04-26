@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -52,11 +52,11 @@ public class FunInvocation extends AbstractSentence {
 		this.params = params;
 	}
 
-	public FunDefinition getDefinition() {
+	public FunDefinition getFunDefinition() {
 		return definition;
 	}
 
-	public void setDefinition(FunDefinition definition) {
+	public void setFunDefinition(FunDefinition definition) {
 		this.definition = definition;
 	}
 

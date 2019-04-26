@@ -33,14 +33,14 @@ public class TypeChecking extends DefaultVisitor {
 	//	class FunDefinition { String name;  List<Definition> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
 	public Object visit(FunDefinition node, Object param) {
 		//pasamos referencia de la definición de la funcion para el return
-		visitChildren(node.getParams(), node);
+		visitChildren(node.getParams(), param);
 		if(node.getReturn_t() != null)
-			node.getReturn_t().accept(this, node);
-		visitChildren(node.getDefinitions(), node);
+			node.getReturn_t().accept(this, param);
+		visitChildren(node.getDefinitions(), param);
 
 		Boolean retB = false;
 		for(AST child : node.getSentences()) {
-			Object ret = child.accept(this, node);
+			Object ret = child.accept(this, param);
 			if(ret instanceof Boolean && (Boolean) ret) {      // sentencia de return
 				retB = (Boolean) ret;
 			}
@@ -49,7 +49,6 @@ public class TypeChecking extends DefaultVisitor {
 		if(!(node.getReturn_t() instanceof VoidType)) {
 			predicado(!retB, "No hay sentencia return y es necesaria", node);
 		}
-
 
 		predicado(isReturnable(node.getReturn_t()), "El tipo de retorno de la función " + node.getName() + " no es compatible.", node);
 
@@ -97,14 +96,14 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(Return node, Object param) {
 		super.visit(node, param);
 
-		predicado(isReturnable(node.getExpression().getType()), "El tipo de la expresión no es compatible con el Return de la función.", node);
-		if(param instanceof FunDefinition) {
-			predicado(sameType(((FunDefinition) param).getReturn_t(), node.getExpression()
-					.getType()), "La expresión no es del tipo de retorno", node);
-			return false;
-		}
+		boolean condicion1 = isReturnable(node.getExpression().getType());
+		predicado(condicion1, "El tipo de la expresión no es compatible con el Return de la función.", node);
 
-		return true;
+		boolean condicion2 = sameType(node.getFunDefinition().getReturn_t(), node.getExpression().getType());
+		predicado(condicion2, "La expresión no es del tipo de retorno", node);
+
+		return !condicion1 && !condicion2;
+
 	}
 
 	//	class Read { Expression expression; }
@@ -143,7 +142,6 @@ public class TypeChecking extends DefaultVisitor {
 			}
 		}
 
-
 		predicado(sameType(node.getExpression()
 				.getType(), IntType.class), "El tipo de la expresión " + node.getExpression() + " no es un número entero.", node);
 
@@ -164,11 +162,12 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(FunInvocation node, Object param) {
 		super.visit(node, param);
 
-		predicado(node.getParams().size() == node.getDefinition()
+		predicado(node.getParams().size() == node.getFunDefinition()
 				.getParams()
 				.size(), "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node);
-		node.getDefinition().getParams().forEach(p -> {
-			int index = node.getDefinition().getParams().indexOf(p);
+
+		node.getFunDefinition().getParams().forEach(p -> {
+			int index = node.getFunDefinition().getParams().indexOf(p);
 			List<Expression> definition = node.getParams();
 			predicado(index >= 0 && index < definition.size() && sameType(p.getType(), definition.get(index)
 					.getType()), "El tipo del parametro " + p.getName() + " no se corresponde con la definición.", node);

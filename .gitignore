@@ -30,3 +30,4 @@ bin/
 /out/
 *.interp
 *.tokens
+output*.txt

@@ -60,21 +60,21 @@ public class StructField extends AbstractAST implements Definition {
 	}
 
 	@Override
+	public int getAddress() {
+		return address;
+	}
+
+	@Override
+	public void setAddress(int offset) {
+		this.address = offset;
+	}
+
+	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	}
 
 	public String toString() {
 		return "{name:" + getName() + ", type:" + getType() + "}";
-	}
-
-	@Override
-	public int getAddress() {
-		return address;
-	}
-
-	@Override
-	public void setAddress(int address) {
-		this.address = address;
 	}
 }

@@ -33,7 +33,7 @@ public class Identification extends DefaultVisitor {
 		variables.set();
 		node.getParams().forEach(x -> x.accept(this, ScopeEnum.PARAM));
 		node.getDefinitions().forEach(x -> x.accept(this, ScopeEnum.LOCAL));
-		node.getSentences().forEach(x -> x.accept(this, param));
+		node.getSentences().forEach(x -> x.accept(this, node));
 
 		node.getReturn_t().accept(this, param);
 
@@ -47,7 +47,7 @@ public class Identification extends DefaultVisitor {
 
 		FunDefinition definition = functions.get(node.getName());
 		predicado(functions.get(node.getName()) != null, "Función no definida: " + node.getName(), node);
-		node.setDefinition(definition);
+		node.setFunDefinition(definition);
 
 		return null;
 	}
@@ -61,6 +61,79 @@ public class Identification extends DefaultVisitor {
 
 		return null;
 	}
+
+	public Object visit(Read node, Object param) {
+		super.visit(node, param);
+
+		if(param instanceof FunDefinition) {
+			node.setFunDefinition((FunDefinition) param);
+		}
+
+		if(node.getExpression() instanceof Variable) {
+			Variable var = ((Variable) node.getExpression());
+			Definition definition = variables.getFromAny(var.getName());
+			predicado(definition != null, "Variable no definida: " + var.getName(), node);
+			node.setDefinition((VarDefinition) definition);
+		}
+
+		return null;
+	}
+
+	//	class Print { Expression expression; }
+	public Object visit(Print node, Object param) {
+		super.visit(node, param);
+
+		if(param instanceof FunDefinition) {
+			node.setFunDefinition((FunDefinition) param);
+		}
+
+		return null;
+	}
+
+	//	class Assignment { Expression left;  Expression right; }
+	public Object visit(Assignment node, Object param) {
+		super.visit(node, param);
+
+		if(param instanceof FunDefinition) {
+			node.setFunDefinition((FunDefinition) param);
+		}
+
+		return null;
+	}
+
+	//	class Return { Expression expression; }
+	public Object visit(Return node, Object param) {
+		super.visit(node, param);
+
+		if(param instanceof FunDefinition) {
+			node.setFunDefinition((FunDefinition) param);
+		}
+
+		return null;
+	}
+
+	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
+	public Object visit(IfElse node, Object param) {
+		super.visit(node, param);
+
+		if(param instanceof FunDefinition) {
+			node.setFunDefinition((FunDefinition) param);
+		}
+
+		return null;
+	}
+
+	//	class While { Expression expression;  List<Sentence> sentence; }
+	public Object visit(While node, Object param) {
+		super.visit(node, param);
+
+		if(param instanceof FunDefinition) {
+			node.setFunDefinition((FunDefinition) param);
+		}
+
+		return null;
+	}
+
 
 	public Object visit(VarDefinition node, Object param) {
 		super.visit(node, param);
