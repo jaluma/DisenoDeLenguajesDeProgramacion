@@ -21,7 +21,7 @@ public class CodeSelection extends DefaultVisitor {
 	private Stack<Integer> countsIf = new Stack<>();
 	private Stack<Integer> countsWhile = new Stack<>();
 
-	public CodeSelection(Writer writer, String sourceFile) {
+	CodeSelection(Writer writer, String sourceFile) {
 		this.writer = new PrintWriter(writer);
 		this.sourceFile = sourceFile;
 
@@ -44,10 +44,11 @@ public class CodeSelection extends DefaultVisitor {
 	}
 
 	public Object visit(Program node, Object param) {
-
 		out("#source \"" + sourceFile + "\"");
 		out("call main");
 		out("halt");
+		outln();
+
 		visitChildren(node.getInstructions(), param);
 
 		return null;
@@ -64,18 +65,26 @@ public class CodeSelection extends DefaultVisitor {
 		out("#type " + node.getName().getType() + ": {");
 		visitChildren(node.getDefinitions(), CodeFunction.VALUE);
 		out("}");
+
 		return null;
 	}
 
 	//	class FunDefinition { String name;  List<Definition> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
 	public Object visit(FunDefinition node, Object param) {
+		line(node);
+
 		out(node.getName() + ":");
+		outln();
+
 		out("#func " + node.getName());
 		out("#ret " + node.getReturn_t().getMAPLName());
-		out("enter " + node.getDefinitions().stream().mapToInt(d -> d.getType().getSizeMemory()).sum());
+
 		visitChildren(node.getParams(), CodeFunction.ADDRESS);
 		node.getReturn_t().accept(this, CodeFunction.VALUE);
 		visitChildren(node.getDefinitions(), CodeFunction.ADDRESS);
+
+		out("enter " + node.getDefinitions().stream().mapToInt(d -> d.getType().getSizeMemory()).sum());
+
 		visitChildren(node.getSentences(), CodeFunction.VALUE);
 
 		if(node.getReturn_t() instanceof VoidType) {
@@ -84,7 +93,9 @@ public class CodeSelection extends DefaultVisitor {
 			int paramSize = node.getParams().stream().mapToInt(d -> d.getType().getSizeMemory()).sum();
 
 			out("ret " + retSize + ", " + localSize + ", " + paramSize);
+
 		}
+
 		return null;
 	}
 
@@ -97,21 +108,38 @@ public class CodeSelection extends DefaultVisitor {
 	//	class Print { Expression expression; }
 	public Object visit(Print node, Object param) {
 		line(node);
+
 		node.getExpression().accept(this, CodeFunction.VALUE);
 		out("out", node.getExpression().getType());
+
+		if (node.getLex().length() > 0){
+			int lex = 10;       // salto de linea
+			if(!node.getLex().equals(System.getProperty("line.separator"))){
+				lex = (int) node.getLex().charAt(0);
+			}
+
+			out("pushb " + lex);
+			out("outb");
+		}
+
 		return null;
 	}
 
 	//	class Assignment { Expression left;  Expression right; }
 	public Object visit(Assignment node, Object param) {
+		line(node);
+
 		node.getLeft().accept(this, CodeFunction.ADDRESS);
 		node.getRight().accept(this, CodeFunction.VALUE);
 		out("store", node.getLeft().getType());
+
 		return null;
 	}
 
 	//	class Return { Expression expression; }
 	public Object visit(Return node, Object param) {
+		line(node);
+
 		super.visit(node, param);
 
 		int retSize = node.getExpression().getType().getSizeMemory();
@@ -126,17 +154,21 @@ public class CodeSelection extends DefaultVisitor {
 	//	class Read { Expression expression; }
 	public Object visit(Read node, Object param) {
 		line(node);
+
 		super.visit(node, CodeFunction.ADDRESS);
+
 		out("in", node.getDefinition().getType());
 		out("store", node.getDefinition().getType());
+
+		outln();
 		return null;
 	}
 
 	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
 	public Object visit(IfElse node, Object param) {
-		int countIfs = countsIf.peek();
+		line(node);
 
-		//		out("start_if_" + countIfs + ":");
+		int countIfs = countsIf.peek();
 		node.getExpression().accept(this, param);
 
 		String elseJump = node.getElse_s() != null ? "else" : "end_else";
@@ -148,6 +180,7 @@ public class CodeSelection extends DefaultVisitor {
 
 		if(node.getElse_s() != null) {
 			out("jmp end_else_" + countIfs);        //codigo muerto sino
+			outln();
 			out("else_" + countIfs + ":");
 			countsIf.push(count + 1);
 			node.getElse_s().forEach(s -> s.accept(this, param));
@@ -158,20 +191,25 @@ public class CodeSelection extends DefaultVisitor {
 
 		countsIf.pop();
 		countsIf.push(count + 1);
+
 		return null;
 	}
 
 	//	class While { Expression expression;  List<Sentence> sentence; }
 	public Object visit(While node, Object param) {
+		line(node);
+
 		int countWhile = countsWhile.peek();
 
 		out("start_while_" + countWhile + ":");
 		node.getExpression().accept(this, param);
 		out("jz end_while_" + countWhile);
+
 		countsWhile.push(countWhile + 1);
 		node.getSentence().forEach(s -> s.accept(this, param));
 		int count = countsWhile.pop();
 		out("jmp start_while_" + countWhile);
+
 		out("end_while_" + countWhile + ":");
 
 		countsWhile.pop();
@@ -183,11 +221,13 @@ public class CodeSelection extends DefaultVisitor {
 	//	class FunInvocation { String name;  List<Expression> params; }
 	public Object visit(FunInvocation node, Object param) {
 		line(node);
+
 		node.getParams().forEach(p -> p.accept(this, param));
 		out("call " + node.getName());
 		if(!node.getFunDefinition().getReturn_t().getClass().equals(VoidType.class)) {
 			out("pop", node.getFunDefinition().getReturn_t());
 		}
+
 		return null;
 	}
 
@@ -269,7 +309,13 @@ public class CodeSelection extends DefaultVisitor {
 	//	class CharConstant { String value; }
 	public Object visit(CharConstant node, Object param) {
 		assert (param == CodeFunction.VALUE);
+
 		int ascii = (int) node.getValue().charAt(0);
+		if (node.getValue().charAt(0) == '\\') {
+			if (node.getValue().charAt(1) == 'n')
+			ascii = 10;
+		}
+
 		out("pushb " + ascii);
 		return null;
 	}
@@ -325,6 +371,10 @@ public class CodeSelection extends DefaultVisitor {
 		writer.println(instruction);
 	}
 
+	private void outln() {
+		writer.println();
+	}
+
 	private void line(Position pos) {
 		if(pos != null) {
 			out("\n#line " + pos.getLine());
@@ -332,6 +382,6 @@ public class CodeSelection extends DefaultVisitor {
 	}
 
 	private void line(AST node) {
-		line(node.getEnd());
+		line(node.getStart());
 	}
 }

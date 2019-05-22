@@ -65,7 +65,6 @@ tipo returns [Type ast]
 	;
 
 
-
 /* <----------------- AUXILIARES -----------------> */
 
 // para defenir funciones
