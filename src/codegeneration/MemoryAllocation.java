@@ -9,7 +9,6 @@ import visitor.DefaultVisitor;
 public class MemoryAllocation extends DefaultVisitor {
 
 	private int currentAddress = 0;
-	private int bp = 1024;
 
 	// class Programa { List<DefVariable> definiciones; List<Sentencia> sentencias; }
 	public Object visit(Program node, Object param) {
@@ -35,17 +34,17 @@ public class MemoryAllocation extends DefaultVisitor {
 		visitChildren(node.getSentences(), param);
 
 		// visitaamos los parametros y las definiciones
-		int bpLocal = bp + 4;
+		int bp = 4;
 		for(int i = node.getParams().size() - 1; i >= 0; i--) {
 			VarDefinition paramFunction = node.getParams().get(i);
-			paramFunction.setAddress(bpLocal);
-			bpLocal += paramFunction.getType().getSizeMemory();
+			paramFunction.setAddress(bp);
+			bp += paramFunction.getType().getSizeMemory();
 		}
 
-		bpLocal = bp;
+		bp = 0;
 		for(VarDefinition definition : node.getDefinitions()) {
-			definition.setAddress(bpLocal - definition.getType().getSizeMemory());
-			bpLocal -= definition.getType().getSizeMemory();
+			bp -= definition.getType().getSizeMemory();
+			definition.setAddress(bp);
 		}
 
 		return null;
@@ -55,9 +54,9 @@ public class MemoryAllocation extends DefaultVisitor {
 		if(node.getName() != null)
 			node.getName().accept(this, param);
 
-		int size = 0;
+		int offset = 0;
 		for(AST child : node.getDefinitions()) {
-			size = (int) child.accept(this, size);
+			offset += (int) child.accept(this, offset);
 		}
 
 		return null;
@@ -66,17 +65,13 @@ public class MemoryAllocation extends DefaultVisitor {
 	public Object visit(StructField node, Object param) {
 		super.visit(node, param);
 
-		int currentAddress = 0;
+		int offset = 0;
 		if(param instanceof Integer)
-			currentAddress = (int) param;
+			offset = (int) param;
 
-		node.setAddress(currentAddress);
+		node.setAddress(offset);
 
-		return node.getType().getSizeMemory() + currentAddress;
-	}
-
-	private <T> T casting(Object obj, Class<T> type) {
-		return obj.getClass().equals(type) ? type.cast(obj) : null;
+		return node.getType().getSizeMemory();
 	}
 
 }

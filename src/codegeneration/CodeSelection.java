@@ -112,6 +112,8 @@ public class CodeSelection extends DefaultVisitor {
 
 	//	class Return { Expression expression; }
 	public Object visit(Return node, Object param) {
+		super.visit(node, param);
+
 		int retSize = node.getExpression().getType().getSizeMemory();
 		int localSize = node.getFunDefinition().getDefinitions().stream().mapToInt(d -> d.getType().getSizeMemory()).sum();
 		int paramSize = node.getFunDefinition().getParams().stream().mapToInt(d -> d.getType().getSizeMemory()).sum();
@@ -124,7 +126,9 @@ public class CodeSelection extends DefaultVisitor {
 	//	class Read { Expression expression; }
 	public Object visit(Read node, Object param) {
 		line(node);
-		out("load", node.getDefinition().getType());
+		super.visit(node, CodeFunction.ADDRESS);
+		out("in", node.getDefinition().getType());
+		out("store", node.getDefinition().getType());
 		return null;
 	}
 
@@ -135,16 +139,15 @@ public class CodeSelection extends DefaultVisitor {
 		//		out("start_if_" + countIfs + ":");
 		node.getExpression().accept(this, param);
 
-		String elseJump = node.getElse_s() != null ? "else" : "end_else_" + countIfs;
+		String elseJump = node.getElse_s() != null ? "else" : "end_else";
 		out("jz " + elseJump + "_" + countIfs);
 
 		countsIf.push(countIfs + 1);
 		node.getIf_s().forEach(s -> s.accept(this, param));
 		int count = countsIf.pop();
 
-		out("jmp end_else_" + countIfs);
-
 		if(node.getElse_s() != null) {
+			out("jmp end_else_" + countIfs);        //codigo muerto sino
 			out("else_" + countIfs + ":");
 			countsIf.push(count + 1);
 			node.getElse_s().forEach(s -> s.accept(this, param));
@@ -182,6 +185,9 @@ public class CodeSelection extends DefaultVisitor {
 		line(node);
 		node.getParams().forEach(p -> p.accept(this, param));
 		out("call " + node.getName());
+		if(!node.getFunDefinition().getReturn_t().getClass().equals(VoidType.class)) {
+			out("pop", node.getFunDefinition().getReturn_t());
+		}
 		return null;
 	}
 
@@ -227,7 +233,14 @@ public class CodeSelection extends DefaultVisitor {
 			out("load", node.getType());
 		} else { // Funcion.DIRECCION
 			assert (param == CodeFunction.ADDRESS);
-			out("pusha " + node.getDefinition().getAddress());
+			if(node.getDefinition().getScope() == ScopeEnum.LOCAL || node.getDefinition().getScope() == ScopeEnum.PARAM) {
+				out("pusha BP");
+				out("push " + node.getDefinition().getAddress());
+				out(instruccion.get("+"));
+			} else {
+				out("pusha " + node.getDefinition().getAddress());
+			}
+
 		}
 		return null;
 	}
@@ -243,7 +256,7 @@ public class CodeSelection extends DefaultVisitor {
 	public Object visit(IntConstant node, Object param) {
 		assert (param == CodeFunction.VALUE);
 		out("push " + node.getValue());
-		return null;
+		return node.getValue();
 	}
 
 	//	class RealConstant { String valor; }
@@ -269,7 +282,9 @@ public class CodeSelection extends DefaultVisitor {
 		} else { // Funcion.DIRECCION
 			assert (param == CodeFunction.ADDRESS);
 			node.getCall().accept(this, param);
-			//node.getIndex().accept(this, CodeFunction.VALUE);
+			node.getIndex().accept(this, CodeFunction.VALUE);
+			out("push " + node.getType().getSizeMemory());
+			out(instruccion.get("*"));
 			out(instruccion.get("+"));
 		}
 
