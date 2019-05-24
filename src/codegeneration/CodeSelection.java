@@ -63,7 +63,7 @@ public class CodeSelection extends DefaultVisitor {
 	//	class StructDefinition { VarType name;  List<StructField> definitions; }
 	public Object visit(StructDefinition node, Object param) {
 		out("#type " + node.getName().getType() + ": {");
-		visitChildren(node.getDefinitions(), CodeFunction.VALUE);
+		visitChildren(node.getDefinitions(), param);
 		out("}");
 
 		return null;
@@ -357,7 +357,17 @@ public class CodeSelection extends DefaultVisitor {
 	public Object visit(CastExpression node, Object param) {
 		assert (param == CodeFunction.VALUE);
 		node.getExpression().accept(this, CodeFunction.VALUE);
-		out(node.getExpression().getType().getSuffix() + "2" + node.getTypeChange().getSuffix());
+
+		Type expressionType = node.getExpression().getType();
+		Type typeChange = node.getTypeChange();
+
+		if (!expressionType.getClass().equals(IntType.class) && !typeChange.getClass().equals(IntType.class)) {
+			out(expressionType.getSuffix() + "2" + new IntType().getSuffix());
+			expressionType = new IntType();
+		}
+
+		out(expressionType.getSuffix() + "2" + typeChange.getSuffix());
+
 		return null;
 	}
 

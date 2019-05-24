@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -166,17 +166,6 @@ public class ASTPrinter extends DefaultVisitor {
 		visit(indent + 1, "return_t", "Type", node.getReturn_t());
 		visit(indent + 1, "definitions", "List<Definition>", node.getDefinitions());
 		visit(indent + 1, "sentences", "List<Sentence>", node.getSentences());
-		return null;
-	}
-
-	//	class ParamDefinition { String name;  Type type; }
-	public Object visit(ParamDefinition node, Object param) {
-		int indent = ((Integer) param).intValue();
-
-		printName(indent, "ParamDefinition", node, false);
-
-		print(indent + 1, "name", "String", node.getName());
-		visit(indent + 1, "type", "Type", node.getType());
 		return null;
 	}
 

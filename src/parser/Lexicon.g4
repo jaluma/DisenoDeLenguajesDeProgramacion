@@ -6,7 +6,7 @@ INT_CONSTANT
 REAL_CONSTANT
 	: DIGIT+ '.' DIGIT+;
 CHAR_CONSTANT
-	: QUOTE ( .? | '\\n') QUOTE;
+	: QUOTE ('\\n' | . ) QUOTE;
 
 QUOTE
 	: '\'' -> skip;

@@ -9,7 +9,6 @@ instruction -> definitions:definition;
 varDefinition:definition -> name:string type;
 structDefinition:definition -> name:varType definitions:structField*;
 funDefinition:definition -> name:string params:definition* return_t:type definitions:definition* sentences:sentence*;
-paramDefinition:definition -> name:string type;
 structField:definition -> name:string type:type;
 
 intType:type -> ;

@@ -17,8 +17,6 @@ public interface Visitor {
 
 	Object visit(FunDefinition node, Object param);
 
-	Object visit(ParamDefinition node, Object param);
-
 	Object visit(StructField node, Object param);
 
 	Object visit(IntType node, Object param);

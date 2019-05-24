@@ -1,4 +1,4 @@
-/**
+/*
  * @generated VGen (for ANTLR) 1.4.0
  */
 
@@ -50,13 +50,6 @@ public class DefaultVisitor implements Visitor {
 			node.getReturn_t().accept(this, param);
 		visitChildren(node.getDefinitions(), param);
 		visitChildren(node.getSentences(), param);
-		return null;
-	}
-
-	//	class ParamDefinition { String name;  Type type; }
-	public Object visit(ParamDefinition node, Object param) {
-		if(node.getType() != null)
-			node.getType().accept(this, param);
 		return null;
 	}
 
