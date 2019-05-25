@@ -20,6 +20,9 @@ public class FunDefinition extends AbstractDefinition {
 	private List<VarDefinition> definitions;
 	private List<Sentence> sentences;
 
+	// Heredado
+	private boolean existRet = false;
+
 	public FunDefinition(String name, List<VarDefinition> params, Type return_t, List<VarDefinition> definitions, List<Sentence> sentences) {
 		this.name = name;
 		this.params = params;
@@ -83,6 +86,14 @@ public class FunDefinition extends AbstractDefinition {
 
 	public void setSentences(List<Sentence> sentences) {
 		this.sentences = sentences;
+	}
+
+	public boolean isExistRet() {
+		return existRet;
+	}
+
+	public void setExistRet(boolean existRet) {
+		this.existRet = existRet;
 	}
 
 	@Override

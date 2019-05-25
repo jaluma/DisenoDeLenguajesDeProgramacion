@@ -23,31 +23,12 @@ public class TypeChecking extends DefaultVisitor {
 		this.errorManager = errorManager;
 	}
 
-	//	class StructDefinition { VarType name;  List<StructField> definitions; }
-	public Object visit(StructDefinition node, Object param) {
-		super.visit(node, param);
-
-		return null;
-	}
-
 	//	class FunDefinition { String name;  List<Definition> params;  Type return_t;  List<Definition> definitions;  List<Sentence> sentences; }
 	public Object visit(FunDefinition node, Object param) {
-		//pasamos referencia de la definición de la funcion para el return
-		visitChildren(node.getParams(), param);
-		if(node.getReturn_t() != null)
-			node.getReturn_t().accept(this, param);
-		visitChildren(node.getDefinitions(), param);
-
-		Boolean retB = false;
-		for(AST child : node.getSentences()) {
-			Object ret = child.accept(this, param);
-			if(ret instanceof Boolean && (Boolean) ret) {      // sentencia de return
-				retB = (Boolean) ret;
-			}
-		}
+		super.visit(node, param);
 
 		if(!(node.getReturn_t() instanceof VoidType)) {
-			predicado(!retB, "No hay sentencia return y es necesaria", node);
+			predicado(node.isExistRet(), "No hay sentencia return y es necesaria", node);
 		}
 
 		predicado(isReturnable(node.getReturn_t()), "El tipo de retorno de la función " + node.getName() + " no es compatible.", node);
@@ -69,12 +50,13 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(Print node, Object param) {
 		super.visit(node, param);
 
-		if(node.getLex().equals(PrintSeparatorEnum.LINE_BREAK.getValue()))
-			predicado(node.getExpression() == null || isSimple(node.getExpression()
-					.getType()), "La expresión de tipo " + node.getExpression() + " no es compatible con el Print.", node);
-		else
-			predicado(isSimple(node.getExpression()
-					.getType()), "El tipo de la expresión " + node.getExpression() + " no es compatible con el Print. No es de un tipo simple.", node);
+		if(node.getLex().equals(PrintSeparatorEnum.LINE_BREAK.getValue())) {
+			predicado(node.getExpression() == null || isSimple(node.getExpression().getType()),
+					"La expresión de tipo " + node.getExpression() + " no es compatible con el Print.", node);
+		} else {
+			predicado(isSimple(node.getExpression().getType()),
+					"El tipo de la expresión " + node.getExpression() + " no es compatible con el Print. No es de un tipo simple.", node);
+		}
 
 		return null;
 	}
@@ -83,10 +65,10 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(Assignment node, Object param) {
 		super.visit(node, param);
 
-		predicado(sameType(node.getLeft().getType(), node.getRight().getType()), "La asignación es incompatible. Tipos diferentes: " + node.getLeft()
-				.getType() + ", " + node.getRight().getType(), node);
-		predicado(isSimple(node.getLeft().getType()), "El tipo de la izquierda " + node.getLeft()
-				.getType() + " no es compatible con la asignación. No es un tipo simple.", node);
+		predicado(sameType(node.getLeft().getType(), node.getRight().getType()),
+				"La asignación es incompatible. Tipos diferentes: " + node.getLeft().getType() + ", " + node.getRight().getType(), node);
+		predicado(isSimple(node.getLeft().getType()),
+				"El tipo de la izquierda " + node.getLeft().getType() + " no es compatible con la asignación. No es un tipo simple.", node);
 		predicado(node.getLeft().isModificable(), "La asignación es incompatible. Término de solo lectura.", node);
 
 		return null;
@@ -96,13 +78,14 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(Return node, Object param) {
 		super.visit(node, param);
 
-		boolean condicion1 = isReturnable(node.getExpression().getType());
-		predicado(condicion1, "El tipo de la expresión no es compatible con el Return de la función.", node);
+		predicado(isReturnable(node.getExpression().getType()),
+				"El tipo de la expresión no es compatible con el Return de la función.", node);
+		predicado(sameType(node.getFunDefinition().getReturn_t(), node.getExpression().getType()),
+				"La expresión no es del tipo de retorno", node);
 
-		boolean condicion2 = sameType(node.getFunDefinition().getReturn_t(), node.getExpression().getType());
-		predicado(condicion2, "La expresión no es del tipo de retorno", node);
+		node.getFunDefinition().setExistRet(true);
 
-		return !condicion1 && !condicion2;
+		return true;
 
 	}
 
@@ -110,50 +93,35 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(Read node, Object param) {
 		super.visit(node, param);
 
-		predicado(isSimple(node.getExpression().getType()), "El tipo del parametro de la función " + node.getExpression() + " no es simple.", node);
-		predicado(node.getExpression().isModificable(), "La expresión " + node.getExpression() + " no es modificable.", node);
+		predicado(isSimple(node.getExpression().getType()),
+				"El tipo del parametro de la función " + node.getExpression() + " no es simple.", node);
+		predicado(node.getExpression().isModificable(),
+				"La expresión " + node.getExpression() + " no es modificable.", node);
 
 		return null;
 	}
 
 	//	class IfElse { Expression expression;  List<Sentence> if_s;  List<Sentence> else_s; }
 	public Object visit(IfElse node, Object param) {
-		if(node.getExpression() != null)
-			node.getExpression().accept(this, param);
+		boolean oldReturnStatus = node.getFunDefinition().isExistRet();
 
-		// si hay sentencia de return en el if
-		Boolean retIf = false;
-		if(node.getIf_s() != null) {
-			for(AST child : node.getIf_s()) {
-				Object ret = child.accept(this, param);
-				if(ret instanceof Boolean && (Boolean) ret) {      // sentencia de return
-					retIf = (Boolean) ret;
-				}
-			}
-		}
+		super.visit(node, param);
 
-		Boolean retElse = false;
-		if(node.getElse_s() != null) {
-			for(AST child : node.getElse_s()) {
-				Object ret = child.accept(this, param);
-				if(ret instanceof Boolean && (Boolean) ret) {      // sentencia de return
-					retElse = (Boolean) ret;
-				}
-			}
-		}
+		predicado(sameType(node.getExpression().getType(), IntType.class),
+				"El tipo de la expresión " + node.getExpression() + " no es un número entero.", node);
 
-		predicado(sameType(node.getExpression()
-				.getType(), IntType.class), "El tipo de la expresión " + node.getExpression() + " no es un número entero.", node);
+		if (!oldReturnStatus)
+			node.getFunDefinition().setExistRet(existReturn(node.getIf_s(), node.getElse_s()));
 
-		return retIf || retElse;
+		return null;
 	}
 
 	//	class While { Expression expression;  List<Sentence> sentence; }
 	public Object visit(While node, Object param) {
 		super.visit(node, param);
 
-		predicado(sameType(node.getExpression()
-				.getType(), IntType.class), "El tipo de la expresión " + node.getExpression() + " no es un número entero.", node);
+		predicado(sameType(node.getExpression().getType(), IntType.class),
+				"El tipo de la expresión " + node.getExpression() + " no es un número entero.", node);
 
 		return null;
 	}
@@ -162,16 +130,13 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(FunInvocation node, Object param) {
 		super.visit(node, param);
 
-		predicado(node.getParams().size() == node.getFunDefinition()
-				.getParams()
-				.size(), "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node);
+		predicado(node.getParams().size() == node.getFunDefinition().getParams().size(),
+				"El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node);
 
-		node.getFunDefinition().getParams().forEach(p -> {
-			int index = node.getFunDefinition().getParams().indexOf(p);
-			List<Expression> definition = node.getParams();
-			predicado(index >= 0 && index < definition.size() && sameType(p.getType(), definition.get(index)
-					.getType()), "El tipo del parametro " + p.getName() + " no se corresponde con la definición.", node);
-		});
+		node.getFunDefinition()
+				.getParams()
+				.forEach(p -> predicado(paramsEquals(node.getFunDefinition().getParams(), p),
+						"El tipo del parametro " + p.getName() + " no se corresponde con la definición.", node));
 
 		return null;
 	}
@@ -180,17 +145,15 @@ public class TypeChecking extends DefaultVisitor {
 	public Object visit(FunInvocationExpression node, Object param) {
 		super.visit(node, param);
 
-		boolean condicion = node.getParams().size() == node.getDefinition().getParams().size();
-		predicado(condicion, "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node);
-		if(isErrorType(node, condicion)) {
+		boolean condition = node.getParams().size() == node.getDefinition().getParams().size();
+		predicado(condition, "El número de parametros de la función " + node.getName() + " no se corresponde con la definición.", node);
+		if(isErrorType(node, condition)) {
 			return null;
 		}
-		node.getDefinition().getParams().forEach(p -> {
-			int index = node.getDefinition().getParams().indexOf(p);
-			List<Expression> definition = node.getParams();
-			predicado(index >= 0 && index < definition.size() && sameType(p.getType(), definition.get(index)
-					.getType()), "El tipo del parametro " + p.getName() + " no se corresponde con la definición.", node);
-		});
+		node.getDefinition()
+				.getParams()
+				.forEach(p -> predicado(paramsEquals(node.getDefinition().getParams(), p),
+						"El tipo del parametro " + p.getName() + " no se corresponde con la definición.", node));
 
 		node.setType(node.getDefinition().getReturn_t());
 		node.setModificable(false);
@@ -435,7 +398,35 @@ public class TypeChecking extends DefaultVisitor {
 		return false;
 	}
 
-	private boolean isErrorType(Expression node, Boolean... conditions) {
+	private boolean paramsEquals(List<VarDefinition> paramsDefinition, VarDefinition p) {
+		int index = paramsDefinition.indexOf(p);
+		return index >= 0 && index < paramsDefinition.size() && sameType(p.getType(), paramsDefinition.get(index).getType());
+	}
+
+	private boolean existReturn(List<Sentence> ifSentences, List<Sentence> elseSentences) {
+		boolean returnIf = false;
+		boolean returnElse = false;
+
+		if (ifSentences != null) {
+			for(Sentence child : ifSentences) {
+				if(child instanceof Return) {
+					returnIf = true;
+				}
+			}
+		}
+
+		if(elseSentences != null) {
+			for(Sentence child : elseSentences) {
+				if(child instanceof Return) {
+					returnElse = true;
+				}
+			}
+		}
+
+		return returnIf && returnElse;
+	}
+
+	private boolean isErrorType(Expression node, boolean... conditions) {
 		// OR
 		for(boolean cond : conditions) {
 			if(!cond) {

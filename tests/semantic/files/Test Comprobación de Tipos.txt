@@ -43,6 +43,28 @@ j(a:int, b:float):float {
 	return; // Debe haber un valor de retorno
 }
 
+i():int {
+	if (3) {
+		if (4) {
+			return 5;
+		} else { }
+
+		return 6;
+	}
+	// Error: falta return
+}
+
+k():int {
+	if (3) {
+		if (4) {
+			return 5;
+		} else { }
+
+		return 6;
+	}
+	return 7;
+}
+
 main() {
 	var i:int;
 	var f:float;

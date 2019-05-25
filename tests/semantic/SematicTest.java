@@ -48,13 +48,13 @@ public class SematicTest {
 	@Test
 	public void prog2() {
 		filename = "prog2.txt";
-		test(14);        // 0 identificacion / 13 tipos
+		test(13);        // 0 identificacion / 13 tipos, tenia puesto 14
 	}
 
 	@Test
 	public void comprobacionDeTipos() {
 		filename = "Test Comprobación de Tipos.txt";
-		test(46);
+		test(45);
 	}
 
 	@Test
